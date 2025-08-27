@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c53uyscygg23h"]
+
+[ext_resource type="AudioStream" uid="uid://20mpgkeyrsac" path="res://Assets/song_sun.mp3" id="1_btsea"]
+
+[node name="music" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_btsea")
+volume_db = 9.712
+autoplay = true
+bus = &"music"

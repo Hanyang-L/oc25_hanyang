@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://chhb4hjc0683d"]
+
+[ext_resource type="Texture2D" uid="uid://by8ey1nqi2u5b" path="res://Assets/nuage.png" id="1_x8okd"]
+
+[node name="Nuage" type="Sprite2D"]
+texture = ExtResource("1_x8okd")
