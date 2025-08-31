@@ -62,7 +62,7 @@ while True:
     if prog == 0:
         np[i] = colors[j]
         np.show()
-        sleep(500)
+        sleep(50)
         i = (i + 1) % 60
     
     if prog == 1:
@@ -91,10 +91,18 @@ while True:
         sleep(20)
         
     if prog == 4:
-        ...
+        if button_b.is_pressed():
+            i = i + 1
+        i = i % 60
+        np[i] = colors[j]
+        np.show()
+        sleep(20)    
 
     if prog == 5:
-        ...
+        np[i] = (i,0,i)
+        np.show()
+        sleep(50)
+        i = (i + 1) % 30
      
     if prog == 6:
         i = (i+1) % 20
@@ -105,7 +113,11 @@ while True:
         np.show()
 
     if prog == 7:
-        ...
+        np.clear()
+        i=random.randint(0,59)
+        np[i]=tuple(10*i for i in colors[j])
+        np.show()
+        sleep(50)
 
     if prog == 8:
         t = running_time()
@@ -126,3 +138,4 @@ while True:
             np[(i+30)%60] = blue
             np.show()
             sleep(20)
+
