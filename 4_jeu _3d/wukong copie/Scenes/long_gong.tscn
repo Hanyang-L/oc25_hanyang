@@ -1,0 +1,127 @@
+[gd_scene load_steps=17 format=3 uid="uid://rqe74nwj0vty"]
+
+[ext_resource type="Texture2D" uid="uid://v6v4ioioivcr" path="res://Assets/long_gong.png" id="1_njl77"]
+[ext_resource type="Script" path="res://Scripts/door.gd" id="2_ag5nj"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ioqda"]
+a = Vector2(-6.17337e-07, -198.976)
+b = Vector2(-9.53674e-07, 109.96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oi3tj"]
+size = Vector2(26, 4.5)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_1kcy0"]
+b = Vector2(0, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yy5f0"]
+size = Vector2(34, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s4x7k"]
+size = Vector2(34, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rmsk0"]
+size = Vector2(29, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4vn55"]
+size = Vector2(21, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_san0f"]
+size = Vector2(20, 8.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uinbc"]
+size = Vector2(9, 4)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_f1bgk"]
+a = Vector2(20.7144, 57.5983)
+b = Vector2(170.894, 162.322)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ea18e"]
+b = Vector2(-11, 18)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_btf2q"]
+b = Vector2(5, 11)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_yh6vc"]
+a = Vector2(0, -54)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5d7xb"]
+radius = 2.0
+height = 4.0
+
+[node name="long_gong" type="StaticBody2D"]
+
+[node name="LongGong" type="Sprite2D" parent="."]
+position = Vector2(-6.50521e-19, -17)
+scale = Vector2(0.193103, 0.190978)
+texture = ExtResource("1_njl77")
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="."]
+position = Vector2(1.19209e-07, -3)
+scale = Vector2(0.193103, 0.190978)
+shape = SubResource("SegmentShape2D_ioqda")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(31, 39.25)
+shape = SubResource("RectangleShape2D_oi3tj")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(45, 41)
+shape = SubResource("SegmentShape2D_1kcy0")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(17, 35)
+shape = SubResource("RectangleShape2D_yy5f0")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="."]
+position = Vector2(12, 31)
+shape = SubResource("RectangleShape2D_s4x7k")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="."]
+position = Vector2(7, 27)
+shape = SubResource("RectangleShape2D_rmsk0")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="."]
+position = Vector2(3.5, 22.5)
+shape = SubResource("RectangleShape2D_4vn55")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="."]
+position = Vector2(1, 20)
+shape = SubResource("RectangleShape2D_san0f")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="."]
+position = Vector2(4, 14)
+shape = SubResource("RectangleShape2D_uinbc")
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="."]
+position = Vector2(-85, 17)
+scale = Vector2(0.193103, 0.190978)
+shape = SubResource("SegmentShape2D_f1bgk")
+
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="."]
+position = Vector2(-51, 48)
+shape = SubResource("SegmentShape2D_ea18e")
+
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="."]
+position = Vector2(-85, 17)
+shape = SubResource("SegmentShape2D_btf2q")
+
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="."]
+position = Vector2(-85, 8)
+shape = SubResource("SegmentShape2D_yh6vc")
+
+[node name="door" type="Area2D" parent="."]
+position = Vector2(-115, 30)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("2_ag5nj")
+
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="door"]
+position = Vector2(119, -28)
+shape = SubResource("CapsuleShape2D_5d7xb")
+
+[node name="Timer" type="Timer" parent="door"]
+wait_time = 0.6
+one_shot = true
+
+[connection signal="body_entered" from="door" to="door" method="_on_body_entered"]
+[connection signal="timeout" from="door/Timer" to="door" method="_on_timer_timeout"]

@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://b70m12jqs2kl3"]
+
+[ext_resource type="Script" path="res://Scripts/db.gd" id="1_k6jt7"]
+[ext_resource type="Texture2D" uid="uid://bwyp8pqy60j02" path="res://Assets/brackeys_platformer_assets/sprites/world_tileset.png" id="2_w3kfq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ney2"]
+size = Vector2(6, 8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g26s2"]
+radius = 3.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wkifv"]
+radius = 2.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t3dan"]
+radius = 3.60555
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dy81m"]
+size = Vector2(10, 4.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ar65m"]
+size = Vector2(5.25, 5.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cn6vp"]
+size = Vector2(2, 1.625)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_85w4o"]
+radius = 1.0
+
+[node name="db" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_k6jt7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_w3kfq")
+region_enabled = true
+region_rect = Rect2(16.9253, 102.857, 14.136, 9.41122)
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8ney2")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="."]
+position = Vector2(-3, 1)
+shape = SubResource("CircleShape2D_g26s2")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="."]
+position = Vector2(4, -2)
+shape = SubResource("CircleShape2D_wkifv")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="."]
+position = Vector2(3, 0)
+shape = SubResource("CircleShape2D_t3dan")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_dy81m")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0.375, -1)
+shape = SubResource("RectangleShape2D_ar65m")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-4, 1.375)
+shape = SubResource("RectangleShape2D_cn6vp")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-3, -0.8125)
+shape = SubResource("RectangleShape2D_cn6vp")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-4, 2)
+shape = SubResource("CircleShape2D_85w4o")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
