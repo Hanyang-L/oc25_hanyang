@@ -1,12 +1,12 @@
 [gd_scene load_steps=25 format=4 uid="uid://bihonfafrqpfu"]
 
 [ext_resource type="PackedScene" uid="uid://c5ab4mahbf4ed" path="res://Scenes/player.tscn" id="1_bjrbk"]
-[ext_resource type="Script" path="res://Scripts/level_3.gd" id="1_ket0e"]
+[ext_resource type="Script" uid="uid://b2afmqd1uv6au" path="res://Scripts/level_3.gd" id="1_ket0e"]
 [ext_resource type="Texture2D" uid="uid://bhnl4vum3pika" path="res://Assets/kenney_pixel-platformer/Tilemap/tilemap.png" id="2_a5y1v"]
 [ext_resource type="Texture2D" uid="uid://bwyp8pqy60j02" path="res://Assets/brackeys_platformer_assets/sprites/world_tileset.png" id="3_xsajm"]
 [ext_resource type="PackedScene" uid="uid://chgpfysrv541j" path="res://Scenes/platform/plat_nuage.tscn" id="4_5hilb"]
 [ext_resource type="PackedScene" uid="uid://p6poiu7uhdyq" path="res://Scenes/killzone.tscn" id="4_e78mq"]
-[ext_resource type="Shader" path="res://Scenes/level/water.gdshader" id="5_4hjvp"]
+[ext_resource type="Shader" uid="uid://chwbry5iu6b2" path="res://Scenes/level/water.gdshader" id="5_4hjvp"]
 [ext_resource type="Texture2D" uid="uid://cvt51r3qkobyn" path="res://Assets/tf_atlantis_tiles.png" id="5_iep5j"]
 [ext_resource type="Texture2D" uid="uid://b3rvl1bn37wln" path="res://Assets/water_animated_tileset.png" id="6_5awcs"]
 [ext_resource type="PackedScene" uid="uid://dkx3of5rfrx0o" path="res://Scenes/dragon.tscn" id="6_eklde"]
@@ -1336,9 +1336,9 @@ noise = SubResource("FastNoiseLite_nab8h")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ohhp6"]
 shader = ExtResource("5_4hjvp")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_jkp0b")
 shader_parameter/speed = Vector2(0.5, 0.2)
 shader_parameter/distortion = 0.01
-shader_parameter/noise_texture = SubResource("NoiseTexture2D_jkp0b")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwd6v"]
 texture = ExtResource("5_iep5j")
