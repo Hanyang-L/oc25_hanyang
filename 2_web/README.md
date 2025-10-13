@@ -8,4 +8,4 @@ for i in range (20):
     print (H)
     print (S)
 ```
-https://bugnon.github.io/oc-2025/2_web/s
+https://bugnon.github.io/oc-2025/2_web/
