@@ -49,3 +49,5 @@ L’ensemble de la maquette est conçu de manière cohérente, conservant une id
 #### Téléchargement du jeu
 
 ![maquette_4](./images/maquette_4.png)
+
+![maquette_8](./images/maquette_8.png)
