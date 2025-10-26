@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Pour des cours d'informatique dans un cadre scolaire, la création d'un site Web en est le sujet. Le projet consiste à créer un site web simple afin d’appliquer ldeses notions acquises en cours.
+Pour des cours d'informatique dans un cadre scolaire, la création d'un site Web en est le sujet. Le projet consiste à appliquer les notions de Web fondamentales acquises en cours telles que le HTML, CSS et JavaScript, tout en respectant un cahier des charges précis.  
 
 ## Cahier des charges
 
@@ -29,20 +29,20 @@ L’ensemble de la maquette est conçu de manière cohérente, conservant une id
 
 ### Éléments imposés
 
-* Le site web doit contenir au minimum quatre pages dans quatre fichiers HTML différents, dont une page d’accueil.
+* Le site Web doit contenir au minimum quatre pages dans quatre fichiers HTML différents, dont une page d’accueil.
 * La page d’accueil doit présenter le sujet traité et table des matières du site Web ainsi qu’une brève description du contenu.
 * Il doit y avoir une barre de navigation pour naviguer entre les pages.
 * Chaque page doit contenir au moins 100 mots.
 * Le sujet traité doit être lié aux STIM et le contenu (texte, images, équations, code, animations, etc.) doit être cohérent, pertinent et maîtrisé par l’élève.
-* La page web doit contenir soit des équations, soit du code informatique, soit un formulaire dynamique.
-* Le site web doit être stylé avec une feuille CSS.
+* La page Web doit contenir soit des équations, soit du code informatique, soit un formulaire dynamique.
+* Le site Web doit être stylé avec une feuille CSS.
 * Il doit y avoir une animation réalisée avec canvas.
-* Le code doit être sur GitHub est être déployé sur le web avec GitHub Pages.
+* Le code doit être sur GitHub est être déployé sur le Web avec GitHub Pages.
 * La page doit pouvoir s’adapter aux écrans des smartphone.
 
 ### Maquette
 
-La première image de chaque type corresponds toujours aux écrans horizontaux et la deuxième pour les écrans vericaux.
+La première image de chaque type correspond toujours aux écrans horizontaux et la deuxième pour les écrans vericaux.
 
 #### Page d'aqueil
 
