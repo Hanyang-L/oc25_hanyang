@@ -1,11 +1,14 @@
 body{
-    background-color: rgb(62, 117, 165);
-    font-family: Arial;
+    background-image: url(/2_web/images/readme/maquette_1.png);
+    font-family: Arial, Helvetica, sans-serif;
+}
+h1,h2,h3 {text-align: center;
 }
 
 h1, h2{
     color:brown;
     background-color: blueviolet;
+    border-radius: 10px;
 }
 
 #bienvenue{
@@ -15,6 +18,10 @@ h1, h2{
 
 .important{
     border: 2px solid black;
+    padding: 22px 22px 22px 22px;
+    margin: 22px 22px 22px 22px;
+    border-left: red solid 10px;
+    border-radius: 100px;
 }
 .important > strong {
     text-decoration:underline wavy;

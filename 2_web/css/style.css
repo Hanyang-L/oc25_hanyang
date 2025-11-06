@@ -1,24 +1,17 @@
 body{
-    background-color: rgb(62, 117, 165);
+    background-color: rgb(120, 218, 521);
     font-family: Arial;
 }
 
-h1, h2{
-    color:brown;
-    background-color: blueviolet;
+h1 {
+    color:rgb(221, 25, 25);
+    text-align: center;
+    font-family: Geneva;
+    
 }
 
-#bienvenue{
-    border:1px dashed olive;
-    background-color: darkmagenta;
-}
 
-.important{
-    border: 2px solid black;
-}
-.important > strong {
-    text-decoration:underline wavy;
-    color: green;
-    font-style:italic;
+.table>ul>li>a{
+    color:rgb(239, 239, 49)
 }
 /* commentaires */
