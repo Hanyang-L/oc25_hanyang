@@ -1,17 +1,29 @@
+@font-face {
+    font-family: "Alterebro Pixel Font";
+    src: url(/2_web/polices/alterebro-pixel-font.ttf);
+}    
+
 body{
-    background-color: rgb(120, 218, 521);
+    background-image: url(/2_web/images/index.png);
     font-family: Arial;
 }
 
 h1 {
     color:rgb(221, 25, 25);
     text-align: center;
-    font-family: Geneva;
-    
+    font-family: alterebro-pixel-font;
+    font-size: 120px;
+    font-style: italic;
 }
-
-
-.table>ul>li>a{
-    color:rgb(239, 239, 49)
+.table {
+    color:rgb(239, 239, 49);
+    font-size:100px;
+    font-style: normal;
+    font-weight: 400;
 }
-/* commentaires */
+.itable ul li {
+    color:rgb(239, 239, 49);
+}
+.itable ul li a {
+    color:rgb(239, 239, 49);
+}
