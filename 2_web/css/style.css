@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Alterebro Pixel Font";
-    src: url(/2_web/polices/alterebro-pixel-font.ttf);
+    src: url ("../polices/alterebro-pixel-font.ttf");
 }    
 
 body{
@@ -11,7 +11,7 @@ body{
 h1 {
     color:rgb(221, 25, 25);
     text-align: center;
-    font-family: alterebro-pixel-font;
+    font-family: Alterebro Pixel Font;
     font-size: 120px;
     font-style: italic;
 }
