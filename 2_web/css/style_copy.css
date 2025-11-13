@@ -34,4 +34,14 @@ h1, h2{
     color: green;
     font-style:italic;
 }
+
+.guerrier{
+    background-color: brown;
+}
+.magicien{
+    background-color: chartreuse;
+}
+.voleur{
+    background-color: gray;
+}
 /* commentaires */
