@@ -1,29 +1,83 @@
 @font-face {
     font-family: "Alterebro Pixel Font";
     src: url ("../polices/alterebro-pixel-font.ttf");
-}    
+}
+@font-face {
+    font-family: "Avenir Black";
+    src: url ("../polices/avenir_fonts/avenir-black.ttf");
+}
+@font-face {
+    font-family: "Avenir Book";
+    src: url ("../polices/avenir_fonts/avenir-book.ttf");
+}
+@font-face {
+    font-family: "Avenir Heavy";
+    src: url ("../polices/avenir_fonts/avenir-heavy.ttf");
+}
+@font-face {
+    font-family: "Avenir Light";
+    src: url ("../polices/avenir_fonts/avenir-light.ttf");
+}
+@font-face {
+    font-family: "Avenir Regular";
+    src: url ("../polices/avenir_fonts/avenir-regular.ttf");
+}
 
-body{
+body.index{
     background-image: url(/2_web/images/index.png);
-    font-family: Arial;
+    font-family: "Avenir Regular";
+
+    h1 {
+        color:rgb(221, 25, 25);
+        text-align: center;
+        font-family: Alterebro Pixel Font;
+        font-size: 120px;
+        font-style: italic;
+    }
+    .table {
+        color:rgb(239, 239, 49);
+        font-size:100px;
+        font-style: normal;
+        font-weight: 400;
+    }
+    .itable ul li {
+        color:rgb(239, 239, 49);
+    }
+    .itable ul li a {
+        color:rgb(239, 239, 49);
+    }
+}
+body.intro{
+    .menu ul {
+        display: flex;
+        gap: 270px;
+        margin: 40px 100px 50px 300px;
+    }
+}
+body.jeu{
+    font-family: "Avenir Regular";
+    .menu ul {
+        display: flex;
+        gap: 270px;
+        margin: 40px 100px 50px 300px;
+    }
+    .jingubang {
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        margin: 50px 0px -400px 0px;
+    }
+}
+body.telechargement{
+    .menu ul {
+        display: flex;
+        gap: 270px;
+        margin: 40px 100px 50px 300px;
+    }
 }
 
-h1 {
-    color:rgb(221, 25, 25);
-    text-align: center;
-    font-family: Alterebro Pixel Font;
-    font-size: 120px;
-    font-style: italic;
-}
-.table {
-    color:rgb(239, 239, 49);
-    font-size:100px;
-    font-style: normal;
-    font-weight: 400;
-}
-.itable ul li {
-    color:rgb(239, 239, 49);
-}
-.itable ul li a {
-    color:rgb(239, 239, 49);
+body.spritesheet{
+    .menu ul {
+        display: flex;
+        margin: 40px 100px 50px 100px;
+    }
 }
