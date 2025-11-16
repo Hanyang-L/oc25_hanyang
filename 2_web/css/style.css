@@ -25,7 +25,7 @@
 
 body.index{
     background-image: url(/2_web/images/index.png);
-    font-family: "Avenir Regular";
+    font-family: Avenir Regular;
 
     h1 {
         color:rgb(221, 25, 25);
