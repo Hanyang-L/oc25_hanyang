@@ -68,6 +68,9 @@ body.jeu{
     }
 }
 body.telechargement{
+    
+    background: linear-gradient(to bottom ,rgb(0, 234, 255), rgb(0, 26, 255));
+    
     .menu ul {
         display: flex;
         gap: 270px;
