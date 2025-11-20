@@ -50,37 +50,50 @@ body.index{
 body.intro{
     .menu ul {
         display: flex;
-        gap: 270px;
-        margin: 40px 100px 50px 300px;
+        justify-content: center;
+        align-items: center;
+        gap: 40px 300px;
+        margin: 40px ;
+        flex-wrap: wrap;
     }
 }
 body.jeu{
     font-family: "Avenir Regular";
     .menu ul {
         display: flex;
-        gap: 270px;
-        margin: 40px 100px 50px 300px;
+        justify-content: center;
+        align-items: center;
+        gap: 40px 300px;
+        margin: 40px ;
+        flex-wrap: wrap;
     }
     .jingubang {
         transform: rotate(-90deg);
         transform-origin: left top;
         margin: 50px 0px -400px 0px;
     }
+
 }
 body.telechargement{
-    
+    min-height: 150vh;
     background: linear-gradient(to bottom ,rgb(0, 234, 255), rgb(0, 26, 255));
-    
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    /* size: x, y  */;
+
     .menu ul {
         display: flex;
-        gap: 270px;
-        margin: 40px 100px 50px 300px;
+        justify-content: center;
+        align-items: center;
+        gap: 40px 300px;
+        margin: 40px ;
+        flex-wrap: wrap;
     }
 }
 
 body.spritesheet{
     .menu ul {
         display: flex;
-        margin: 40px 100px 50px 100px;
+        margin: 40px 30px 50px 100px;
     }
 }
