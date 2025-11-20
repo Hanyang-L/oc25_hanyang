@@ -12,17 +12,17 @@ const context = dessin.getContext("2d");
 
 context.beginPath();
 context.strokeStyle = "red";
-context.moveTo(250, 250);
+context.moveTo(250, 100);
 context.lineTo(100, 250);
 context.lineTo(250, 400);
 context.lineTo(400, 250);
 context.closePath();
 context.fillStyle = "green";
-context.fillStyle();
+context.fill();
 context.stroke();
 
 context.beginPath();
-context.arc(250, 250, 100  , 0, 2 * Maths.PI);
+context.arc(250, 250, 100  , 1 * Math.PI, 2 * Math.PI);
 // (coordonné x du centre, coordoné y du centre, 
 // rayon en px, angle de départ, angle en RAD)
 context.fillStyle = "red";
