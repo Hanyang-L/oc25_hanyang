@@ -23,11 +23,45 @@
     src: url ("../polices/avenir_fonts/avenir-regular.ttf");
 }
 
-body.index{
+.title_center {
+    text-align: center;
+}
+.gradient {
+    background: linear-gradient(to bottom ,rgb(0, 217, 255), rgb(3, 186, 250), rgb(12, 68, 249));
+    height: 100%;
+}
+
+.menu ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px 300px;
+    margin: 40px ;
+    flex-wrap: wrap;
+}
+.button_nav {
+    color: yellow;
+    background-color: red;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 0px;
+    transition: background-color 0.5s;
+}
+.button_nav:hover {
+    color: rgb(231, 216, 8);
+    background-color: rgb(203, 3, 3);
+}
+
+
+.index{
     background-image: url(/2_web/images/index.png);
+    margin: 0 0 0 0;
+    background-repeat: no-repeat;
     font-family: Avenir Regular;
 
     h1 {
+        margin: 0 0 0 0;
+        padding: 80px;
         color:rgb(221, 25, 25);
         text-align: center;
         font-family: Alterebro Pixel Font;
@@ -47,26 +81,12 @@ body.index{
         color:rgb(239, 239, 49);
     }
 }
-body.intro{
-    .menu ul {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 40px 300px;
-        margin: 40px ;
-        flex-wrap: wrap;
-    }
+.intro{
+    
 }
-body.jeu{
+.jeu{
     font-family: "Avenir Regular";
-    .menu ul {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 40px 300px;
-        margin: 40px ;
-        flex-wrap: wrap;
-    }
+
     .jingubang {
         transform: rotate(-90deg);
         transform-origin: left top;
@@ -74,26 +94,21 @@ body.jeu{
     }
 
 }
-body.telechargement{
-    min-height: 150vh;
-    background: linear-gradient(to bottom ,rgb(0, 234, 255), rgb(0, 26, 255));
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    /* size: x, y  */;
+.telechargement{
 
-    .menu ul {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 40px 300px;
-        margin: 40px ;
-        flex-wrap: wrap;
+    background: linear-gradient(to bottom ,rgb(0, 234, 255), rgb(0, 26, 255));
+    height: 100%;
+
+    .long {
+        float:right;
     }
+
 }
 
-body.spritesheet{
-    .menu ul {
+.spritesheet{
+    .return ul {
         display: flex;
-        margin: 40px 30px 50px 100px;
+        margin: 40px 30px 50px 370px;
     }
+    margin: 8px 8px 8px 25px;
 }
