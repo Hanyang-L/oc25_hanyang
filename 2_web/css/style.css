@@ -28,7 +28,7 @@
 }
 .gradient {
     background: linear-gradient(to bottom ,rgb(0, 217, 255), rgb(3, 186, 250), rgb(12, 68, 249));
-    height: 100%;
+    background-size: 100% 100%;
 }
 
 .menu ul {
@@ -97,7 +97,7 @@
 .telechargement{
 
     background: linear-gradient(to bottom ,rgb(0, 234, 255), rgb(0, 26, 255));
-    height: 100%;
+    background-size: 100% 100%;
 
     .long {
         float:right;
