@@ -101,6 +101,7 @@
 
     .long {
         float:right;
+        margin-bottom: 600px;
     }
 
 }

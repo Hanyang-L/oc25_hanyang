@@ -1,0 +1,28 @@
+.gradient {
+background-color: deepskyblue;
+}
+
+.body{
+    border: solid 1px red;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1, h2, p {
+    order: solid 1px green;
+}
+.marcher {
+    width: 400px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.marcher-float {
+    width:500px;
+    float: left;
+    margin-bottom: 20px;
+    margin-right: 20px;
+
+}
