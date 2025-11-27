@@ -73,19 +73,35 @@
         font-size:100px;
         font-style: normal;
         font-weight: 400;
+        text-align: end;
+        margin: 100px 90px 100px 0px;
     }
     .itable ul li {
         color:rgb(239, 239, 49);
+        float: right;
+        margin-right: 90px;
+        margin-left: 20px;
     }
     .itable ul li a {
         color:rgb(239, 239, 49);
+        text-align: end;
+        margin: 10px 90px 60px 0px;
+    }
+    p {
+        max-width: 1200px;
+        margin-left: 20px;
+        padding-top: 100px;
     }
 }
 .intro{
+    max-width: 1200px;
+    margin-left: 20px;
     
 }
 .jeu{
     font-family: "Avenir Regular";
+    max-width: 1200px;
+    margin-left: 20px;
 
     .jingubang {
         transform: rotate(-90deg);
@@ -106,10 +122,20 @@
 
 }
 
-.spritesheet{
+.spritesheet {
+    margin: 8px 8px 8px 20px;
+    h2 {
+        margin-top: 30px;
+    }
+    .spritesheet_longwang {
+        width: 750px;
+        margin-bottom: 60px;
+    }
+    .spritesheet_wukong{
+        margin-top: 10px;
+    }
     .return ul {
         display: flex;
         margin: 40px 30px 50px 370px;
     }
-    margin: 8px 8px 8px 25px;
 }
