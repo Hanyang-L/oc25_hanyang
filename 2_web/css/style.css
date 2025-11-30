@@ -25,12 +25,18 @@
 
 .title_center {
     text-align: center;
+    font-family: Alterebro Pixel Font;
+    color: rgb(221, 25, 25);
+    font-size: 120px;
 }
 .gradient {
     background: linear-gradient(to bottom ,rgb(0, 217, 255), rgb(3, 186, 250), rgb(12, 68, 249));
     background-size: 100% 100%;
 }
-
+.gradient_index {
+    background: linear-gradient(to bottom ,rgb(0, 217, 255) 60%,  rgb(12, 68, 249) );
+    background-size: 100% 100%;
+}
 .menu ul {
     display: flex;
     justify-content: center;
@@ -41,7 +47,7 @@
 }
 .button_nav {
     color: yellow;
-    background-color: red;
+    background-color: rgb(221, 25, 25);
     padding: 3px 8px;
     border-radius: 3px;
     border: 0px;
@@ -66,14 +72,16 @@
         text-align: center;
         font-family: Alterebro Pixel Font;
         font-size: 120px;
-        font-style: italic;
     }
     .table {
         color:rgb(239, 239, 49);
         width: fit-content;
         margin-left: auto;
-        margin-right: 30px;
-        font-size:100px;
+        margin-top: 40px;
+        margin-right: 180px;
+        margin-bottom: 0px;
+        padding-top: 0px;
+        font-size:55px;
         font-style: normal;
         font-weight: 400;
     }
@@ -81,31 +89,41 @@
         margin-left: auto;
         width: fit-content;
     }
+    .itable ul {
+        margin-top: 0px;
+    }
     .itable ul li {
         color:rgb(239, 239, 49);
         margin-right: 90px;
         margin-left: 20px;
-        padding-top: 100px ;
+        padding-top: 10px ;
     }
     .itable ul li a {
-        font-size: 60px;
+        font-size: 30px;
         color:rgb(239, 239, 49);
         margin: 10px 200px 60px 0px;
+        text-decoration: none;
     }
     p {
         font-size: 20px;
         max-width: 1200px;
-        margin-left: 20px;
-        padding-top: 100px;
+        margin: 30px 30px 30px 20px;
+        padding-top:110px;
     }
 }
+canvas {
+    border: 2px solid red;
+}   
 .intro{
+    font-family: "Avenir Regular";
+    font-size: 20px;
     max-width: 1200px;
     margin-left: 20px;
     
 }
 .jeu{
     font-family: "Avenir Regular";
+    font-size: 20px;
     max-width: 1200px;
     margin-left: 20px;
 
@@ -114,20 +132,132 @@
         transform-origin: left top;
         margin: 50px 0px -400px 0px;
     }
+    p {
+        margin: 10px 0px 30px 0px;
+    }
 
 }
-.telechargement{
+.img_inspi {
+    margin-left: 20px;
+}
+.telechargement {
 
-    background: linear-gradient(to bottom ,rgb(0, 234, 255), rgb(0, 26, 255));
+    background: radial-gradient(farthest-corner at 100px 100px, 
+        rgb(185, 234, 251) 0% 3%, rgb(28, 148, 233) 20% 50%, rgb(14, 57, 228));
     background-size: 100% 100%;
 
     .long {
         float:right;
         margin-bottom: 600px;
     }
-
 }
-
+.wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.wrapper div {
+    position: absolute;
+    width: 4em;
+    height: 4em;
+    border: 1px solid rgba(255,255, 255, 0.7);
+    border-radius: 50%;
+    top: 15%;
+    left: 10%;
+    animation: animate 4s linear infinite;
+}
+div .dot {
+    position: absolute;
+    width: 0.4em;
+    height: 0.4em;
+    border-radius: 50%;
+    background: rgba(255,255, 255, 0.5);
+    top: 20%;
+    right: 20%;
+}
+.wrapper div:nth-child(1) {
+    top: 20%;
+    left: 20%;
+    animation: animate 8s linear infinite;
+}
+.wrapper div:nth-child(2) {
+    top: 60%;
+    left: 80%;
+    animation: animate 10s linear infinite;
+}
+.wrapper div:nth-child(3) {
+    top: 40%;
+    left: 40%;
+    animation: animate 5s linear infinite;
+}
+.wrapper div:nth-child(4) {
+    top: 60%;
+    left: 30%;
+    animation: animate 7s linear infinite;
+}
+.wrapper div:nth-child(5) {
+    top: 90%;
+    left: 10%;
+    animation: animate 9s linear infinite;
+}
+.wrapper div:nth-child(6) {
+    top: 30%;
+    left: 60%;
+    animation: animate 5s linear infinite;
+}
+.wrapper div:nth-child(7) {
+    top: 70%;
+    left: 0%;
+    animation: animate 8s linear infinite;
+}
+.wrapper div:nth-child(8) {
+    top: 10%;
+    left: 85%;
+    animation: animate 7s linear infinite;
+}
+.wrapper div:nth-child(9) {
+    top: 120%;
+    left: 30%;
+    animation: animate 10s linear infinite;
+}
+.wrapper div:nth-child(10) {
+    top: 75%;
+    left: 55%;
+    animation: animate 5s linear infinite;
+}
+.wrapper div:nth-child(11) {
+    top: 145%;
+    left: 60%;
+    animation: animate 6s linear infinite;
+}
+.wrapper div:nth-child(12) {
+    top: 130%;
+    left: 90%;
+    animation: animate 9s linear infinite;
+}
+.wrapper div:nth-child(13) {
+    top: 140%;
+    left: 15%;
+    animation: animate 10s linear infinite;
+}
+.wrapper div:nth-child(14) {
+    top: 153%;
+    left: 45%;
+    animation: animate 12s linear infinite;
+}
+.wrapper div:nth-child(15) {
+    top: 110%;
+    left: 67%;
+    animation: animate 8s linear infinite;
+}
+@keyframes animate {
+    0%{
+        transform: scale(0) translateY(-100px) rotate(70deg);
+    }
+    100%{
+        transform: scale(1.5) translateY(-100px) rotate(0deg);
+    }
+}
 .spritesheet {
     margin: 8px 8px 8px 20px;
     h2 {
