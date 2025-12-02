@@ -7,21 +7,23 @@
         </title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="/2_web/css/style.css">
-        <link href="https://fonts-googleapis.com/css2?family=Press+Start+2P&display=swap">
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
     </head>
     <body class="index">
         <h1>WUKONG'S LEGEND</h1>
-        <canvas width="500px" height="500px" id = "Image" class="animation"></canvas>
-        <p class="table">
-            <u>Table des matières</u>
-        </p>
-        <br>
-        <div class="itable">
-            <ul>
-                <li><a href="/2_web/pages_html/introduction.html">Introduction</a></li>
-                <li><a href="/2_web/pages_html/jeu.html">Le jeu</a></li>
-                <li><a href="/2_web/pages_html/telechargement.html">Téléchargement</a></li>
-            </ul>
+        <div class="display_flex justify_content_space_around">
+            <canvas width="500px" height="500px" id = "Image" class="animation"></canvas>
+            <div class="display_flex flex_direc_column">
+                <p class="table">
+                    <u>Table des matières</u>
+                </p>
+                <ul class="itable">
+                    <li><a class="text_table" href="/2_web/pages_html/introduction.html">Introduction</a></li>
+                    <li><a class="text_table" href="/2_web/pages_html/jeu.html">Le jeu</a></li>
+                    <li><a class="text_table" href="/2_web/pages_html/telechargement.html">Téléchargement</a></li> 
+                </ul>
+            </div>
         </div>
         <p>
             Dans la page d'introduction se trouveLa présentation du sujet. Plusieurs élements
@@ -36,7 +38,6 @@
             les trois systèmes d'exploitations les plus utilisés, avec les instructions de 
             téléchargement pour chaque système.
         </p>
-
     </body>
     <script src="/2_web/js/animations.js"></script>
 </html>

@@ -22,7 +22,7 @@ function draw() {
     y = 1;
     }
     else {
-    ctx_image.drawImage(img_wukong, 1, 1, 150, 150);
+    ctx_image.drawImage(img_wukong, 1, 1, 250, 250);
     ctx_image.translate(dx, dy);
     x = x + dx;
     y = x + dy;

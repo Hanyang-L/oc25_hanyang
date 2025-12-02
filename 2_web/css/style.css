@@ -1,31 +1,6 @@
-@font-face {
-    font-family: "Alterebro Pixel Font";
-    src: url ("../polices/alterebro-pixel-font.ttf");
-}
-@font-face {
-    font-family: "Avenir Black";
-    src: url ("../polices/avenir_fonts/avenir-black.ttf");
-}
-@font-face {
-    font-family: "Avenir Book";
-    src: url ("../polices/avenir_fonts/avenir-book.ttf");
-}
-@font-face {
-    font-family: "Avenir Heavy";
-    src: url ("../polices/avenir_fonts/avenir-heavy.ttf");
-}
-@font-face {
-    font-family: "Avenir Light";
-    src: url ("../polices/avenir_fonts/avenir-light.ttf");
-}
-@font-face {
-    font-family: "Avenir Regular";
-    src: url ("../polices/avenir_fonts/avenir-regular.ttf");
-}
-
 .title_center {
     text-align: center;
-    font-family: "Alterebro Pixel Font", sans-serif;
+    font-family: "Press Start 2P", sans-serif;
     color: rgb(221, 25, 25);
     font-size: 120px;
 }
@@ -58,21 +33,29 @@
     background-color: rgb(203, 3, 3);
 }
 
-
 .index{
     background-image: url(/2_web/images/index.png);
     margin: 0 0 0 0;
     background-repeat: no-repeat;
-    font-family: "Avenir Regular", sans-serif;
+    font-family: "Nunito Sans", sans-serif;
 
     h1 {
         margin: 0 0 0 0;
         padding: 80px;
         color:rgb(224, 24, 44);
         text-align: center;
-        font-family: "Alterebro Pixel Font", "Press Start 2P", sans-serif;
-        font-size: 120px;
+        font-family: "Press Start 2P", sans-serif;
+        font-size: 70px;
         text-shadow: 0px 0 0, 0px 0 0, 0 6px 0 rgb(216, 80, 110), 0 0px 0;
+    }
+    .display_flex {
+        display: flex;
+    }
+    .flex_direc_column {
+        flex-direction: column;
+    }
+    .justify_content_space_around {
+        justify-content: space-around;
     }
     .table {
         color:rgb(239, 239, 49);
@@ -87,24 +70,18 @@
         font-weight: 400;
     }
     .itable {
-        margin-left: auto;
-        width: fit-content;
-    }
-    .itable ul {
-        margin-top: 0px;
-    }
-    .itable ul li {
-        color:rgb(239, 239, 49);
-        margin-right: 90px;
-        margin-left: 20px;
-        padding-top: 10px ;
-    }
-    .itable ul li a {
-        font-size: 30px;
-        color:rgb(239, 239, 49);
-        margin: 10px 200px 60px 0px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        font-size: 40px;
+        justify-content: space-around;
+        color: rgb(239, 239, 49);
         text-decoration: none;
     }
+    .text_table {
+        text-decoration: none;
+        color: rgb(239, 239, 49);
+    } 
     p {
         font-size: 20px;
         max-width: 1200px;
@@ -116,14 +93,14 @@ canvas {
     border: 2px solid red;
 }   
 .intro{
-    font-family: "Avenir Regular";
+    font-family: "Nunito Sans", sans-serif;
     font-size: 20px;
     max-width: 1200px;
     margin-left: 20px;
     
 }
 .jeu{
-    font-family: "Avenir Regular";
+    font-family: "Nunito Sans", sans-serif;
     font-size: 20px;
     max-width: 1200px;
     margin-left: 20px;
@@ -258,6 +235,22 @@ div .dot {
     100%{
         transform: scale(1.5) translateY(-100px) rotate(0deg);
     }
+}
+.download_game {
+    position: absolute;
+}
+.button_download {
+    color: navajowhite;
+    background-color: rgba(221, 25, 25, 0);
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 10px;
+    border-color: black;
+    transition: background-color 0.5s;
+}
+.button_download:hover {
+    color: rgb(231, 216, 8);
+    background-color: rgb(203, 3, 3);
 }
 .spritesheet {
     margin: 8px 8px 8px 20px;
