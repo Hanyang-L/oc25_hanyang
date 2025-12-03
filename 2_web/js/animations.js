@@ -12,30 +12,6 @@ let y = 220;
 const yMin = 200;
 const yMax = 260;
 let dy = 1;
-// const dx = 1;
-// const dy = 1;
-// var x = 1;
-// var y = 1;
-
-// function int() {
-//     img_wukong.src = "/2_web/images/wukong_anim.png";
-//     window.requestAnimationFrame(draw);
-// }
-// function draw() {
-//     ctx_image.clearRect(0, 0, 500, 500);
-//     if(x > canvasSizeX){
-//     ctx_image.translate(-canvasSizeX, -canvasSizeY);
-//     x = 1;
-//     y = 1;
-//     }
-//     else {
-//     ctx_image.drawImage(img_wukong, 1, 1, 460, 390); //x=80, y=68, ratio:0.85
-//     ctx_image.translate(dx, dy);
-//     x = x + dx;
-//     y = x + dy;
-//     }
-//     window.requestAnimationFrame(draw);
-// }
 function init() {
     img_wukong.src = "/2_web/images/wukong_anim.png";
     img_wukong.onload = () => {
@@ -48,7 +24,7 @@ function draw() {
     if (y > yMax || y < yMin) {
         dy = -dy;
     }
-    ctx_image.drawImage(img_wukong, x, y, 460, 390);
+    ctx_image.drawImage(img_wukong, x, y, 460, 390); //x=80, y=68, ratio:0.85
     window.requestAnimationFrame(draw);
 }
 init();
