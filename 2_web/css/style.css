@@ -88,13 +88,11 @@
         font-size: 20px;
         max-width: 1200px;
         margin: 30px 30px 30px 20px;
-        padding-top:110px;
     }
 }
-canvas {
-    border: 2px solid red;
-}
+
 #Image {
+
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
@@ -244,6 +242,13 @@ div .dot {
 }
 .download_game {
     position: absolute;
+}
+#dessin {
+    
+}
+.illustration{
+    position: absolute;
+    border: 1px solid red;
 }
 .button_download {
     color: navajowhite;

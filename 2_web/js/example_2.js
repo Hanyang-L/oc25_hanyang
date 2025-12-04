@@ -1,5 +1,3 @@
-console.log("bon")
-
 const statut = document.getElementById("statut");
 const ctx_statut = statut.getContext("2d");
 console.log(ctx_statut);
