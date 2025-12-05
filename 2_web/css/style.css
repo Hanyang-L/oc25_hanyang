@@ -1,3 +1,7 @@
+.home_container {
+    flex-wrap: wrap;
+}
+
 .title_center {
     text-align: center;
     font-family: "Press Start 2P", sans-serif;
@@ -5,22 +9,28 @@
     font-size: 60px;
     margin-top: 70px;
 }
+
 .gradient {
-    background: linear-gradient(to bottom ,rgb(0, 217, 255), rgb(3, 186, 250), rgb(12, 68, 249));
+    background: linear-gradient(to bottom, rgb(0, 217, 255), rgb(3, 186, 250), rgb(12, 68, 249));
     background-size: 100% 100%;
+    background-attachment: fixed;
 }
+
 .gradient_index {
-    background: linear-gradient(to bottom ,rgb(0, 217, 255) 60%,  rgb(12, 68, 249) );
+    background: linear-gradient(to bottom, rgb(0, 217, 255) 60%, rgb(12, 68, 249));
     background-size: 100% 100%;
+    background-attachment: fixed;
 }
+
 .menu ul {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 40px 300px;
-    margin: 40px ;
+    margin: 40px;
     flex-wrap: wrap;
 }
+
 .button_nav {
     color: yellow;
     background-color: rgb(221, 25, 25);
@@ -29,12 +39,13 @@
     border: 0px;
     transition: background-color 0.5s;
 }
+
 .button_nav:hover {
     color: rgb(231, 216, 8);
     background-color: rgb(203, 3, 3);
 }
 
-.index{
+.index {
     background-image: url(/2_web/images/index.png);
     margin: 0 0 0 0;
     background-repeat: no-repeat;
@@ -43,34 +54,36 @@
     h1 {
         margin: 0 0 0 0;
         padding: 80px;
-        color:rgb(224, 24, 44);
+        z-index: 2;
+        color: rgb(224, 24, 44);
         text-align: center;
         font-family: "Press Start 2P", sans-serif;
         font-size: 60px;
-        text-shadow: 0px 0 0, 0px 0 0, 0 6px 0 rgb(188, 41, 73), 0 0px 0; 
+        text-shadow: 0px 0 0, 0px 0 0, 0 6px 0 rgb(188, 41, 73), 0 0px 0;
         transform: scaleY(1.5);
     }
-    .display_flex {
-        display: flex;
-    }
+
     .flex_direc_column {
         flex-direction: column;
     }
+
     .justify_content_space_around {
         justify-content: space-around;
     }
+
     .table {
-        color:rgb(239, 239, 49);
+        color: rgb(239, 239, 49);
         width: fit-content;
         margin-left: auto;
         margin-top: 40px;
         margin-right: 180px;
         margin-bottom: 0px;
         padding-top: 0px;
-        font-size:55px;
+        font-size: 55px;
         font-style: normal;
         font-weight: 400;
     }
+
     .itable {
         height: 100%;
         display: flex;
@@ -80,10 +93,12 @@
         color: rgb(239, 239, 49);
         text-decoration: none;
     }
+
     .text_table {
         text-decoration: none;
         color: rgb(239, 239, 49);
-    } 
+    }
+
     p {
         font-size: 20px;
         max-width: 1200px;
@@ -91,19 +106,25 @@
     }
 }
 
+.display_flex {
+    display: flex;
+}
+
 #Image {
 
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
-.intro{
+
+.intro {
     font-family: "Nunito Sans", sans-serif;
     font-size: 20px;
     max-width: 1200px;
     margin-left: 20px;
-    
+
 }
-.jeu{
+
+.jeu {
     font-family: "Nunito Sans", sans-serif;
     font-size: 20px;
     max-width: 1200px;
@@ -114,142 +135,166 @@
         transform-origin: left top;
         margin: 50px 0px -400px 0px;
     }
+
     p {
         margin: 10px 0px 30px 0px;
     }
 
 }
+
 .img_inspi {
     margin-left: 20px;
 }
+
 .telechargement {
-
-    background: radial-gradient(farthest-corner at 100px 100px, 
-        rgb(185, 234, 251) 0% 3%, rgb(28, 148, 233) 20% 50%, rgb(14, 57, 228));
+    background: radial-gradient(farthest-corner at 100px 100px, rgb(185, 234, 251) 0% 3%, rgb(28, 148, 233) 20% 50%, rgb(14, 57, 228));
     background-size: 100% 100%;
-
-    .long {
-        float:right;
-        margin-bottom: 600px;
-    }
+    background-attachment: fixed;
 }
+
 #dessin {
-
-}
-.illustration{
+    background-image: url('/2_web/images/long_wang.png');
+    background-repeat: no-repeat;
+    background-position: right;
     z-index: 1;
-    border: 1px solid black;
+    margin-bottom: 100px;
 }
+
+.illustration {
+    z-index: 1;
+}
+
 .wrapper {
-    z-index: 3;
-    width: 100%;
-    height: 100%;
+    z-index: 2;
+    width: 90vw;
+    height: 60%;
+    position: absolute;
 }
+
 .wrapper div {
     position: absolute;
     width: 4em;
     height: 4em;
-    border: 1px solid rgba(255,255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.7);
     border-radius: 50%;
     top: 15%;
     left: 10%;
     animation: animate 4s linear infinite;
 }
+
 div .dot {
     position: absolute;
     width: 0.4em;
     height: 0.4em;
     border-radius: 50%;
-    background: rgba(255,255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.5);
     top: 20%;
     right: 20%;
 }
+
 .wrapper div:nth-child(1) {
     top: 20%;
     left: 20%;
     animation: animate 8s linear infinite;
 }
+
 .wrapper div:nth-child(2) {
     top: 60%;
     left: 80%;
     animation: animate 10s linear infinite;
 }
+
 .wrapper div:nth-child(3) {
     top: 40%;
     left: 40%;
     animation: animate 5s linear infinite;
 }
+
 .wrapper div:nth-child(4) {
     top: 60%;
     left: 30%;
     animation: animate 7s linear infinite;
 }
+
 .wrapper div:nth-child(5) {
     top: 90%;
     left: 10%;
     animation: animate 9s linear infinite;
 }
+
 .wrapper div:nth-child(6) {
     top: 30%;
     left: 60%;
     animation: animate 5s linear infinite;
 }
+
 .wrapper div:nth-child(7) {
     top: 70%;
     left: 0%;
     animation: animate 8s linear infinite;
 }
+
 .wrapper div:nth-child(8) {
     top: 10%;
     left: 85%;
     animation: animate 7s linear infinite;
 }
+
 .wrapper div:nth-child(9) {
     top: 120%;
     left: 30%;
     animation: animate 10s linear infinite;
 }
+
 .wrapper div:nth-child(10) {
     top: 75%;
     left: 55%;
     animation: animate 5s linear infinite;
 }
+
 .wrapper div:nth-child(11) {
     top: 145%;
     left: 60%;
     animation: animate 6s linear infinite;
 }
+
 .wrapper div:nth-child(12) {
     top: 130%;
     left: 90%;
     animation: animate 9s linear infinite;
 }
+
 .wrapper div:nth-child(13) {
     top: 140%;
     left: 15%;
     animation: animate 10s linear infinite;
 }
+
 .wrapper div:nth-child(14) {
     top: 145%;
     left: 45%;
     animation: animate 12s linear infinite;
 }
+
 .wrapper div:nth-child(15) {
     top: 110%;
     left: 67%;
     animation: animate 8s linear infinite;
 }
+
 @keyframes animate {
-    0%{
+    0% {
         transform: scale(0) translateY(-100px) rotate(70deg);
     }
-    100%{
+    100% {
         transform: scale(1.5) translateY(-100px) rotate(0deg);
     }
 }
+
 .download_game {
     position: absolute;
 }
+
 .button_download {
     color: navajowhite;
     background-color: rgba(221, 25, 25, 0);
@@ -258,26 +303,145 @@ div .dot {
     border: 10px;
     border-color: black;
     transition: background-color 0.5s;
+    text-decoration: none;
 }
+
 .button_download:hover {
     color: rgb(231, 216, 8);
     background-color: rgb(203, 3, 3);
 }
+
+.text_instructions_game ul li {
+    width: max-content;
+}
+
+.container_text_download {
+    font-family: "Nunito Sans", sans-serif;
+    position: absolute;
+    z-index: 2;
+}
+
+.container_text_download > a {
+    position: absolute;
+}
+
+.download_text_macos {
+    top: 200px;
+    left: 635px;
+}
+
+.download_button_macos {
+    top: 220px;
+    left: 600px;
+}
+
+.download_text_windows {
+    left: 630px;
+    top: 318px
+}
+
+.download_button_windows {
+    left: 600px;
+    top: 338px;
+}
+
+.download_text_linux {
+    left: 640px;
+    top: 436px;
+}
+
+.download_button_linux {
+    left: 600px;
+    top: 455px;
+}
+
+.button_download {
+    color: black;
+    cursor: pointer;
+    font-style: italic;
+    border: solid 1px red;
+}
+
+.text_instructions_game {
+    position: absolute;
+    left: 200px;
+    top: 555px;
+}
+
 .spritesheet {
     margin: 8px 8px 8px 20px;
     font-family: "Press Start 2P", sans-serif;
+
     h2 {
         margin-top: 30px;
     }
+
     .spritesheet_longwang {
         width: 750px;
         margin-bottom: 60px;
     }
-    .spritesheet_wukong{
+
+    .spritesheet_wukong {
         margin-top: 10px;
     }
+
     .return ul {
         display: flex;
         margin: 40px 30px 50px 370px;
     }
+
 }
+
+.mobile_download_error_message, .mobile_instruction_error {
+    display: none
+}
+
+/* Media query pour téléphone mobile */
+@media screen and (max-width: 800px) {
+
+    .button_download, .text_instructions_game {
+        position: unset !important;
+    }
+
+    .illustration {
+        opacity: 0 !important;
+    }
+
+    .title_center {
+        font-size: 1.75rem;
+    }
+
+    .container_text_download {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+        width: 100vw;
+    }
+
+    .download_texts {
+        position: unset !important;
+    }
+
+    .text_instructions_game ul {
+        margin-top: 0;
+        padding-left: 0;
+    }
+
+    .mobile_instruction_error {
+        display: block;
+    }
+
+    .text_instructions_game {
+        opacity: 0;
+    }
+
+    .home_container div {
+        padding: 30px;
+    }
+
+    .home_container {
+        display: flex;
+        flex-direction: column!important;
+    }
+} 

@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 
-<html class="telechargement">
+<html class="telechargement" lang="fr">
     <head>
         <title>
             Téléchargement
         </title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="/2_web/css/style.css">
-        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+        <link href="
+https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap
+" rel="stylesheet">
+        <link href="
+https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap
+" rel="stylesheet">
     </head>
     <body>
         <nav class="menu">
@@ -42,17 +46,34 @@
             <div><span class="dot"></span></div>
         </div>
         <h1 class="title_center">TELECHARGEMENT</h1>
-        <!-- <a href="2_web/polices/alterebro-pixel-font.ttf" download class="download_game">
-            <button class="button_download">Téléchargement</button> -->
-        <!-- </a> -->
-        <canvas width="1550px" height="900px" id = "dessin" class="illustration"></canvas>
-        <p>
+        <!-- Container avec le canvas et les textes au dessus + l'image sur la droite -->
+        <div class="display_flex">
 
-        </p>
-            
-        
-        
-       <img src="/2_web/images/long_wang.png" width="380" class="long">
+            <canvas width="1550px" height="900px" id = "dessin" class="illustration" style="background-image: url('/2_web/images/long_wang.png')"></canvas>
+
+            <div class="container_text_download">
+                <a class="download_texts download_text_macos">MacOS</a>
+                <a class="download_button_macos button_download" href="2_web/polices/alterebro-pixel-font.ttf" download>Téléchargement</a>
+
+                <a class="download_texts download_text_windows">Windows</a>
+                <a  class="download_button_windows button_download">Téléchargement</a>
+
+                <a class="download_texts download_text_linux">Linux</a>
+                <a class="download_button_linux button_download">Téléchargement</a>
+
+                <a class="text_instructions_game">Instructions</a>
+                <span class="mobile_instruction_error">Le jeu ne peut pas être joué sur mobile.</span>
+                <div class="text_instructions_game">
+                    <ul>
+                        <li>instruction 1</li>
+                        <li>instruction 1</li>
+                        <li>instruction 1</li>
+                        <li>instruction 1</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
     </body>
     <script src="/2_web/js/fonctions.js"></script>
-</html>
+</html> 
