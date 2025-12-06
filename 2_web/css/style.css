@@ -160,10 +160,6 @@
     margin-bottom: 100px;
 }
 
-.illustration {
-    z-index: 1;
-}
-
 .wrapper {
     z-index: 2;
     width: 90vw;
@@ -296,19 +292,19 @@ div .dot {
 }
 
 .button_download {
-    color: navajowhite;
-    background-color: rgba(221, 25, 25, 0);
     padding: 3px 8px;
-    border-radius: 3px;
+    border-radius: 2px;
     border: 10px;
-    border-color: black;
+    color: black;
+    font-style: italic;
+    border: solid 1px rgb(0, 0, 0);
     transition: background-color 0.5s;
     text-decoration: none;
 }
 
 .button_download:hover {
-    color: rgb(231, 216, 8);
-    background-color: rgb(203, 3, 3);
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
 }
 
 .text_instructions_game ul li {
@@ -353,13 +349,6 @@ div .dot {
 .download_button_linux {
     left: 600px;
     top: 455px;
-}
-
-.button_download {
-    color: black;
-    cursor: pointer;
-    font-style: italic;
-    border: solid 1px red;
 }
 
 .text_instructions_game {
