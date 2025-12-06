@@ -81,8 +81,8 @@ function draw() {
     context.moveTo(90, 345);
     context.lineTo(130.43, 365.22);
     context.lineTo(500, 365.22);
-    context.lineTo(500, 500);
-    context.lineTo(90, 500);
+    context.lineTo(500, 660);
+    context.lineTo(90, 660);
     context.closePath();
     context.fillStyle = "rgb(234, 51, 35)";
     context.fill();
@@ -92,7 +92,7 @@ function draw() {
     context.strokeStyle = "rgb(173, 68, 77)";
     context.moveTo(90, 345);
     context.lineTo(25, 377.5);
-    context.lineTo(90, 500);
+    context.lineTo(90, 660);
     context.closePath();
     context.fillStyle = "rgb(173, 68, 77)";
     context.fill();
