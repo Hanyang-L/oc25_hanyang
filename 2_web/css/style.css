@@ -424,4 +424,8 @@ div .dot {
         display: flex;
         flex-direction: column!important;
     }
+    .return ul {
+        display: flex;
+        margin: 40px 30px 50px 70px!important;
+    }
 }
