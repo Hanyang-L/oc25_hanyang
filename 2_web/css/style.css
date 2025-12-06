@@ -105,13 +105,11 @@
         margin: 30px 30px 30px 20px;
     }
 }
-
 .display_flex {
     display: flex;
 }
 
 #Image {
-
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
@@ -121,7 +119,6 @@
     font-size: 20px;
     max-width: 1200px;
     margin-left: 20px;
-
 }
 
 .jeu {
@@ -139,7 +136,6 @@
     p {
         margin: 10px 0px 30px 0px;
     }
-
 }
 
 .img_inspi {
@@ -317,7 +313,7 @@ div .dot {
     z-index: 2;
 }
 
-.container_text_download > a {
+.container_text_download a {
     position: absolute;
 }
 
@@ -378,17 +374,16 @@ div .dot {
         display: flex;
         margin: 40px 30px 50px 370px;
     }
-
 }
 
-.mobile_download_error_message, .mobile_instruction_error {
+.mobile_instruction_error {
     display: none
 }
 
-/* Media query pour téléphone mobile */
+/* Media query pour mobile */
 @media screen and (max-width: 800px) {
 
-    .button_download, .text_instructions_game {
+    .button_download, .text_instructions_game, .download_texts {
         position: unset !important;
     }
 
@@ -397,7 +392,7 @@ div .dot {
     }
 
     .title_center {
-        font-size: 1.75rem;
+        font-size: 30px;
     }
 
     .container_text_download {
@@ -406,10 +401,6 @@ div .dot {
         gap: 15px;
         align-items: center;
         width: 100vw;
-    }
-
-    .download_texts {
-        position: unset !important;
     }
 
     .text_instructions_game ul {
@@ -433,4 +424,4 @@ div .dot {
         display: flex;
         flex-direction: column!important;
     }
-} 
+}
