@@ -362,7 +362,7 @@ div .dot {
     }
 
     .title_center {
-        font-size: 30px;
+        font-size: 26px;
     }
 
     .container_text_download {
@@ -401,10 +401,7 @@ div .dot {
         display: flex;
         margin: 40px 30px 50px 70px!important;
     }
-    .button_nav {
-        padding: 6px 16px!important;
-        font-size: 12px;
-    }
+
     .long_wang{
         display: none;
     }
@@ -417,5 +414,6 @@ div .dot {
     }
     .button_nav {
         padding: 6px 16px!important;
+        font-size: 30px;
     }
 } 
