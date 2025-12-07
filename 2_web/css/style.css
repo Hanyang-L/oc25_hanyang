@@ -46,7 +46,7 @@
 }
 
 .index {
-    background-image: url(images/index.avif);
+    background-image: url(../images/index.avif);
     margin: 0 0 0 0;
     background-repeat: no-repeat;
     font-family: "Nunito Sans", sans-serif;
