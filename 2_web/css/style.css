@@ -345,7 +345,7 @@ div .dot {
 }
 
 /* Media query pour mobile */
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 600px) {
 
     .button_download, .text_instructions_game, .download_texts {
         position: unset !important;
@@ -378,6 +378,9 @@ div .dot {
 
     .text_instructions_game {
         opacity: 0;
+    }
+    .text_instructions_game ul li {
+    font-size: 1px!important;
     }
 
     .home_container div {
