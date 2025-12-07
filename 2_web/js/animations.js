@@ -11,7 +11,7 @@ const yMin = 0;
 const yMax = 20;
 let dy = 0.5; //gère la vitesse
 function down_up() {
-    img_wukong.src = "images/wukong_anim.avif";
+    img_wukong.src = "images/wukong_anim.jpg";
     window.requestAnimationFrame(draw);
 }
 function draw() {
