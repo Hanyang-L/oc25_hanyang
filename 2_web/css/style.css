@@ -408,7 +408,14 @@ div .dot {
     .long_wang{
         display: none;
     }
-    .menu ul {
-        flex-direction: column!important;
-    }
 }
+
+@media screen and (max-width: 1200px) {
+
+    .menu ul {
+        flex-direction: column;
+    }
+    .button_nav {
+        padding: 6px 16px!important;
+    }
+} 
