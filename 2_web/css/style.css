@@ -113,6 +113,9 @@
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
+.illustration {
+    border: 1px solid black;
+}
 
 .intro {
     font-family: "Nunito Sans", sans-serif;
@@ -153,6 +156,13 @@
     background-position: right;
     z-index: 1;
     margin-bottom: 100px;
+}
+
+.long_wang{
+    position: absolute;
+    width: 45%;
+    left: 800px;
+    top: 350px;
 }
 
 .wrapper {
@@ -344,7 +354,7 @@ div .dot {
 }
 
 /* Media query pour mobile */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
 
     .button_download, .text_instructions_game, .download_texts {
         position: unset !important;
@@ -396,5 +406,8 @@ div .dot {
     }
     .wrapper {
     /* height: 60%!important; */
+    }
+    .button_nav {
+        padding: 6, 16!important;
     }
 }
