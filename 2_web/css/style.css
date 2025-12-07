@@ -428,4 +428,7 @@ div .dot {
         display: flex;
         margin: 40px 30px 50px 70px!important;
     }
+    .wrapper {
+    height: 60%!important;
+    }
 }
