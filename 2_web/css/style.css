@@ -113,9 +113,6 @@
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
-.illustration {
-    border: 1px solid black;
-}
 
 .intro {
     font-family: "Nunito Sans", sans-serif;
