@@ -32,6 +32,8 @@
 }
 
 .button_nav {
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 20px;
     color: yellow;
     background-color: rgb(221, 25, 25);
     padding: 3px 8px;
@@ -413,7 +415,12 @@ div .dot {
         flex-direction: column;
     }
     .button_nav {
+        font-family: "Nunito Sans", sans-serif;
         padding: 6px 16px!important;
         font-size: 30px;
+    }
+    .button_nav_telechargement_tel {
+        font-family: "Nunito Sans", sans-serif;
+        font-size: 20px!important;
     }
 } 
