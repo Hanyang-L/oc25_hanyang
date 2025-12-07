@@ -100,13 +100,3 @@ function draw() {
     context.restore();
 }
 draw();
-
-function hide() {
-    if(window.innerWidth < 800){
-        context.hidden = true;
-    }
-    else{
-        context.hidden = false;
-    }
-}
-window.onresize = hide;

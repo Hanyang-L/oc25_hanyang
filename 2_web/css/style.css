@@ -361,7 +361,7 @@ div .dot {
     }
 
     .illustration {
-        opacity: 0 !important;
+        visibility: hidden!important;
     }
 
     .title_center {
@@ -409,5 +409,8 @@ div .dot {
     }
     .button_nav {
         padding: 6, 16!important;
+    }
+    .long_wang{
+        visibility: hidden;
     }
 }
