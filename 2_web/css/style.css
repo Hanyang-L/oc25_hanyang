@@ -361,7 +361,7 @@ div .dot {
     }
 
     .illustration {
-        visibility: hidden!important;
+        display: none!important;
     }
 
     .title_center {
@@ -404,13 +404,10 @@ div .dot {
         display: flex;
         margin: 40px 30px 50px 70px!important;
     }
-    .wrapper {
-    /* height: 60%!important; */
-    }
     .button_nav {
-        padding: 6, 16!important;
+        padding: 6px 16px!important;
     }
     .long_wang{
-        visibility: hidden;
+        display: none;
     }
 }
