@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://cm4donsgl874c"]
+
+[ext_resource type="PackedScene" uid="uid://bje3hff3ykl1a" path="res://sceenes/player.tscn" id="1_kpdl5"]
+
+[node name="Main" type="Node"]
+
+[node name="Player" parent="." instance=ExtResource("1_kpdl5")]
+
+[node name="MobTimer" type="Timer" parent="."]
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+
+[node name="StartPosition" type="Marker2D" parent="."]
