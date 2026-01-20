@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bje3hff3ykl1a" path="res://sceenes/player.tscn" id="1_kpdl5"]
 [ext_resource type="Script" uid="uid://dh55qtu81bhuy" path="res://script/game.gd" id="1_vn8w6"]
 [ext_resource type="PackedScene" uid="uid://ylfqxqn8uhtk" path="res://sceenes/mob.tscn" id="2_66yd3"]
-[ext_resource type="PackedScene" uid="uid://ca83xasw8rd1v" path="res://hud.tscn" id="4_66yd3"]
+[ext_resource type="PackedScene" uid="uid://ca83xasw8rd1v" path="res://sceenes/hud.tscn" id="4_66yd3"]
 [ext_resource type="Texture2D" uid="uid://c4fjym6ywmt7r" path="res://Super_m_archer.jpg" id="4_ijd5y"]
 [ext_resource type="AudioStream" uid="uid://c23hvm7os37wh" path="res://art/gameover.wav" id="6_1fkcj"]
 
@@ -34,8 +34,6 @@ loop = true
 script = ExtResource("1_vn8w6")
 mob_scene = ExtResource("2_66yd3")
 
-[node name="Player" parent="." instance=ExtResource("1_kpdl5")]
-
 [node name="BackImage" type="TextureRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,6 +56,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.2379261, 0.28108847, 0.29804513, 0.69411767)
+
+[node name="Player" parent="." instance=ExtResource("1_kpdl5")]
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5

@@ -3,6 +3,9 @@ extends Node
 @export var mob_scene: PackedScene
 var score
 
+func _ready():
+	pass
+
 func game_over():
 	$ScoreTimer.stop()
 	$MobTimer.stop()
