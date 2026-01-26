@@ -1,5 +1,7 @@
-res://scene/player.tscn
-res://script/player.gd
-res://scene/main.tscn
-res://scene/mob.gd
 res://scene/mob.tscn
+res://script/main.gd
+res://scene/main.tscn
+res://script/player.gd
+res://script/mob.gd
+res://scene/player.tscn
+res://script/score_label.gd

@@ -1,12 +1,14 @@
 [gd_scene load_steps=4 format=3 uid="uid://bd16gu3226qu1"]
 
 [ext_resource type="PackedScene" uid="uid://bicorb7we351t" path="res://art/mob.glb" id="1_8jgfq"]
-[ext_resource type="Script" uid="uid://diohks3188hw1" path="res://scene/mob.gd" id="1_rtm52"]
+[ext_resource type="Script" uid="uid://diohks3188hw1" path="res://script/mob.gd" id="1_rtm52"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rtm52"]
 size = Vector3(1.4784088, 1.2271423, 2.3557131)
 
-[node name="Mob" type="CharacterBody3D"]
+[node name="Mob" type="CharacterBody3D" groups=["mob"]]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("1_rtm52")
 
 [node name="Pivot" type="Node3D" parent="."]
