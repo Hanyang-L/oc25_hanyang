@@ -19,8 +19,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0)
 [node name="Character" parent="Pivot" instance=ExtResource("1_xo3ru")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.417534, 0)
 shape = SubResource("SphereShape3D_onrkg")
 
 [node name="MobDetector" type="Area3D" parent="."]

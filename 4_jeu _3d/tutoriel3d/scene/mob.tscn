@@ -4,9 +4,10 @@
 [ext_resource type="Script" uid="uid://diohks3188hw1" path="res://script/mob.gd" id="1_rtm52"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rtm52"]
-size = Vector3(1.4784088, 1.2271423, 2.3557131)
+size = Vector3(1.4784088, 1.995285, 2.3557131)
 
 [node name="Mob" type="CharacterBody3D" groups=["mob"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37868965, 0)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_rtm52")
@@ -16,7 +17,7 @@ script = ExtResource("1_rtm52")
 [node name="Character" parent="Pivot" instance=ExtResource("1_8jgfq")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0800274, 0.336, -0.022180304)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0800274, 0.7200713, -0.022180304)
 shape = SubResource("BoxShape3D_rtm52")
 
 [node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
