@@ -3,6 +3,9 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_asbwb"]
 albedo_color = Color(0.96862745, 0.7490196, 0.2901961, 1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c1h23"]
+albedo_color = Color(0.4745098, 0.38039216, 0.14117648, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ykav7"]
 albedo_color = Color(0, 1, 0, 1)
 
@@ -18,13 +21,35 @@ albedo_color = Color(0.8627451, 0.84705883, 0.9490196, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jtqmf"]
 albedo_color = Color(0.67058825, 1, 0.36862746, 1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2dkg6"]
+albedo_color = Color(0.7137255, 0.4745098, 0.07450981, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3i1iq"]
+albedo_color = Color(0.6627451, 0.47058824, 0.16862746, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fq8kr"]
+albedo_color = Color(0.654902, 0.45490196, 0.16078432, 1)
+
 [node name="Ex3" type="Node3D" unique_id=271335149]
 
 [node name="Room" type="CSGBox3D" parent="." unique_id=1761692306]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.002535, 5.001531, 5.0059214)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.003, 2.5, 5.006)
+visible = false
 flip_faces = true
-size = Vector3(10, 10, 10)
+size = Vector3(10, 5, 10)
 material = SubResource("StandardMaterial3D_asbwb")
+
+[node name="window" type="CSGBox3D" parent="Room" unique_id=1912270130]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0736074, 0.9967818, -4.9819636)
+operation = 2
+size = Vector3(3.8085938, 2.081787, 0.2626953)
+material = SubResource("StandardMaterial3D_c1h23")
+
+[node name="window_2" type="CSGBox3D" parent="Room" unique_id=284692138]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9193106, 0.9884231, -4.9819636)
+operation = 2
+size = Vector3(3.500122, 2.081787, 0.2626953)
+material = SubResource("StandardMaterial3D_c1h23")
 
 [node name="Table" type="CSGBox3D" parent="." unique_id=1803466610]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 0.7268295)
@@ -86,3 +111,20 @@ transform = Transform3D(0.99906266, -0.04328809, 0, 0.04328809, 0.99906266, 0, 0
 radius = 0.4
 rings = 9
 material = SubResource("StandardMaterial3D_jtqmf")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=236335894]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.84864044, 1.708472, 8.705329)
+size = Vector3(2.5889893, 3.4057617, 1.6025391)
+material = SubResource("StandardMaterial3D_2dkg6")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D" unique_id=1241611949]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.010620117, 0.91503906, -0.050420284)
+operation = 2
+size = Vector3(2.3341064, 1.2358398, 1.6251221)
+material = SubResource("StandardMaterial3D_3i1iq")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGBox3D" unique_id=1674073461]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.010620117, -0.7486962, -0.06124115)
+operation = 2
+size = Vector3(2.3341064, 1.4899902, 1.5635986)
+material = SubResource("StandardMaterial3D_fq8kr")
