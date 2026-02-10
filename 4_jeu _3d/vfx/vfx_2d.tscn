@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://djkt8nw8orcnv"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mb7ju"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kqe62"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 69.89
+initial_velocity_max = 69.89
+gravity = Vector3(0, 98, 0)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bkak3"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 128.0
+angle_min = 720.0
+angle_max = 720.0
+spread = 0.0
+initial_velocity_min = 532.26
+initial_velocity_max = 532.26
+gravity = Vector3(0, 98, 0)
+
+[node name="Vfx2d" type="Node2D" unique_id=821856982]
+
+[node name="point" type="GPUParticles2D" parent="." unique_id=267874014]
+lifetime = 1.31
+speed_scale = 4.17
+process_material = SubResource("ParticleProcessMaterial_mb7ju")
+
+[node name="Label" type="Label" parent="point" unique_id=310793523]
+offset_left = -49.0
+offset_top = -26.0
+offset_right = 48.0
+offset_bottom = -3.0
+text = "Point source"
+
+[node name="point2" type="GPUParticles2D" parent="." unique_id=574170600]
+position = Vector2(-208, 0)
+amount = 100
+lifetime = 1.4000000000000001
+speed_scale = 4.17
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_kqe62")
+
+[node name="Label" type="Label" parent="point2" unique_id=1697198490]
+offset_left = -49.0
+offset_top = -26.0
+offset_right = 48.0
+offset_bottom = -3.0
+text = "Point source"
+
+[node name="sphere" type="GPUParticles2D" parent="." unique_id=453785752]
+position = Vector2(214, -1)
+rotation = -4.922448
+amount = 1000000
+lifetime = 30.85
+speed_scale = 4.17
+process_material = SubResource("ParticleProcessMaterial_bkak3")
+
+[node name="Label" type="Label" parent="sphere" unique_id=20506761]
+offset_left = -49.0
+offset_top = -26.0
+offset_right = 48.0
+offset_bottom = -3.0
+text = "spawn shere 1000 particles 1s"
