@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://ch6h0ww6bse2t"]
 
+[ext_resource type="PackedScene" uid="uid://f2apn1s8jhl7" path="res://scene/lamp.tscn" id="1_ykav7"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_asbwb"]
 albedo_color = Color(0.96862745, 0.7490196, 0.2901961, 1)
 
@@ -34,7 +36,6 @@ albedo_color = Color(0.654902, 0.45490196, 0.16078432, 1)
 
 [node name="Room" type="CSGBox3D" parent="." unique_id=1761692306]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.003, 2.5, 5.006)
-visible = false
 flip_faces = true
 size = Vector3(10, 5, 10)
 material = SubResource("StandardMaterial3D_asbwb")
@@ -128,3 +129,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.010620117, -0.7486962, -0.0
 operation = 2
 size = Vector3(2.3341064, 1.4899902, 1.5635986)
 material = SubResource("StandardMaterial3D_fq8kr")
+
+[node name="Node3D" parent="." unique_id=1829826692 instance=ExtResource("1_ykav7")]
+transform = Transform3D(0.80701184, 0, 0.5905352, 0, 1, 0, -0.5905352, 0, 0.80701184, 6.0166454, 1.0714133, 8.786459)
