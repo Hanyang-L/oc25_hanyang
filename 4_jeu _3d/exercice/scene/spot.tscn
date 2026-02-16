@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwcbg05sjn2c6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4xowi"]
+grow = true
+
+[node name="Node3D" type="Node3D"]
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="."]
+inner_radius = 0.01
+outer_radius = 0.02
+sides = 15
+material = SubResource("StandardMaterial3D_4xowi")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="CSGTorus3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0030013695, 0)
+spot_angle = 180.0
+spot_angle_attenuation = 0.16493833
