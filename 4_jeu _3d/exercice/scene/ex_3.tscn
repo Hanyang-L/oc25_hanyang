@@ -1,6 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://ch6h0ww6bse2t"]
+[gd_scene load_steps=14 format=3 uid="uid://ch6h0ww6bse2t"]
 
 [ext_resource type="PackedScene" uid="uid://f2apn1s8jhl7" path="res://scene/lamp.tscn" id="1_ykav7"]
+[ext_resource type="PackedScene" uid="uid://c7h3ccrbwfih1" path="res://scene/box.tscn" id="2_ifrcg"]
+[ext_resource type="PackedScene" uid="uid://cwcbg05sjn2c6" path="res://scene/spot.tscn" id="2_jwff4"]
+[ext_resource type="PackedScene" uid="uid://dguicpxwmdcsh" path="res://scene/door.tscn" id="3_jtqmf"]
+[ext_resource type="PackedScene" uid="uid://dh7252ouqprt8" path="res://scene/chair.tscn" id="5_jtqmf"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bmghl"]
 albedo_color = Color(0.29779106, 0.67739195, 0.18919066, 1)
@@ -26,15 +30,6 @@ albedo_color = Color(0.8627451, 0.84705883, 0.9490196, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jtqmf"]
 albedo_color = Color(0.67058825, 1, 0.36862746, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2dkg6"]
-albedo_color = Color(0.7137255, 0.4745098, 0.07450981, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3i1iq"]
-albedo_color = Color(0.6627451, 0.47058824, 0.16862746, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fq8kr"]
-albedo_color = Color(0.654902, 0.45490196, 0.16078432, 1)
-
 [node name="Ex3" type="Node3D"]
 
 [node name="grass" type="CSGBox3D" parent="."]
@@ -43,7 +38,7 @@ size = Vector3(1000, 1, 1000)
 material = SubResource("StandardMaterial3D_bmghl")
 
 [node name="Room" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.003, 2.5, 5.006)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.002868, 2.5074594, 5.001985)
 flip_faces = true
 size = Vector3(10, 5, 10)
 material = SubResource("StandardMaterial3D_asbwb")
@@ -55,13 +50,13 @@ size = Vector3(3.8085938, 2.081787, 0.2626953)
 material = SubResource("StandardMaterial3D_c1h23")
 
 [node name="window_2" type="CSGBox3D" parent="Room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9193106, 0.9884231, -4.9819636)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8530035, 0.9884231, -4.9819636)
 operation = 2
-size = Vector3(3.500122, 2.081787, 0.2626953)
+size = Vector3(1.7956696, 2.081787, 0.2626953)
 material = SubResource("StandardMaterial3D_c1h23")
 
 [node name="Table" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 0.7268295)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.6689134, 0.7268295)
 size = Vector3(4, 0.1, 1.4366455)
 material = SubResource("StandardMaterial3D_ykav7")
 
@@ -121,22 +116,29 @@ radius = 0.4
 rings = 9
 material = SubResource("StandardMaterial3D_jtqmf")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.84864044, 1.708472, 8.705329)
-size = Vector3(2.5889893, 3.4057617, 1.6025391)
-material = SubResource("StandardMaterial3D_2dkg6")
+[node name="light" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01684457, 0)
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.010620117, 0.91503906, -0.050420284)
-operation = 2
-size = Vector3(2.3341064, 1.2358398, 1.6251221)
-material = SubResource("StandardMaterial3D_3i1iq")
+[node name="spot1" parent="light" instance=ExtResource("2_jwff4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9592545, 4.9700003, 3.1335816)
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="CSGBox3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.010620117, -0.7486962, -0.06124115)
-operation = 2
-size = Vector3(2.3341064, 1.4899902, 1.5635986)
-material = SubResource("StandardMaterial3D_fq8kr")
+[node name="spot2" parent="light" instance=ExtResource("2_jwff4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.95, 4.97, 6.374886)
+
+[node name="spot3" parent="light" instance=ExtResource("2_jwff4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.634997, 4.98, 6.375)
+
+[node name="spot4" parent="light" instance=ExtResource("2_jwff4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.635, 4.98, 3.134)
+
+[node name="box" parent="." instance=ExtResource("2_ifrcg")]
+transform = Transform3D(-0.8, 0, -6.9938224e-08, 0, 0.8, 0, 6.9938224e-08, 0, -0.8, 8.979109, 1.3530043, 0.64136064)
+
+[node name="door" parent="." instance=ExtResource("3_jtqmf")]
+transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, 0.028973132, 2.1044414, 8.607457)
 
 [node name="lamp" parent="." instance=ExtResource("1_ykav7")]
 transform = Transform3D(0.80701184, 0, 0.5905352, 0, 1, 0, -0.5905352, 0, 0.80701184, 6.0166454, 1.0714133, 8.786459)
+
+[node name="chair" parent="." instance=ExtResource("5_jtqmf")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1.3, 0, 1, 0, -4.371139e-08, 2.208248, 0.66246307, 1.2953296)

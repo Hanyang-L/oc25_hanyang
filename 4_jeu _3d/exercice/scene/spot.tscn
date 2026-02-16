@@ -1,17 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwcbg05sjn2c6"]
+[gd_scene load_steps=4 format=3 uid="uid://cwcbg05sjn2c6"]
+
+[sub_resource type="Gradient" id="Gradient_x5ays"]
+colors = PackedColorArray(0.8239239, 0.82392395, 0.8239239, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1hekl"]
+gradient = SubResource("Gradient_x5ays")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4xowi"]
+transparency = 1
+albedo_texture = SubResource("GradientTexture2D_1hekl")
 grow = true
 
 [node name="Node3D" type="Node3D"]
 
 [node name="CSGTorus3D" type="CSGTorus3D" parent="."]
-inner_radius = 0.01
-outer_radius = 0.02
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.004699871, 0)
+inner_radius = 0.028334754
+outer_radius = 0.052774463
 sides = 15
 material = SubResource("StandardMaterial3D_4xowi")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="CSGTorus3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0030013695, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17119849, 0)
 spot_angle = 180.0
 spot_angle_attenuation = 0.16493833

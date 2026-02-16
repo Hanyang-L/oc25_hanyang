@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://dh7252ouqprt8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ulel"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ums8i"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ovl5v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26541"]
+
+[node name="chair" type="Node3D"]
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.62438345, -0.31703782, 0.060438633)
+radius = 0.7
+radial_segments = 9
+rings = 50
+material = SubResource("StandardMaterial3D_4ulel")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGSphere3D"]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, 0.5980301, 0.33253938, 0.032312833)
+operation = 2
+size = Vector3(0.24658203, 1.852478, 1.3172302)
+material = SubResource("StandardMaterial3D_ums8i")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="CSGSphere3D"]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, -0.09609771, -0.47470403, -0.013366699)
+operation = 2
+size = Vector3(1.3983765, 0.58740234, 2.2095947)
+material = SubResource("StandardMaterial3D_ovl5v")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="CSGSphere3D"]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0.38336396, 0.62267065, 0.04881285)
+operation = 2
+size = Vector3(2.3572998, 0.1743164, 1.1783752)
+material = SubResource("StandardMaterial3D_ovl5v")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="CSGSphere3D"]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, -0.86312926, 0.09155071, -0.013366699)
+operation = 2
+size = Vector3(0.5796814, 1, 2.2095947)
+material = SubResource("StandardMaterial3D_ovl5v")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0161405, 0.095796704, 0.074201286)
+size = Vector3(0.15930176, 2.1245117, 0.8815613)
+material = SubResource("StandardMaterial3D_26541")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="CSGBox3D2"]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, -0.039963484, -0.8482319, -0.013366699)
+operation = 2
+size = Vector3(0.35830688, 0.50878906, 2.2095947)
+material = SubResource("StandardMaterial3D_ovl5v")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="CSGBox3D2"]
+transform = Transform3D(1, 0, 0, 0, 0.834242, 0.5513982, 0, -0.5513982, 0.834242, -0.03561151, 1.0712913, -0.6451609)
+operation = 2
+size = Vector3(0.5796814, 0.44433594, 1.0372009)
+material = SubResource("StandardMaterial3D_ovl5v")
