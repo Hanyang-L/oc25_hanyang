@@ -1,0 +1,37 @@
+# Travail effectué avec Google NotebookLM. J'ai essayé la création de vidéo basé sur l'article à lire pour le 5 mars.
+
+## Chat:
+### Measuring Massive Multitask Language Understanding (MMLU)
+
+The researchers introduce a **comprehensive benchmark** designed to evaluate the **multitask accuracy** of large-scale language models across 57 distinct academic and professional subjects. By testing areas such as **STEM, the humanities, and social sciences**, the study moves beyond simple linguistic assessments to measure **world knowledge and problem-solving skills**. The findings reveal that while massive models like **GPT-3** show significant progress over random chance, they still lack **expert-level mastery** and struggle with complex calculations. Furthermore, the analysis indicates that these models are often **uncalibrated**, meaning they lack an accurate sense of their own performance. The benchmark ultimately highlights critical **shortcomings** in socially sensitive areas like law and ethics, providing a tool to track future AI development.
+
+#### Me:
+#### this article is from 2021 Is it still the same thing now in 2026
+## Chat:
+The 2021 article you provided describes the introduction of the **Massive Multitask Language Understanding (MMLU) benchmark**, a test designed to measure the breadth and depth of an AI model's world knowledge and problem-solving abilities. While the **MMLU remains a foundational and widely used benchmark in 2026**, the specific performance data and technical limitations described in the source are no longer current.
+
+Here is a breakdown of how the landscape has shifted:
+
+### 1. Performance Levels (Then vs. Now)
+*   **In 2021:** The largest model at the time, **GPT-3 (175B parameters)**, was considered the state-of-the-art but only achieved an average accuracy of **43.9%**. Most other models performed at near **random-chance levels (25%)**. 
+*   **Expert Target:** The researchers estimated that **human expert-level accuracy** was approximately **89.8%**.
+*   **In 2026 (Outside Source Information):** The AI field has advanced exponentially. As of early 2026, current frontier models frequently score in the **high 80s or low 90s** on the MMLU, effectively meeting or exceeding the "expert-level" accuracy that the 2021 paper identified as a distant goal. 
+
+### 2. "Lopsided" Capabilities and Procedural Knowledge
+The 2021 article noted that models had **"lopsided" performance**, doing better on verbal subjects (like US Foreign Policy) but struggling significantly with **calculation-heavy STEM subjects** and **procedural reasoning** (e.g., applying mathematics). 
+*   **The 2021 Reality:** GPT-3 could explain the acronym for the order of operations (PEMDAS) but often failed to apply it correctly to actual math problems.
+*   **In 2026 (Outside Source Information):** While procedural reasoning remains a complex area, modern models have largely closed this gap through better reasoning architectures and specialized training, making them far more consistent in mathematics and logic than the models described in the sources.
+
+### 3. Calibration and Trust
+A major finding in the 2021 paper was that models were **uncalibrated**, meaning they did not "know when they were wrong". Their confidence in an answer often did not match their actual accuracy, with gaps as large as **24%**. 
+*   **In 2026 (Outside Source Information):** Although model calibration has improved, "hallucinations" and overconfidence remain topics of active research and development in 2026, though modern systems are significantly more reliable than the GPT-3 variants tested in the original paper.
+
+### 4. Predictions on Scaling and Data
+The authors of the 2021 paper questioned whether simply **scaling up models** would solve the test, citing a **data bottleneck** because there is less high-quality text available for esoteric branches of knowledge than for everyday topics.
+*   **In 2026 (Outside Source Information):** This prediction proved partially correct; while scaling continued to help, the leap to expert-level performance in 2026 was driven not just by more data, but by **synthetic data generation**, human-in-the-loop reinforcement learning, and improved "reasoning" tokens.
+
+**Summary of Accuracy:** The article's definition of the **MMLU benchmark** is still accurate and relevant, but its **performance rankings** (where GPT-3 is the leader at 44%) are now historical data rather than current 2026 benchmarks.
+
+*Please note: Information regarding the specific performance of AI models in 2026 is not contained in your 2021 source material and should be independently verified.*
+
+Would you like me to create a **tailored report** comparing the different subjects (Humanities, STEM, Social Sciences) mentioned in the sources, or perhaps an **infographic** mapping out the 57 tasks used in this benchmark?
