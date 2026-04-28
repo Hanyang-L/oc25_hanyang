@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://cbror8gvpamvf"]
+
+[ext_resource type="Script" uid="uid://ryro5kpc566r" path="res://csg_box_3d.gd" id="1_fexi5"]
+[ext_resource type="Script" uid="uid://bdv85g3fv07nr" path="res://csg_torus_3d.gd" id="2_davwy"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fexi5"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_davwy"]
+sky_material = SubResource("ProceduralSkyMaterial_fexi5")
+
+[sub_resource type="Environment" id="Environment_25k3i"]
+background_mode = 2
+sky = SubResource("Sky_davwy")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Node3D" type="Node3D" unique_id=1348923979]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=245271542]
+environment = SubResource("Environment_25k3i")
+
+[node name="Camera3D" type="Camera3D" parent="WorldEnvironment" unique_id=134973616]
+transform = Transform3D(0.79572886, -0.17787622, 0.5789436, -0.0024525982, 0.9549455, 0.2967711, -0.6056481, -0.23756923, 0.75944144, 4.8003697, 2.2316995, 5.681184)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1694141516]
+transform = Transform3D(1, 0, 0, 0, -0.8719762, -0.4895481, 0, 0.4895481, -0.8719762, -0.3804158, 0.19865735, 0.7710614)
+script = ExtResource("1_fexi5")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="." unique_id=1587811544]
+transform = Transform3D(0.60021085, -0.7998418, 0, 0.7998418, 0.60021085, 0, 0, 0, 1, 1.3320706, 0.42526865, 0.15573777)
+inner_radius = 3.8590727
+outer_radius = 2.996
+sides = 25
+ring_sides = 25
+script = ExtResource("2_davwy")
