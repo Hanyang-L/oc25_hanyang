@@ -18,13 +18,13 @@ class_name Stairs
 				create()
 		
 ## Transposition vector (offset).
-@export var transpose = Vector3(1.3, 0.5, 0):
+@export var transpose = Vector3(0, 1, 0):
 	set(x):
 		transpose = x 
 		create()
 		
 # Euler angles of rotation
-@export var rotate_3d = Vector3(0, 20, 0):
+@export var rotate_3d = Vector3(10, 40, 10):
 	set(x):
 		rotate_3d = x
 		create()
@@ -38,7 +38,6 @@ class_name Stairs
 # Staircase material		
 @export var material: BaseMaterial3D		
 
-		
 func _ready():
 	create()
 	
