@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://1dhqdm1tojye"]
+
+[ext_resource type="Texture2D" uid="uid://b4haqph50vcjw" path="res://assets/sky_background/autumn_field_puresky_4k.hdr" id="1_v0l8b"]
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="2_wp4xf"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_0cfwr"]
+panorama = ExtResource("1_v0l8b")
+
+[sub_resource type="Sky" id="Sky_eete0"]
+sky_material = SubResource("PanoramaSkyMaterial_0cfwr")
+
+[sub_resource type="Environment" id="Environment_0cfwr"]
+background_mode = 2
+sky = SubResource("Sky_eete0")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4xowi"]
+albedo_color = Color(0.43137255, 0.39607844, 0.45490196, 1)
+
+[sub_resource type="Gradient" id="Gradient_gl4or"]
+colors = PackedColorArray(4.3317675e-07, 0.4701107, 0.3428249, 1, 0.9254902, 0.44313726, 0.8666667, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_eete0"]
+gradient = SubResource("Gradient_gl4or")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0cfwr"]
+albedo_texture = SubResource("GradientTexture2D_eete0")
+metallic = 1.0
+
+[node name="Main" type="Node3D" unique_id=719303197]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=186243916]
+environment = SubResource("Environment_0cfwr")
+
+[node name="Floor" type="CSGBox3D" parent="." unique_id=156569076]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.023368835, -1.0186205, -0.018323898)
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="Wall" type="CSGCombiner3D" parent="Floor" unique_id=1950550110]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.459768, 1.6070089, 10.216959)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor/Wall" unique_id=172800104]
+size = Vector3(20, 3, 0.5)
+material = SubResource("StandardMaterial3D_4xowi")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Floor/Wall" unique_id=232178923]
+transform = Transform3D(-0.001745386, 0, 0.99999845, 0, 1, 0, -0.99999845, 0, -0.001745386, -10.252496, 0.06317997, -9.723655)
+size = Vector3(20, 3, 0.5)
+material = SubResource("StandardMaterial3D_4xowi")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Floor/Wall" unique_id=976783641]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.69727063, 0.1274786, -19.964584)
+size = Vector3(20, 3, 0.5)
+material = SubResource("StandardMaterial3D_4xowi")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Floor/Wall" unique_id=355451183]
+transform = Transform3D(-0.001745386, 0, 0.99999845, 0, 1, 0, -0.99999845, 0, -0.001745386, 9.540232, 0.06317997, -10.216959)
+size = Vector3(20, 3, 0.5)
+material = SubResource("StandardMaterial3D_4xowi")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Floor/Wall" unique_id=677911701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8163693, -0.78929996, -19.857183)
+operation = 2
+size = Vector3(1.644741, 1.1664429, 1.1796875)
+material = SubResource("StandardMaterial3D_4xowi")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Floor" unique_id=165591240]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Floor/CSGCombiner3D" unique_id=963789964]
+transform = Transform3D(-0.001745386, 0, 0.99999845, 0, 1, 0, -0.99999845, 0, -0.001745386, -6.966915, 0.06317997, -17.030788)
+size = Vector3(14.215942, 3, 0.5)
+material = SubResource("StandardMaterial3D_4xowi")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Floor/CSGCombiner3D" unique_id=301098255]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.021205187, 0.1274786, -24.016014)
+size = Vector3(13.829529, 3, 0.5)
+material = SubResource("StandardMaterial3D_4xowi")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Floor/CSGCombiner3D" unique_id=800273954]
+transform = Transform3D(-0.001745386, 0, 0.99999845, 0, 1, 0, -0.99999845, 0, -0.001745386, 6.885223, 0.06317997, -16.934586)
+size = Vector3(14.640564, 3, 0.5)
+material = SubResource("StandardMaterial3D_4xowi")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Floor/CSGCombiner3D" unique_id=1404903737]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4029, 0.012183189, -23.830105)
+operation = 2
+size = Vector3(2.8178024, 2.7694092, 1.1796875)
+material = SubResource("StandardMaterial3D_4xowi")
+
+[node name="sculpture" type="CSGCombiner3D" parent="Floor" unique_id=1860522439]
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="Floor/sculpture" unique_id=1202827200]
+transform = Transform3D(0.40046328, -0.48629734, 0.7766234, -0.8512151, 0.11632255, 0.5117637, -0.33920816, -0.86601615, -0.3673607, 1.8893738, 1.4923551, 1.3306513)
+inner_radius = 2.354
+outer_radius = 1.067
+sides = 64
+ring_sides = 64
+material = SubResource("StandardMaterial3D_0cfwr")
+
+[node name="CSGTorus3D2" type="CSGTorus3D" parent="Floor/sculpture" unique_id=1896810401]
+transform = Transform3D(-0.75671077, -0.45958552, -0.4649406, 0.06525068, 0.6545439, -0.75320286, 0.6504852, -0.6002946, -0.46531212, 3.6022067, 2.8519275, 1.4327416)
+inner_radius = 2.354
+outer_radius = 1.067
+sides = 64
+ring_sides = 64
+material = SubResource("StandardMaterial3D_0cfwr")
+
+[node name="CSGTorus3D3" type="CSGTorus3D" parent="Floor/sculpture" unique_id=927508532]
+transform = Transform3D(-0.7773508, -0.6145637, -0.13430169, 0.08719112, -0.3166926, 0.944512, -0.6229953, 0.7225076, 0.2997657, 3.750602, 4.4373, 1.2296078)
+inner_radius = 2.354
+outer_radius = 1.067
+sides = 64
+ring_sides = 64
+material = SubResource("StandardMaterial3D_0cfwr")
+
+[node name="ProtoController" parent="." unique_id=1396163208 instance=ExtResource("2_wp4xf")]
+transform = Transform3D(0.29999998, 0, 0, 0, 0.29999998, 0, 0, 0, 0.29999998, -1, -0.4847414, -26.059774)
+
+[node name="Camera3D" parent="ProtoController/Head" parent_id_path=PackedInt32Array(1396163208, 384824402) index="0" unique_id=1166934015]
+transform = Transform3D(-3.3089676, 0, -0.40230384, 0, 3.333334, 0, 0.40230384, 0, -3.3089676, 0, 0, 0)
+
+[editable path="ProtoController"]
