@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://cbror8gvpamvf"]
 
 [ext_resource type="Texture2D" uid="uid://b4haqph50vcjw" path="res://assets/sky_background/autumn_field_puresky_4k.hdr" id="1_1jctc"]
-[ext_resource type="Script" uid="uid://ryro5kpc566r" path="res://csg_box_3d.gd" id="1_fexi5"]
-[ext_resource type="Script" uid="uid://bdv85g3fv07nr" path="res://csg_torus_3d.gd" id="2_davwy"]
 [ext_resource type="Script" uid="uid://dga1te31crpri" path="res://stairs.gd" id="3_25k3i"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_x6y4r"]
@@ -15,11 +13,14 @@ sky_material = SubResource("PanoramaSkyMaterial_x6y4r")
 background_mode = 2
 sky = SubResource("Sky_vcbjm")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1jctc"]
-albedo_color = Color(0.827451, 0.43137255, 0.25490198, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_25k3i"]
+albedo_color = Color(0.827451, 0.43137255, 0.6039216, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ksf6t"]
 albedo_color = Color(0.37254903, 0.88235295, 0.25882354, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_davwy"]
+albedo_color = Color(0.34509805, 0.53333336, 0.39607844, 1)
 
 [node name="Node3D" type="Node3D" unique_id=1348923979]
 
@@ -27,31 +28,39 @@ albedo_color = Color(0.37254903, 0.88235295, 0.25882354, 1)
 environment = SubResource("Environment_o7b47")
 
 [node name="Camera3D" type="Camera3D" parent="WorldEnvironment" unique_id=2072435713]
-transform = Transform3D(0.79572886, -0.17787622, 0.5789436, -0.0024525982, 0.9549455, 0.2967711, -0.6056481, -0.23756923, 0.75944144, 4.8003697, 2.2316995, 5.681184)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1694141516]
-transform = Transform3D(1, 0, 0, 0, -0.8719762, -0.4895481, 0, 0.4895481, -0.8719762, -0.9775236, -1.4397268, 0.867882)
+transform = Transform3D(-0.5863119, -0.15054554, 0.795974, -0.017282996, 0.9846813, 0.17350589, -0.8099012, 0.08797174, -0.57993215, 4.8003697, 33.526867, 5.681184)
 visible = false
-script = ExtResource("1_fexi5")
 
-[node name="CSGTorus3D" type="CSGTorus3D" parent="." unique_id=1587811544]
-transform = Transform3D(0.60021085, -0.7998418, 0, 0.7998418, 0.60021085, 0, 0, 0, 1, -1.5788519, -0.19437015, 0.5949619)
-visible = false
-inner_radius = 3.8590727
-outer_radius = 2.996
-sides = 25
-ring_sides = 25
-script = ExtResource("2_davwy")
-
-[node name="Node3D" type="Node3D" parent="." unique_id=1941817286]
+[node name="stairs" type="Node3D" parent="." unique_id=1973360998]
+transform = Transform3D(0.034132212, 0.00021708084, 0.99941725, -2.6913109e-05, 1, -0.00021628826, -0.99941725, -1.9514999e-05, 0.034132212, 136.50992, -0.03863393, -6.8016815)
 script = ExtResource("3_25k3i")
-repeat = 1000
+repeat = 400
 size = Vector3(2, 0.5, 200)
-transpose = Vector3(0, 0.5, 0)
+transpose = Vector3(3, 0.5, -3)
 rotate_3d = Vector3(0, 1, 0)
-material = SubResource("StandardMaterial3D_1jctc")
+material = SubResource("StandardMaterial3D_25k3i")
+
+[node name="stairs2" type="Node3D" parent="." unique_id=1071990840]
+transform = Transform3D(0.034132212, 0.00021708084, 0.99941725, -2.6913109e-05, 1, -0.00021628826, -0.99941725, -1.9514999e-05, 0.034132212, -187.19144, 0.03863393, 351.819)
+script = ExtResource("3_25k3i")
+repeat = 400
+size = Vector3(2, 0.5, 200)
+transpose = Vector3(-3, 0.5, 3)
+rotate_3d = Vector3(0, 1, 0)
+material = SubResource("StandardMaterial3D_25k3i")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=480561669]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.48606455, 0)
-size = Vector3(1000, 1, 1000)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 105.05563, -0.48606455, 169.66725)
+size = Vector3(1359.0879, 1, 1281.5986)
 material = SubResource("StandardMaterial3D_ksf6t")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=1380225632]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 105.05563, 199.79796, 169.66725)
+use_collision = true
+size = Vector3(1359.0879, 1, 1281.5986)
+material = SubResource("StandardMaterial3D_davwy")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D3" unique_id=1466053600]
+transform = Transform3D(0.6185652, 0.00036670474, -0.78573346, -2.666602e-05, 0.9999999, 0.00044571186, 0.7857335, -0.00025475034, 0.61856514, -70.914764, -1.2102966, 229.5355)
+operation = 2
+size = Vector3(84.21423, 10, 199.07782)

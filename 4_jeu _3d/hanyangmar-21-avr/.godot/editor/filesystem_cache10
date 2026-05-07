@@ -1,11 +1,11 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1777962848
+::res://::1778155178
 csg_box_3d.gd::GDScript::1243814189769652123::1777358082::0::1::::<>CSGBox3D<><>0<>1<><>::
 csg_torus_3d.gd::GDScript::2642396740671778435::1777358082::0::1::::<>CSGTorus3D<><>0<>1<><>::
 icon.svg::CompressedTexture2D::4339204169111484281::1777358082::1777358082::1::::<><><>0<>0<>a489091fb6f7e7992cddf1a7baaa2a0f<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 node_3d.tscn::PackedScene::1163531186946441720::1777358082::0::1::::<><><>0<>0<><>::
-stairs.gd::GDScript::7582007939336222574::1777359596::0::1::::Stairs<>Node3D<><>0<>1<><>::
-turn.tscn::PackedScene::4879006772751949199::1777962617::0::1::::<><><>0<>0<><>::uid://ryro5kpc566r::::res://csg_box_3d.gd<>uid://bdv85g3fv07nr::::res://csg_torus_3d.gd<>uid://dga1te31crpri::::res://stairs.gd
+stairs.gd::GDScript::7582007939336222574::1777964048::0::1::::Stairs<>Node3D<><>0<>1<><>::
+turn.tscn::PackedScene::4879006772751949199::1777964582::0::1::::<><><>0<>0<><>::uid://b4haqph50vcjw::::res://assets/sky_background/autumn_field_puresky_4k.hdr<>uid://ryro5kpc566r::::res://csg_box_3d.gd<>uid://bdv85g3fv07nr::::res://csg_torus_3d.gd<>uid://dga1te31crpri::::res://stairs.gd
 ::res://assets/::1777962969
 ::res://assets/sky_background/::1777962969
 autumn_field_puresky_4k.hdr::CompressedTexture2D::4436377166238119176::1777962969::1777962969::1::::<><><>0<>0<>899f23d76d9248fa5779086e599f80b2<>res://.godot/imported/autumn_field_puresky_4k.hdr-7428613d6be566b9982ab10a483aeeb4.bptc.ctex::

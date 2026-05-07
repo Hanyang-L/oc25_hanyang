@@ -1,14 +1,14 @@
-[gd_scene format=3 uid="uid://cl3ixn2ifiit5"]
+[gd_scene load_steps=3 format=3 uid="uid://cl3ixn2ifiit5"]
 
 [ext_resource type="PackedScene" uid="uid://dq0cedtbphlo7" path="res://assets/import_examples/barrel/barrel.glb" id="1_n8un1"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_n8un1"]
 radius = 1.0
 
-[node name="barrel" type="RigidBody3D" unique_id=852993451]
+[node name="barrel" type="RigidBody3D"]
 
-[node name="barrel" parent="." unique_id=1916061510 instance=ExtResource("1_n8un1")]
+[node name="barrel" parent="." instance=ExtResource("1_n8un1")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1338071607]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9569777, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.956978, 0)
 shape = SubResource("CylinderShape3D_n8un1")
