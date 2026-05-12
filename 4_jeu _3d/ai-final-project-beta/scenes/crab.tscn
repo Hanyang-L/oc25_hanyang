@@ -1,0 +1,163 @@
+[gd_scene format=3 uid="uid://bylherkifio65"]
+
+[ext_resource type="Script" uid="uid://c5lwc3oaiylas" path="res://scripts/crab.gd" id="1_crab"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_crab_body"]
+albedo_color = Color(0.85, 0.2, 0.15, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ow7wl"]
+albedo_color = Color(0.8509804, 0.2, 0.14901961, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2b8bq"]
+albedo_color = Color(0.8509804, 0.2, 0.14901961, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_crab_eyewhite"]
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_crab_eye"]
+albedo_color = Color(0.05, 0.05, 0.05, 1)
+metallic = 0.5
+roughness = 0.3
+
+[sub_resource type="BoxShape3D" id="BoxShape_crab_body"]
+size = Vector3(1.4, 0.7557373, 1.0887451)
+
+[sub_resource type="BoxShape3D" id="BoxShape_crab_attack"]
+size = Vector3(2.5, 1.0874023, 1.3623047)
+
+[node name="Crab" type="CharacterBody3D" unique_id=1102950645]
+collision_layer = 4
+script = ExtResource("1_crab")
+
+[node name="CrabBody" type="CSGCombiner3D" parent="." unique_id=545591620]
+
+[node name="Body" type="CSGSphere3D" parent="CrabBody" unique_id=857618676]
+transform = Transform3D(0.7, 0, 0, 0, 0.3, 0, 0, 0, 0.5, 0, 0.35, 0)
+radius = 1.0
+material = SubResource("Mat_crab_body")
+
+[node name="LeftClaw" type="CSGBox3D" parent="CrabBody" unique_id=963006207]
+transform = Transform3D(0.7931682, -0.5019481, -0.3448664, 0.29782563, 0.8136485, -0.49927592, 0.5312103, 0.29329967, 0.794853, -0.8243206, 0.49827087, 0.36537102)
+size = Vector3(0.4, 0.35, 0.4)
+material = SubResource("Mat_crab_body")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CrabBody/LeftClaw" unique_id=272155005]
+transform = Transform3D(0.9999994, 2.9802322e-08, -7.748604e-07, 1.4901161e-08, -2.9802322e-08, -0.9999994, -1.7881393e-07, 1, -1.6391277e-07, -2.0861626e-07, 0.054831743, -0.03633502)
+operation = 2
+radius = 0.157
+height = 0.48007032
+sides = 6
+smooth_faces = false
+material = SubResource("StandardMaterial3D_ow7wl")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CrabBody/LeftClaw" unique_id=1714878040]
+transform = Transform3D(0.8419564, -0.0115031, -0.5394236, -0.23319463, 0.8938122, -0.38304076, 0.4865489, 0.44829535, 0.7498683, -0.03598979, -0.24967307, -0.19501573)
+size = Vector3(0.05, 0.206, 0.04)
+material = SubResource("StandardMaterial3D_2b8bq")
+
+[node name="RightClaw" type="CSGBox3D" parent="CrabBody" unique_id=1183783197]
+transform = Transform3D(0.6780453, 0.18785776, 0.7106082, 0.29782563, 0.81364846, -0.49927586, -0.6719781, 0.5501691, 0.49574178, 0.87866515, 0.49827087, 0.36537102)
+size = Vector3(0.4, 0.35, 0.4)
+material = SubResource("Mat_crab_body")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CrabBody/RightClaw" unique_id=891777596]
+transform = Transform3D(0.9999999, 0, 8.940697e-08, -1.4901161e-07, 3.8146973e-06, -0.99999964, 0, 0.9999894, -5.9604645e-08, 0, 0.054831445, -0.011875987)
+operation = 2
+radius = 0.157
+height = 0.5289883
+sides = 6
+smooth_faces = false
+material = SubResource("StandardMaterial3D_ow7wl")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CrabBody/RightClaw" unique_id=807980750]
+transform = Transform3D(0.8419564, -0.0115031, -0.5394236, -0.23319463, 0.8938122, -0.38304076, 0.4865489, 0.44829535, 0.7498683, -0.03598979, -0.24967307, -0.19501573)
+size = Vector3(0.05, 0.206, 0.04)
+material = SubResource("StandardMaterial3D_2b8bq")
+
+[node name="EyeL" type="CSGCombiner3D" parent="CrabBody" unique_id=715443774]
+
+[node name="EyeStalk" type="CSGBox3D" parent="CrabBody/EyeL" unique_id=1185732916]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.65, 0.15)
+size = Vector3(0.06, 0.3, 0.06)
+material = SubResource("Mat_crab_body")
+
+[node name="EyeWhite" type="CSGSphere3D" parent="CrabBody/EyeL" unique_id=1676787504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.85, 0.15)
+radius = 0.1
+material = SubResource("Mat_crab_eyewhite")
+
+[node name="Eye" type="CSGSphere3D" parent="CrabBody/EyeL/EyeWhite" unique_id=1698994874]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.06999999)
+radius = 0.05
+material = SubResource("Mat_crab_eye")
+
+[node name="EyeR" type="CSGCombiner3D" parent="CrabBody" unique_id=738693578]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39962745, 0, 0)
+
+[node name="EyeStalk" type="CSGBox3D" parent="CrabBody/EyeR" unique_id=980116930]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.65, 0.15)
+size = Vector3(0.06, 0.3, 0.06)
+material = SubResource("Mat_crab_body")
+
+[node name="EyeWhite" type="CSGSphere3D" parent="CrabBody/EyeR" unique_id=1450195133]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.85, 0.15)
+radius = 0.1
+material = SubResource("Mat_crab_eyewhite")
+
+[node name="Eye" type="CSGSphere3D" parent="CrabBody/EyeR/EyeWhite" unique_id=1475266546]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.06999999)
+radius = 0.05
+material = SubResource("Mat_crab_eye")
+
+[node name="LegsR" type="CSGCombiner3D" parent="CrabBody" unique_id=703880704]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0.1, 0.3)
+
+[node name="Leg1" type="CSGBox3D" parent="CrabBody/LegsR" unique_id=1106656464]
+size = Vector3(0.15, 0.2, 0.15)
+material = SubResource("Mat_crab_body")
+
+[node name="Leg2" type="CSGBox3D" parent="CrabBody/LegsR" unique_id=935967924]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.29597998)
+size = Vector3(0.15, 0.2, 0.15)
+material = SubResource("Mat_crab_body")
+
+[node name="Leg3" type="CSGBox3D" parent="CrabBody/LegsR" unique_id=327923952]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5902972)
+size = Vector3(0.15, 0.2, 0.15)
+material = SubResource("Mat_crab_body")
+
+[node name="LegsL" type="CSGCombiner3D" parent="CrabBody" unique_id=1072070154]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 0.1, 0.3)
+
+[node name="Leg1" type="CSGBox3D" parent="CrabBody/LegsL" unique_id=583021677]
+size = Vector3(0.15, 0.2, 0.15)
+material = SubResource("Mat_crab_body")
+
+[node name="Leg2" type="CSGBox3D" parent="CrabBody/LegsL" unique_id=1343141176]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.29597998)
+size = Vector3(0.15, 0.2, 0.15)
+material = SubResource("Mat_crab_body")
+
+[node name="Leg3" type="CSGBox3D" parent="CrabBody/LegsL" unique_id=1983426008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5902972)
+size = Vector3(0.15, 0.2, 0.15)
+material = SubResource("Mat_crab_body")
+
+[node name="Mouth" type="CSGBox3D" parent="CrabBody" unique_id=71366996]
+transform = Transform3D(0.026150482, -0.15576212, -0.9874484, 0.004123585, 0.9877946, -0.15570752, 0.9996495, 0, 0.026473604, -0.009898987, 0.49114257, 0.43915772)
+size = Vector3(0.01, 0.01, 0.23394775)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1009084586]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42786866, 0.04437256)
+shape = SubResource("BoxShape_crab_body")
+
+[node name="AttackArea" type="Area3D" parent="." unique_id=816383190]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea" unique_id=324804335]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5275879, 0.05810547)
+shape = SubResource("BoxShape_crab_attack")
+
+[connection signal="body_entered" from="AttackArea" to="." method="_on_attack_area_body_entered"]
