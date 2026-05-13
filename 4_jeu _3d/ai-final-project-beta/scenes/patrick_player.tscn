@@ -4,25 +4,28 @@
 [ext_resource type="PackedScene" uid="uid://3l58n2i6irax" path="res://patrick_3d.glb" id="2_glb_patrick"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_patrick"]
-radius = 0.4
-height = 1.8
+radius = 0.35058594
+height = 1.4900391
 
 [node name="Patrick" type="CharacterBody3D" unique_id=851546506]
 script = ExtResource("1_patrick")
 can_sprint = true
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=1376266756]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.74501956, 0.03903991)
 shape = SubResource("CapsuleShape3D_patrick")
 
 [node name="PatrickMesh" parent="." unique_id=853671357 instance=ExtResource("2_glb_patrick")]
+transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.99999994, 0, 0, 0)
 
 [node name="Head" type="Node3D" parent="." unique_id=415305662]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.97851264, -0.23577192)
 
 [node name="Camera3D" type="Camera3D" parent="Head" unique_id=1466978533]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.004781127, 0.047341555)
 current = true
 
-[node name="InteractRay" type="RayCast3D" parent="Head/Camera3D" unique_id=135756441]
+[node name="InteractRay" type="RayCast3D" parent="." unique_id=135756441]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0140513, 0.13511467)
 target_position = Vector3(0, 0, -3)
 collision_mask = 4
