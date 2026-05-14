@@ -18,7 +18,7 @@ Il n'y a pas de tests automatisés ni de linter configuré.
 
 ## Autoloads requis (Project Settings > Autoload)
 
-Deux singletons doivent être enregistrés pour que le jeu fonctionne :
+Deux singletons sont déjà enregistrés dans `project.godot` :
 
 | Nom | Fichier |
 |---|---|
@@ -27,58 +27,87 @@ Deux singletons doivent être enregistrés pour que le jeu fonctionne :
 
 Sans ces autoloads, les appels à `Global.has_key`, `Global.change_scene()` et les transitions de scènes planteront.
 
-## Input Actions requises (Project Settings > Input Map)
+## Input Actions configurées (project.godot)
 
-| Action | Touche suggérée |
+| Action | Touche |
 |---|---|
-| `ui_left/right/up/down` | Flèches (par défaut) |
-| `ui_accept` | Espace (par défaut) |
+| `ui_left/right/up/down` | Flèches (par défaut Godot) |
+| `ui_accept` | Espace (par défaut Godot) |
 | `interact` | E |
 | `sprint` | Shift |
-| `freefly` | F |
+
+> `freefly` n'est **pas** dans `project.godot`. Le paramètre `can_freefly` de `patrick.gd` est `false` par défaut, donc ce n'est pas nécessaire.
 
 ## Architecture
 
-### Flux de scènes
+### État actuel des scènes
+
+Le projet contient actuellement **2 scènes jouables** :
 
 ```
-scene_1_underwater → scene_2_beach → scene_3_bar → scene_4_treasure
+scene_1_underwater  →  scene_2_plage  →  (à créer : scene_3, scene_4…)
 ```
 
-Chaque scène instancie `patrick_player.tscn` et `ui/hud.tscn` directement dans son arbre. La progression est linéaire : chaque scène connecte des `Area3D` triggers pour déclencher `Global.change_scene()` vers la suivante.
+- `scenes/scene_1_underwater.tscn` — scène complète avec terrain CSG, crabes, clé, HUD, particules, transitions eau/plage. Pilotée par `scripts/scene_1.gd`.
+- `scenes/scene_2_plage.tscn` — scène très basique (un seul CSGBox3D), pas encore de gameplay.
+- `scenes/plage.tscn` — doublon/brouillon de scene_2, ignoré en jeu.
+- `scenes/transition.tscn` — overlay de fondu noir (autoload `SceneTransition`).
+- `scenes/crab.tscn` — scène instanciable du crabe (CSG, pas de GLB).
+- `scenes/key_pickup.tscn` — pickup de clé (CSG + AnimationPlayer).
+- `scenes/patrick_player.tscn` — le joueur.
+
+### Progression automatique de scènes (`scene_1.gd`)
+
+`scene_1.gd` détecte automatiquement la prochaine scène par numéro : il lit le dossier `res://scenes/`, cherche le fichier `scene_N+1_*.tscn`, et appelle `Global.change_scene()`. Il suffit d'ajouter un fichier `scene_2_*.tscn`, `scene_3_*.tscn`, etc. pour étendre le jeu.
 
 ### Singleton Global (`scripts/Global.gd`)
 
 Unique source de vérité partagée entre scènes :
-- `has_key: bool` — Patrick a-t-il ramassé la clé (scène 3) ?
+
+- `has_key: bool` — Patrick a-t-il ramassé la clé ?
 - `current_scene_path: String` — utilisé par `reload_current_scene()` pour le respawn après mort
 - `change_scene(path)` — passe par `SceneTransition` si disponible, sinon change directement
+- `reload_current_scene()` — recharge la scène courante (appelé par `die()`)
+- `reset_game()` — remet `has_key = false` et `current_scene_path = ""`
 
 ### Joueur (`scenes/patrick_player.tscn` + `scripts/patrick.gd`)
 
-`patrick.gd` est une extension directe de `addons/proto_controller/proto_controller.gd` (Brackeys, CC0) avec ces ajouts :
+`patrick.gd` étend **directement `CharacterBody3D`** (pas `proto_controller.gd` — le contrôleur a été réécrit de zéro). Fonctionnalités :
+
+- Mouvement FPS complet avec rotation souris, saut, sprint optionnel
 - Mode sous-marin (`underwater: bool`) : vitesse × `underwater_speed_factor`, gravité × `underwater_gravity_factor`
-- Signal `interact_pressed` (touche E) — écouté par `key_pickup.gd` et `chest_interactive.gd`
+- Signal `interact_pressed` (touche E) — écouté par `key_pickup.gd`
 - Méthode `die()` — appelée par les crabes, recharge la scène via `Global.reload_current_scene()`
-- La souris est capturée automatiquement au `_ready()`
+- La souris est capturée automatiquement au `_ready()` ; Échap la relâche
 
-La scène joueur contient : `CharacterBody3D` > `Collider` (capsule) + `PatrickMesh` (instance de `patrick_3d.glb`) + `Head` > `Camera3D` + `InteractRay`.
+Paramètres exportés clés : `can_move`, `can_jump`, `can_sprint`, `can_freefly`, `underwater`, vitesses.
 
-### Système d'interaction (touche E)
+> `addons/proto_controller/` existe encore dans le dépôt mais n'est **plus utilisé** par `patrick.gd`.
 
-Pattern utilisé par `key_pickup.gd` et `chest_interactive.gd` :
-1. `Area3D.body_entered` → connecte `patrick.interact_pressed` à `_on_interact()`
-2. `Area3D.body_exited` → déconnecte le signal
-3. `_on_interact()` → vérifie `Global.has_key`, agit, appelle `get_tree().current_scene.victory()` si besoin
+### Crabe (`scenes/crab.tscn` + `scripts/crab.gd`)
+
+- `CharacterBody3D` construit entièrement en CSG (corps, pinces, yeux, pattes)
+- Patrouille entre deux points selon `patrol_axis` et `patrol_distance` (exportés)
+- Signal `_on_attack_area_body_entered` : si le corps entrant a `die()`, il l'appelle
+- Désynchronisation aléatoire au démarrage (`randf() * 0.5` secondes)
+
+### Clé (`scenes/key_pickup.tscn` + `scripts/key_pickup.gd`)
+
+- `Area3D` avec visuel CSG (anneau + tige + dents + lumière) et `AnimationPlayer`
+- Pattern d'interaction :
+  1. `body_entered` → connecte `patrick.interact_pressed` à `_on_interact()`
+  2. `body_exited` → déconnecte le signal, remet le sous-titre
+  3. `_on_interact()` → `Global.has_key = true`, animation de disparition (tween montée + scale 0)
 
 ### HUD (`ui/hud.tscn` + `scripts/hud.gd`)
 
 Trois méthodes publiques :
-- `show_message(text, duration)` — message temporaire (haut écran)
-- `set_subtitle(text)` — instruction permanente (bas écran)
-- Mise à jour automatique de l'icône clé via `Global.has_key` à chaque frame
 
-Chaque scène récupère le HUD avec `$HUD` et appelle ces méthodes directement.
+- `show_message(text, duration)` — message temporaire en haut de l'écran
+- `set_subtitle(text)` — instruction permanente en bas de l'écran
+- Mise à jour automatique de l'icône clé (🔑 ✅ / ❌) via `Global.has_key` à chaque frame
+
+Les scènes récupèrent le HUD avec `$HUD`.
 
 ### Layers de collision
 
@@ -90,6 +119,8 @@ Chaque scène récupère le HUD avec `$HUD` et appelle ces méthodes directement
 ### Assets
 
 - `patrick_3d.glb` + `patrick_3d_Patrick_texture.png` — modèle joueur (racine du projet)
-- `assets/dungeon_assets/` — props de la scène 3 (bar) et 4 (trésor)
-- `assets/skeleton/`, `assets/zombie/` — assets non encore utilisés dans les scènes
-- `addons/proto_controller/` — contrôleur FPS de base (ne pas modifier, source upstream CC0)
+- `assets/dungeon_assets/` — pièces de bâtiment (murs, sols, piliers) + props (coffre, clés, tonneaux, chandelles…) pour futures scènes
+- `assets/skeleton/skeleton_mage.glb` — squelette mage (non utilisé)
+- `assets/zombie/zombie.glb` + `zombie_idle.glb`, `zombie_run.glb`, `zombie_jump.glb` — zombie avec animations séparées (non utilisé)
+- `assets/import_examples/` — exemples barrel et chest_gold avec matériaux
+- `addons/proto_controller/` — contrôleur FPS de référence CC0 (ne plus modifier, plus utilisé en jeu)
