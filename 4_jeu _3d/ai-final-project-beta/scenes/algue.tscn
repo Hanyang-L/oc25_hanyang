@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://dalgue00001"]
+
+[ext_resource type="Script" uid="uid://dalgue00002" path="res://scripts/algue.gd" id="1_algue"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Stem"]
+albedo_color = Color(0.1, 0.72, 0.2, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_Top"]
+albedo_color = Color(0.12, 0.55, 0.08, 1)
+
+[sub_resource type="Animation" id="Anim_Sway"]
+length = 2.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:z")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.25, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.14, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimLib_Sway"]
+_data = {
+"sway": SubResource("Anim_Sway")
+}
+
+[node name="Algue" type="Node3D"]
+script = ExtResource("1_algue")
+
+[node name="Stalk" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+radius = 0.07
+height = 1.5
+material = SubResource("Mat_Stem")
+
+[node name="Top" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
+radius = 0.2
+material = SubResource("Mat_Top")
+
+[node name="AnimPlayer" type="AnimationPlayer" parent="."]
+autoplay = "sway"
+libraries = {
+"": SubResource("AnimLib_Sway")
+}

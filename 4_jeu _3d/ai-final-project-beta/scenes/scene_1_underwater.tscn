@@ -4,6 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://bhudpatrick01" path="res://ui/hud.tscn" id="2_hud"]
 [ext_resource type="Script" uid="uid://db1r6aoc6f3o7" path="res://scripts/scene_1.gd" id="3_script"]
 [ext_resource type="Texture2D" uid="uid://b4haqph50vcjw" path="res://assets/sky_background/autumn_field_puresky_4k.hdr" id="4_hdr"]
+[ext_resource type="PackedScene" uid="uid://dgoyhqmxxy4e4" path="res://scenes/barrel.tscn" id="5_6uhad"]
+[ext_resource type="PackedScene" uid="uid://bylherkifio65" path="res://scenes/crab.tscn" id="5_crab"]
+[ext_resource type="Script" uid="uid://wnej6oc4k3rv" path="res://scripts/ocean_populator.gd" id="6_populator"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_pb48c"]
 panorama = ExtResource("4_hdr")
@@ -19,6 +22,35 @@ sky_rotation = Vector3(0, 1.1327187, 0)
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="StandardMaterial3D" id="Mat_Rock"]
+albedo_color = Color(0.5, 0.45, 0.4, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_Coral"]
+albedo_color = Color(1, 0.3, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Metal"]
+albedo_color = Color(0.3, 0.3, 0.3, 1)
+metallic = 0.6
+roughness = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6uhad"]
+albedo_color = Color(0.3019608, 0.3019608, 0.3019608, 1)
+metallic = 0.6
+roughness = 0.45
+
+[sub_resource type="StandardMaterial3D" id="Mat_OldWood"]
+albedo_color = Color(0.3, 0.22, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_CoralPurple"]
+albedo_color = Color(0.65, 0.05, 0.82, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_CoralTeal"]
+albedo_color = Color(0, 0.75, 0.65, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_CoralYellow"]
+albedo_color = Color(0.95, 0.72, 0.08, 1)
+
 [sub_resource type="StandardMaterial3D" id="Mat_Sand"]
 albedo_color = Color(0.76, 0.7, 0.5, 1)
 
@@ -32,13 +64,6 @@ albedo_color = Color(0.05, 0.3, 0.7, 0.35)
 
 [sub_resource type="BoxMesh" id="BoxMesh_Water"]
 size = Vector3(400, 6, 400)
-
-[sub_resource type="StandardMaterial3D" id="Mat_Rock"]
-albedo_color = Color(0.5, 0.45, 0.4, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="Mat_Coral"]
-albedo_color = Color(1, 0.3, 0.2, 1)
 
 [sub_resource type="ParticleProcessMaterial" id="PPM_Bubbles"]
 lifetime_randomness = 0.15
@@ -72,6 +97,141 @@ size = Vector3(20, 1.5, 4)
 [sub_resource type="BoxShape3D" id="BoxShape_NextScene"]
 size = Vector3(22, 3, 2)
 
+[sub_resource type="StandardMaterial3D" id="Mat_Seaweed"]
+albedo_color = Color(0.1, 0.72, 0.2, 1)
+roughness = 0.8
+
+[sub_resource type="Animation" id="Anim_Algue1"]
+length = 2.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:z")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2, 2.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.12, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimLib_Algue1"]
+_data = {
+&"sway": SubResource("Anim_Algue1")
+}
+
+[sub_resource type="StandardMaterial3D" id="Mat_Algue"]
+transparency = 1
+albedo_color = Color(0.05, 0.5, 0.15, 0.88)
+roughness = 0.7
+
+[sub_resource type="Animation" id="Anim_Algue2"]
+length = 2.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:z")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.05, 2.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, -0.1, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimLib_Algue2"]
+_data = {
+&"sway": SubResource("Anim_Algue2")
+}
+
+[sub_resource type="Animation" id="Anim_Algue3"]
+length = 2.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:z")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.4, 2.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.15, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimLib_Algue3"]
+_data = {
+&"sway": SubResource("Anim_Algue3")
+}
+
+[sub_resource type="Animation" id="Anim_Algue4"]
+length = 3.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:x")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.18, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimLib_Algue4"]
+_data = {
+&"sway": SubResource("Anim_Algue4")
+}
+
+[sub_resource type="Animation" id="Anim_Algue5"]
+length = 1.9
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:z")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.95, 1.9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, -0.08, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimLib_Algue5"]
+_data = {
+&"sway": SubResource("Anim_Algue5")
+}
+
+[sub_resource type="Animation" id="Anim_Algue6"]
+length = 2.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:x")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.3, 2.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.13, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimLib_Algue6"]
+_data = {
+&"sway": SubResource("Anim_Algue6")
+}
+
 [node name="Scene1Underwater" type="Node3D" unique_id=1831204530]
 script = ExtResource("3_script")
 
@@ -87,6 +247,345 @@ transform = Transform3D(-0.94469726, 0, -0.32794356, 0, 1, 0, 0.32794356, 0, -0.
 transform = Transform3D(1, 0, 0, 0, 0.7071, -0.7071, 0, 0.7071, 0.7071, 0, 0, 0)
 light_color = Color(0.3, 0.6, 1, 1)
 light_energy = 0.6
+
+[node name="OceanObjects" type="Node3D" parent="." unique_id=828395637]
+
+[node name="Barrel" parent="OceanObjects" unique_id=653704603 instance=ExtResource("5_6uhad")]
+transform = Transform3D(0.7698634, -0.46979564, -0.43197492, 0.31985325, 0.86973405, -0.37584102, 0.5522718, 0.15117769, 0.81984216, 4.975839, -3.522482, -7.336863)
+
+[node name="Rock1" type="CSGSphere3D" parent="OceanObjects" unique_id=540284450]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -3, -5)
+use_collision = true
+radius = 1.2
+material = SubResource("Mat_Rock")
+
+[node name="Rock2" type="CSGSphere3D" parent="OceanObjects" unique_id=146385391]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -3, -3)
+use_collision = true
+radius = 0.8
+material = SubResource("Mat_Rock")
+
+[node name="Rock3" type="CSGBox3D" parent="OceanObjects" unique_id=1644942076]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -3, 0)
+use_collision = true
+size = Vector3(3, 0.5, 2)
+material = SubResource("Mat_Rock")
+
+[node name="Coral" type="CSGCombiner3D" parent="OceanObjects" unique_id=1581026562]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -2.3868604, -4)
+use_collision = true
+
+[node name="CoralBase" type="CSGCylinder3D" parent="OceanObjects/Coral" unique_id=2022235840]
+radius = 0.2
+height = 0.6
+material = SubResource("Mat_Coral")
+
+[node name="CoralTop" type="CSGSphere3D" parent="OceanObjects/Coral" unique_id=2058986791]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+radius = 0.35
+material = SubResource("Mat_Coral")
+
+[node name="Ancre" type="CSGCombiner3D" parent="OceanObjects" unique_id=670511327]
+transform = Transform3D(0.7675836, -0.20002425, -0.60893816, -0.075341694, 0.91531324, -0.39563274, 0.63650537, 0.34955963, 0.68750936, -5.2224207, -2.9869964, -11)
+use_collision = true
+
+[node name="Tige" type="CSGCylinder3D" parent="OceanObjects/Ancre" unique_id=1692482440]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52011704, 0)
+radius = 0.07
+height = 1.3597656
+material = SubResource("Mat_Metal")
+
+[node name="Traverse" type="CSGBox3D" parent="OceanObjects/Ancre" unique_id=690031174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+size = Vector3(0.8, 0.1, 0.1)
+material = SubResource("Mat_Metal")
+
+[node name="TipD" type="CSGSphere3D" parent="OceanObjects/Ancre" unique_id=1779418894]
+transform = Transform3D(1, 0, 0, 0, 1, -1.4901161e-08, 0, 1.4901161e-08, 1, -0.6933403, 0.5238333, -4.7683716e-07)
+radius = 0.14
+material = SubResource("Mat_Metal")
+
+[node name="TipG" type="CSGSphere3D" parent="OceanObjects/Ancre" unique_id=1066362024]
+transform = Transform3D(1, 0, 0, 0, 1, -1.4901161e-08, 0, 1.4901161e-08, 1, 0.74563694, 0.41773844, 0)
+radius = 0.14
+material = SubResource("Mat_Metal")
+
+[node name="Bras" type="CSGCombiner3D" parent="OceanObjects/Ancre" unique_id=1675202247]
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="OceanObjects/Ancre/Bras" unique_id=1733765289]
+transform = Transform3D(1, 0, 0, 0, -5.9604645e-08, 1, 0, -1, -5.9604645e-08, 0, 0.5878067, 0)
+inner_radius = 0.647
+outer_radius = 0.824
+sides = 16
+ring_sides = 3
+material = SubResource("StandardMaterial3D_6uhad")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="OceanObjects/Ancre/Bras" unique_id=1197680038]
+transform = Transform3D(1.8610932, -0.73233557, 0.0040949592, 0.73127127, 1.8577245, -0.118751094, 0.03967917, 0.1120007, 1.9964672, -0.24938393, -1.5158715, 0.4621277)
+operation = 2
+polygon = PackedVector2Array(0.57396317, 1.2115073, -3.1928034, -0.45539027, 1.0924091, 2.7067645, 2.0230932, -2.0177717)
+
+[node name="MatBrise" type="CSGCylinder3D" parent="OceanObjects" unique_id=885859625]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 8, -2.85, -12)
+use_collision = true
+radius = 0.15
+height = 4.0
+material = SubResource("Mat_OldWood")
+
+[node name="Boulet1" type="CSGSphere3D" parent="OceanObjects" unique_id=23594261]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -2.85, -9)
+use_collision = true
+radius = 0.15
+material = SubResource("Mat_Metal")
+
+[node name="Boulet2" type="CSGSphere3D" parent="OceanObjects" unique_id=572648754]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, -2.85, -10.3)
+use_collision = true
+radius = 0.15
+material = SubResource("Mat_Metal")
+
+[node name="Boulet3" type="CSGSphere3D" parent="OceanObjects" unique_id=998524671]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, -2.85, -10.8)
+use_collision = true
+radius = 0.15
+material = SubResource("Mat_Metal")
+
+[node name="Planche1" type="CSGBox3D" parent="OceanObjects" unique_id=1135045271]
+transform = Transform3D(0.866, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866, 3, -2.97, -15)
+size = Vector3(0.15, 0.06, 1.3)
+material = SubResource("Mat_OldWood")
+
+[node name="Planche2" type="CSGBox3D" parent="OceanObjects" unique_id=1366909116]
+transform = Transform3D(-0.866, 0, -0.5, 0, 1, 0, 0.5, 0, -0.866, 3.4, -2.97, -16.5)
+size = Vector3(0.15, 0.06, 1.1)
+material = SubResource("Mat_OldWood")
+
+[node name="Planche3" type="CSGBox3D" parent="OceanObjects" unique_id=437452424]
+transform = Transform3D(0.5, 0, -0.866, 0, 1, 0, 0.866, 0, 0.5, 2.3, -2.97, -17.5)
+size = Vector3(0.15, 0.06, 1.5)
+material = SubResource("Mat_OldWood")
+
+[node name="RocksExtra" type="Node3D" parent="OceanObjects" unique_id=-1294967295]
+
+[node name="RockA" type="CSGSphere3D" parent="OceanObjects/RocksExtra" unique_id=-1294967294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, -2.4, -8)
+use_collision = true
+radius = 0.6
+material = SubResource("Mat_Rock")
+
+[node name="RockB" type="CSGSphere3D" parent="OceanObjects/RocksExtra" unique_id=-1294967293]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -2.6, -6)
+use_collision = true
+radius = 0.4
+material = SubResource("Mat_Rock")
+
+[node name="RockC" type="CSGSphere3D" parent="OceanObjects/RocksExtra" unique_id=-1294967292]
+transform = Transform3D(1.3, 0, 0, 0, 0.8, 0, 0, 0, 1.3, -13, -2.2, -16)
+use_collision = true
+radius = 1.0
+material = SubResource("Mat_Rock")
+
+[node name="RockD" type="CSGBox3D" parent="OceanObjects/RocksExtra" unique_id=-1294967291]
+transform = Transform3D(0.95, 0, 0.3, 0, 1, 0, -0.3, 0, 0.95, 8, -2.75, -22)
+use_collision = true
+size = Vector3(2, 0.5, 1.5)
+material = SubResource("Mat_Rock")
+
+[node name="RockE" type="CSGSphere3D" parent="OceanObjects/RocksExtra" unique_id=-1294967290]
+transform = Transform3D(1.2, 0, 0, 0, 0.7, 0, 0, 0, 1.2, -16, -2.45, -28)
+use_collision = true
+radius = 0.9
+material = SubResource("Mat_Rock")
+
+[node name="RockF" type="CSGSphere3D" parent="OceanObjects/RocksExtra" unique_id=-1294967289]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, -2.2, -35)
+use_collision = true
+radius = 0.8
+material = SubResource("Mat_Rock")
+
+[node name="RockG" type="CSGSphere3D" parent="OceanObjects/RocksExtra" unique_id=-1294967288]
+transform = Transform3D(0.8, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, -2.3, -55)
+use_collision = true
+radius = 0.7
+material = SubResource("Mat_Rock")
+
+[node name="RockH" type="CSGSphere3D" parent="OceanObjects/RocksExtra" unique_id=-1294967287]
+transform = Transform3D(1.1, 0, 0, 0, 0.6, 0, 0, 0, 1.1, -10, -2.7, -60)
+use_collision = true
+radius = 0.85
+material = SubResource("Mat_Rock")
+
+[node name="RockLentille" type="CSGCombiner3D" parent="OceanObjects/RocksExtra" unique_id=-1294967286]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -3.4, -18)
+use_collision = true
+
+[node name="Base" type="CSGSphere3D" parent="OceanObjects/RocksExtra/RockLentille" unique_id=-1294967285]
+radius = 1.2
+material = SubResource("Mat_Rock")
+
+[node name="Cut" type="CSGSphere3D" parent="OceanObjects/RocksExtra/RockLentille" unique_id=-1294967284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+operation = 1
+radius = 1.2
+material = SubResource("Mat_Rock")
+
+[node name="RockArche" type="CSGCombiner3D" parent="OceanObjects/RocksExtra" unique_id=-1294967283]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -1.5, -40)
+use_collision = true
+
+[node name="Corps" type="CSGBox3D" parent="OceanObjects/RocksExtra/RockArche" unique_id=-1294967282]
+size = Vector3(4, 3, 1.5)
+material = SubResource("Mat_Rock")
+
+[node name="Tunnel" type="CSGCylinder3D" parent="OceanObjects/RocksExtra/RockArche" unique_id=-1294967281]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, -0.8, 0)
+operation = 2
+radius = 1.0
+height = 2.5
+material = SubResource("Mat_Rock")
+
+[node name="RockCreux" type="CSGCombiner3D" parent="OceanObjects/RocksExtra" unique_id=-1294967280]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -2.1, -12)
+use_collision = true
+
+[node name="Corps" type="CSGSphere3D" parent="OceanObjects/RocksExtra/RockCreux" unique_id=-1294967279]
+radius = 1.1
+material = SubResource("Mat_Rock")
+
+[node name="Cavite" type="CSGSphere3D" parent="OceanObjects/RocksExtra/RockCreux" unique_id=-1294967278]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+operation = 2
+radius = 0.75
+material = SubResource("Mat_Rock")
+
+[node name="CorauxExtra" type="Node3D" parent="OceanObjects" unique_id=-1294967277]
+
+[node name="CoralBuisson" type="CSGCombiner3D" parent="OceanObjects/CorauxExtra" unique_id=-1294967276]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, -3, -20)
+use_collision = true
+
+[node name="Base" type="CSGCylinder3D" parent="OceanObjects/CorauxExtra/CoralBuisson" unique_id=-1294967275]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+radius = 0.15
+height = 0.8
+material = SubResource("Mat_CoralPurple")
+
+[node name="Boule1" type="CSGSphere3D" parent="OceanObjects/CorauxExtra/CoralBuisson" unique_id=-1294967274]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+radius = 0.3
+material = SubResource("Mat_CoralPurple")
+
+[node name="Boule2" type="CSGSphere3D" parent="OceanObjects/CorauxExtra/CoralBuisson" unique_id=-1294967273]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 0.72, 0)
+radius = 0.2
+material = SubResource("Mat_CoralPurple")
+
+[node name="Boule3" type="CSGSphere3D" parent="OceanObjects/CorauxExtra/CoralBuisson" unique_id=-1294967272]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 0.7, 0.1)
+radius = 0.18
+material = SubResource("Mat_CoralPurple")
+
+[node name="CoralTube" type="CSGCombiner3D" parent="OceanObjects/CorauxExtra" unique_id=-1294967271]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, -3, -15)
+use_collision = true
+
+[node name="Ext" type="CSGCylinder3D" parent="OceanObjects/CorauxExtra/CoralTube" unique_id=-1294967270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+radius = 0.28
+height = 1.3
+material = SubResource("Mat_CoralTeal")
+
+[node name="Int" type="CSGCylinder3D" parent="OceanObjects/CorauxExtra/CoralTube" unique_id=-1294967269]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+operation = 2
+radius = 0.18
+height = 1.6
+material = SubResource("Mat_CoralTeal")
+
+[node name="CoralFan" type="CSGCombiner3D" parent="OceanObjects/CorauxExtra" unique_id=-1294967268]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -3, -28)
+use_collision = true
+
+[node name="Disque" type="CSGCylinder3D" parent="OceanObjects/CorauxExtra/CoralFan" unique_id=-1294967267]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+radius = 0.65
+height = 1.0
+material = SubResource("Mat_CoralYellow")
+
+[node name="Coupe" type="CSGBox3D" parent="OceanObjects/CorauxExtra/CoralFan" unique_id=-1294967266]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+operation = 1
+size = Vector3(0.12, 1.5, 1.5)
+material = SubResource("Mat_CoralYellow")
+
+[node name="CoralBranche" type="CSGCombiner3D" parent="OceanObjects/CorauxExtra" unique_id=-1294967265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, -3, -38)
+use_collision = true
+
+[node name="Tronc" type="CSGCylinder3D" parent="OceanObjects/CorauxExtra/CoralBranche" unique_id=-1294967264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+radius = 0.12
+height = 1.0
+material = SubResource("Mat_CoralPurple")
+
+[node name="Branche1" type="CSGCylinder3D" parent="OceanObjects/CorauxExtra/CoralBranche" unique_id=-1294967263]
+transform = Transform3D(0.866, 0.5, 0, -0.5, 0.866, 0, 0, 0, 1, 0.2, 0.95, 0)
+radius = 0.07
+height = 0.65
+material = SubResource("Mat_CoralPurple")
+
+[node name="Branche2" type="CSGCylinder3D" parent="OceanObjects/CorauxExtra/CoralBranche" unique_id=-1294967262]
+transform = Transform3D(0.866, -0.5, 0, 0.5, 0.866, 0, 0, 0, 1, -0.2, 0.95, 0)
+radius = 0.07
+height = 0.65
+material = SubResource("Mat_CoralPurple")
+
+[node name="CoralDome" type="CSGCombiner3D" parent="OceanObjects/CorauxExtra" unique_id=-1294967261]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, -3, -45)
+use_collision = true
+
+[node name="Sphere" type="CSGSphere3D" parent="OceanObjects/CorauxExtra/CoralDome" unique_id=-1294967260]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+radius = 0.65
+material = SubResource("Mat_CoralTeal")
+
+[node name="Coupe" type="CSGBox3D" parent="OceanObjects/CorauxExtra/CoralDome" unique_id=-1294967259]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+operation = 1
+size = Vector3(2, 0.7, 2)
+material = SubResource("Mat_CoralTeal")
+
+[node name="CoralMosaic" type="CSGCombiner3D" parent="OceanObjects/CorauxExtra" unique_id=-1294967258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -3, -50)
+use_collision = true
+
+[node name="Boule" type="CSGSphere3D" parent="OceanObjects/CorauxExtra/CoralMosaic" unique_id=-1294967257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+material = SubResource("Mat_Coral")
+
+[node name="Spike1" type="CSGCylinder3D" parent="OceanObjects/CorauxExtra/CoralMosaic" unique_id=-1294967256]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+radius = 0.06
+height = 0.55
+material = SubResource("Mat_Coral")
+
+[node name="Spike2" type="CSGCylinder3D" parent="OceanObjects/CorauxExtra/CoralMosaic" unique_id=-1294967255]
+transform = Transform3D(0.95, 0.3, 0, -0.3, 0.95, 0, 0, 0, 1, 0.18, 1, 0)
+radius = 0.06
+height = 0.55
+material = SubResource("Mat_Coral")
+
+[node name="Spike3" type="CSGCylinder3D" parent="OceanObjects/CorauxExtra/CoralMosaic" unique_id=-1294967254]
+transform = Transform3D(0.95, -0.3, 0, 0.3, 0.95, 0, 0, 0, 1, -0.18, 1, 0.08)
+radius = 0.06
+height = 0.55
+material = SubResource("Mat_Coral")
+
+[node name="Creux" type="CSGSphere3D" parent="OceanObjects/CorauxExtra/CoralMosaic" unique_id=-1294967253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+operation = 2
+radius = 0.3
+material = SubResource("Mat_Coral")
 
 [node name="Terrain" type="Node3D" parent="." unique_id=1243448678]
 
@@ -113,36 +612,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, -193.49686)
 material_override = SubResource("Mat_Water")
 mesh = SubResource("BoxMesh_Water")
 
-[node name="Rock1" type="CSGSphere3D" parent="Terrain" unique_id=540284450]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -3, -5)
-use_collision = true
-radius = 1.2
-material = SubResource("Mat_Rock")
+[node name="Crab" type="Node3D" parent="." unique_id=97439458]
 
-[node name="Rock2" type="CSGSphere3D" parent="Terrain" unique_id=146385391]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -3, -3)
-use_collision = true
-radius = 0.8
-material = SubResource("Mat_Rock")
-
-[node name="Rock3" type="CSGBox3D" parent="Terrain" unique_id=1644942076]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -3, 0)
-use_collision = true
-size = Vector3(3, 0.5, 2)
-material = SubResource("Mat_Rock")
-
-[node name="Coral" type="CSGCombiner3D" parent="Terrain" unique_id=1581026562]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -2.3868604, -4)
-
-[node name="CoralBase" type="CSGCylinder3D" parent="Terrain/Coral" unique_id=2022235840]
-radius = 0.2
-height = 0.6
-material = SubResource("Mat_Coral")
-
-[node name="CoralTop" type="CSGSphere3D" parent="Terrain/Coral" unique_id=2058986791]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-radius = 0.35
-material = SubResource("Mat_Coral")
+[node name="BeachCrab" parent="Crab" unique_id=611589438 instance=ExtResource("5_crab")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.049, 0.018, 18)
+patrol_distance = 7.0
+face_patrol_axis = false
 
 [node name="Bubbles" type="GPUParticles3D" parent="." unique_id=2016410161]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16.677898, -14.138068)
@@ -157,24 +632,134 @@ emitting = false
 amount = 180
 lifetime = 1.2
 one_shot = true
-explosiveness = 0.85
+explosiveness = 0.76
 process_material = SubResource("PPM_Splash")
 draw_pass_1 = SubResource("SphereMesh_Splash")
 
 [node name="WaterExitArea" type="Area3D" parent="." unique_id=1700748889]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
 collision_layer = 0
-collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WaterExitArea" unique_id=694555100]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65632486, 0.6349602)
 shape = SubResource("BoxShape_WaterExit")
 
 [node name="NextSceneArea" type="Area3D" parent="." unique_id=1800748889]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5136628, 1, 11.908253)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5136628, 1, 112.12129)
 collision_layer = 0
-collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=1800748890]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.1635098)
 shape = SubResource("BoxShape_NextScene")
+
+[node name="OceanPopulator" type="Node3D" parent="." unique_id=-1294967197]
+script = ExtResource("6_populator")
+
+[node name="AlguesVivantes" type="Node3D" parent="." unique_id=-1294967246]
+
+[node name="Algue1" type="Node3D" parent="AlguesVivantes" unique_id=-1294967245]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -3, -9)
+
+[node name="Stalk" type="CSGCylinder3D" parent="AlguesVivantes/Algue1" unique_id=-1294967244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+radius = 0.07
+height = 1.5
+material = SubResource("Mat_Seaweed")
+
+[node name="Top" type="CSGSphere3D" parent="AlguesVivantes/Algue1" unique_id=-1294967243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
+radius = 0.18
+material = SubResource("Mat_Seaweed")
+
+[node name="AnimPlayer" type="AnimationPlayer" parent="AlguesVivantes/Algue1" unique_id=-1294967242]
+libraries/ = SubResource("AnimLib_Algue1")
+autoplay = &"sway"
+
+[node name="Algue2" type="Node3D" parent="AlguesVivantes" unique_id=-1294967241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -3, -13)
+
+[node name="Stalk" type="CSGCylinder3D" parent="AlguesVivantes/Algue2" unique_id=-1294967240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+radius = 0.06
+height = 1.2
+material = SubResource("Mat_Algue")
+
+[node name="Top" type="CSGSphere3D" parent="AlguesVivantes/Algue2" unique_id=-1294967239]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+radius = 0.14
+material = SubResource("Mat_Algue")
+
+[node name="AnimPlayer" type="AnimationPlayer" parent="AlguesVivantes/Algue2" unique_id=-1294967238]
+libraries/ = SubResource("AnimLib_Algue2")
+autoplay = &"sway"
+
+[node name="Algue3" type="Node3D" parent="AlguesVivantes" unique_id=-1294967237]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, -3, -26)
+
+[node name="Stalk" type="CSGCylinder3D" parent="AlguesVivantes/Algue3" unique_id=-1294967236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+radius = 0.09
+material = SubResource("Mat_Seaweed")
+
+[node name="Top" type="CSGSphere3D" parent="AlguesVivantes/Algue3" unique_id=-1294967235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.12, 0)
+radius = 0.22
+material = SubResource("Mat_Seaweed")
+
+[node name="AnimPlayer" type="AnimationPlayer" parent="AlguesVivantes/Algue3" unique_id=-1294967234]
+libraries/ = SubResource("AnimLib_Algue3")
+autoplay = &"sway"
+
+[node name="Algue4" type="Node3D" parent="AlguesVivantes" unique_id=-1294967233]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -3, -33)
+
+[node name="Stalk" type="CSGCylinder3D" parent="AlguesVivantes/Algue4" unique_id=-1294967232]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+radius = 0.08
+height = 1.8
+material = SubResource("Mat_Algue")
+
+[node name="Top" type="CSGSphere3D" parent="AlguesVivantes/Algue4" unique_id=-1294967231]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.92, 0)
+radius = 0.2
+material = SubResource("Mat_Algue")
+
+[node name="AnimPlayer" type="AnimationPlayer" parent="AlguesVivantes/Algue4" unique_id=-1294967230]
+libraries/ = SubResource("AnimLib_Algue4")
+autoplay = &"sway"
+
+[node name="Algue5" type="Node3D" parent="AlguesVivantes" unique_id=-1294967229]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -3, -43)
+
+[node name="Stalk" type="CSGCylinder3D" parent="AlguesVivantes/Algue5" unique_id=-1294967228]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+radius = 0.065
+height = 1.4
+material = SubResource("Mat_Seaweed")
+
+[node name="Top" type="CSGSphere3D" parent="AlguesVivantes/Algue5" unique_id=-1294967227]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52, 0)
+radius = 0.16
+material = SubResource("Mat_Seaweed")
+
+[node name="AnimPlayer" type="AnimationPlayer" parent="AlguesVivantes/Algue5" unique_id=-1294967226]
+libraries/ = SubResource("AnimLib_Algue5")
+autoplay = &"sway"
+
+[node name="Algue6" type="Node3D" parent="AlguesVivantes" unique_id=-1294967225]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, -3, -18)
+
+[node name="Stalk" type="CSGCylinder3D" parent="AlguesVivantes/Algue6" unique_id=-1294967224]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+radius = 0.09
+height = 2.2
+material = SubResource("Mat_Algue")
+
+[node name="Top" type="CSGSphere3D" parent="AlguesVivantes/Algue6" unique_id=-1294967223]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.32, 0)
+radius = 0.24
+material = SubResource("Mat_Algue")
+
+[node name="AnimPlayer" type="AnimationPlayer" parent="AlguesVivantes/Algue6" unique_id=-1294967222]
+libraries/ = SubResource("AnimLib_Algue6")
+autoplay = &"sway"

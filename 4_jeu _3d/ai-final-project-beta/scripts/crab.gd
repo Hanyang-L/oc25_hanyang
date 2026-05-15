@@ -5,6 +5,7 @@ extends CharacterBody3D
 @export var patrol_distance: float = 6.0  ## Distance de patrouille (de chaque côté)
 @export var move_speed: float = 2.5
 @export var patrol_axis: Vector3 = Vector3(1, 0, 0)  ## Axe de patrouille (X par défaut)
+@export var face_patrol_axis: bool = true  ## Si false, garde l'orientation initiale (marche en crabe)
 
 var start_position: Vector3
 var target_position: Vector3
@@ -37,8 +38,8 @@ func _physics_process(delta: float) -> void:
 		var move_dir = to_target.normalized()
 		velocity.x = move_dir.x * move_speed
 		velocity.z = move_dir.z * move_speed
-		# Tourner le crabe vers sa direction
-		look_at(global_position + move_dir, Vector3.UP)
+		if face_patrol_axis:
+			look_at(global_position + move_dir, Vector3.UP)
 	
 	move_and_slide()
 

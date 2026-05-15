@@ -50,8 +50,13 @@ func _ready() -> void:
 	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
-	# Capturer la souris automatiquement au démarrage
 	capture_mouse()
+
+
+func _notification(what: int) -> void:
+	# Re-capture quand la fenêtre reprend le focus (ex: retour depuis le menu)
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN and mouse_captured:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _input(event: InputEvent) -> void:

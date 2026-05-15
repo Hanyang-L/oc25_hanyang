@@ -154,7 +154,7 @@ shape = SubResource("BoxShape_crab_body")
 
 [node name="AttackArea" type="Area3D" parent="." unique_id=816383190]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea" unique_id=324804335]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5275879, 0.05810547)

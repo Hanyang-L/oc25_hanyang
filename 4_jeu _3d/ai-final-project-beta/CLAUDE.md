@@ -21,7 +21,7 @@ Il n'y a pas de tests automatisés ni de linter configuré.
 Deux singletons sont déjà enregistrés dans `project.godot` :
 
 | Nom | Fichier |
-|---|---|
+| --- | --- |
 | `Global` | `res://scripts/Global.gd` |
 | `SceneTransition` | `res://scenes/transition.tscn` |
 
@@ -30,7 +30,7 @@ Sans ces autoloads, les appels à `Global.has_key`, `Global.change_scene()` et l
 ## Input Actions configurées (project.godot)
 
 | Action | Touche |
-|---|---|
+| --- | --- |
 | `ui_left/right/up/down` | Flèches (par défaut Godot) |
 | `ui_accept` | Espace (par défaut Godot) |
 | `interact` | E |
@@ -44,7 +44,7 @@ Sans ces autoloads, les appels à `Global.has_key`, `Global.change_scene()` et l
 
 Le projet contient actuellement **2 scènes jouables** précédées d'un menu principal :
 
-```
+```text
 main_menu  →  scene_1_underwater  →  scene_2_plage  →  (à créer : scene_3, scene_4…)
 ```
 
@@ -119,8 +119,8 @@ Les scènes récupèrent le HUD avec `$HUD`.
 ### Layers de collision
 
 | Layer | Usage |
-|---|---|
-| 2 | Patrick |
+| --- | --- |
+| 1 | Patrick (layer + mask) + sol/terrain (défaut Godot) |
 | 4 | Crabes + `InteractRay` mask |
 
 ### Assets
