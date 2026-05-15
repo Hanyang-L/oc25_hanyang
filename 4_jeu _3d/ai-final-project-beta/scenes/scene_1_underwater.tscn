@@ -104,7 +104,51 @@ script = ExtResource("3_script")
 environment = SubResource("Environment_6uhad")
 
 [node name="Patrick" parent="." unique_id=1903857522 instance=ExtResource("1_patrick")]
-transform = Transform3D(-0.94469726, 0, -0.32794356, 0, 1, 0, 0.32794356, 0, -0.94469726, 0, -2.3658712, -13.552637)
+transform = Transform3D(-0.9893868, 0, 0.14530589, 0, 1, 0, -0.14530589, 0, -0.9893868, 0, -2.3658712, -13.552637)
+
+[node name="Crab" type="Node3D" parent="." unique_id=97439458]
+
+[node name="Crab1" parent="Crab" unique_id=611589438 instance=ExtResource("5_crab")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.049, 0.018, 18)
+patrol_distance = 7.0
+face_patrol_axis = false
+
+[node name="Crab2" parent="Crab" unique_id=2100000001 instance=ExtResource("5_crab")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -16, 0.1, 8)
+face_patrol_axis = false
+
+[node name="Crab3" parent="Crab" unique_id=2100000002 instance=ExtResource("5_crab")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10, 0.1, 9)
+face_patrol_axis = false
+
+[node name="Crab4" parent="Crab" unique_id=2100000003 instance=ExtResource("5_crab")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -5, 0.1, 12)
+patrol_distance = 7.0
+face_patrol_axis = false
+
+[node name="Crab5" parent="Crab" unique_id=2100000004 instance=ExtResource("5_crab")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 18, 0.1, 11)
+patrol_distance = 5.0
+face_patrol_axis = false
+
+[node name="Crab6" parent="Crab" unique_id=2100000005 instance=ExtResource("5_crab")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -20, 0.1, 15)
+patrol_distance = 8.0
+face_patrol_axis = false
+
+[node name="Crab7" parent="Crab" unique_id=2100000006 instance=ExtResource("5_crab")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4, 0.1, 14)
+face_patrol_axis = false
+
+[node name="Crab8" parent="Crab" unique_id=2100000007 instance=ExtResource("5_crab")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -10, 0.1, 19)
+patrol_distance = 7.0
+face_patrol_axis = false
+
+[node name="Crab9" parent="Crab" unique_id=2100000008 instance=ExtResource("5_crab")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 14, 0.1, 20)
+patrol_distance = 5.0
+face_patrol_axis = false
 
 [node name="HUD" parent="." unique_id=1232840243 instance=ExtResource("2_hud")]
 
@@ -198,25 +242,26 @@ transform = Transform3D(0.5, 0, -0.866, 0, 1, 0, 0.866, 0, 0.5, 2.3, -2.97, -17.
 size = Vector3(0.15, 0.06, 1.5)
 material = SubResource("Mat_OldWood")
 
-[node name="Rocks" type="Node3D" parent="OceanObjects" unique_id=-1294967295]
-
-[node name="RockArche" type="CSGCombiner3D" parent="OceanObjects/Rocks" unique_id=-1294967283]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -1.5, -40)
+[node name="Arche" type="CSGCombiner3D" parent="OceanObjects" unique_id=-1294967283]
+transform = Transform3D(1.9318968, 0, 0.5174695, 0, 2, 0, -0.5174695, 0, 1.9318968, -4.2575855, -0.09219837, -24.272013)
 use_collision = true
 
-[node name="Corps" type="CSGBox3D" parent="OceanObjects/Rocks/RockArche" unique_id=-1294967282]
-size = Vector3(4, 3, 1.5)
+[node name="Corps" type="CSGBox3D" parent="OceanObjects/Arche" unique_id=-1294967282]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2861328, 0)
+size = Vector3(4, 2.4277344, 1.5)
 material = SubResource("Mat_Rock")
 
-[node name="Tunnel" type="CSGCylinder3D" parent="OceanObjects/Rocks/RockArche" unique_id=-1294967281]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, -0.8, 0)
+[node name="Tunnel" type="CSGCylinder3D" parent="OceanObjects/Arche" unique_id=-1294967281]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, -1.0601511, 0)
 operation = 2
 radius = 1.0
 height = 2.5
 material = SubResource("Mat_Rock")
 
+[node name="Rocks" type="Node3D" parent="OceanObjects" unique_id=-1294967295]
+
 [node name="RockCreux" type="CSGCombiner3D" parent="OceanObjects/Rocks" unique_id=-1294967280]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -2.1, -12)
+transform = Transform3D(0.21103476, -0.9774786, 0, 0.9774786, 0.21103476, 0, 0, 0, 1, 5.727888, -2.9022305, -12)
 use_collision = true
 
 [node name="Corps" type="CSGSphere3D" parent="OceanObjects/Rocks/RockCreux" unique_id=-1294967279]
@@ -324,15 +369,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -3, -28)
 use_collision = true
 
 [node name="Disque" type="CSGCylinder3D" parent="OceanObjects/Coral/CoralFan" unique_id=-1294967267]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(0.7248936, 0, 0.68886083, 0, 1, 0, -0.68886083, 0, 0.7248936, 0, 0.5, 0)
 radius = 0.65
 height = 1.0
 material = SubResource("Mat_CoralYellow")
 
 [node name="Coupe" type="CSGBox3D" parent="OceanObjects/Coral/CoralFan" unique_id=-1294967266]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.3010254)
 operation = 1
-size = Vector3(0.12, 1.5, 1.5)
+size = Vector3(0.12, 1.5, 0.8979492)
 material = SubResource("Mat_CoralYellow")
 
 [node name="CoralDome" type="CSGCombiner3D" parent="OceanObjects/Coral" unique_id=-1294967261]
@@ -398,15 +443,15 @@ size = Vector3(555.78253, 1, 422.42786)
 material = SubResource("Mat_Sand")
 
 [node name="Ramp" type="CSGBox3D" parent="Terrain" unique_id=1659101304]
-transform = Transform3D(1, 0, 0, 0, 0.9659, 0.2588, 0, -0.2588, 0.9659, -0.99609375, -2.4047337, -1.3766705)
+transform = Transform3D(1, 0, 0, 0, 0.9659, 0.2588, 0, -0.2588, 0.9659, -1.1157227, -2.4047337, -1.3766705)
 use_collision = true
-size = Vector3(21.992188, 1, 15.00824)
+size = Vector3(500, 1, 15.008)
 material = SubResource("Mat_Sand")
 
 [node name="Beach" type="CSGBox3D" parent="Terrain" unique_id=594626698]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0487766, -0.48195934, 14.67754)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.01122, -0.48195934, 319.83057)
 use_collision = true
-size = Vector3(22.064697, 1, 18)
+size = Vector3(697.3544, 1, 628.306)
 material = SubResource("Mat_Beach")
 
 [node name="WaterVolume" type="MeshInstance3D" parent="Terrain" unique_id=1382065174]
@@ -414,12 +459,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, -193.49686)
 material_override = SubResource("Mat_Water")
 mesh = SubResource("BoxMesh_Water")
 
-[node name="Crab" type="Node3D" parent="." unique_id=97439458]
+[node name="Limit" type="Node3D" parent="Terrain" unique_id=584785115]
 
-[node name="BeachCrab" parent="Crab" unique_id=611589438 instance=ExtResource("5_crab")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.049, 0.018, 18)
-patrol_distance = 7.0
-face_patrol_axis = false
+[node name="CSGBox3D2" type="CSGBox3D" parent="Terrain/Limit" unique_id=1707329563]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.365303, -7.7287407, -127.52939)
+layers = 0
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+size = Vector3(1, 100, 302.93158)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Terrain/Limit" unique_id=1628338629]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.5315857, -7.7287407, -57.456085)
+layers = 0
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+size = Vector3(1, 100, 54.027634)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Terrain/Limit" unique_id=953092167]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.937859, -7.7287407, -127.52939)
+layers = 0
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+size = Vector3(1, 100, 302.93158)
 
 [node name="Bubbles" type="GPUParticles3D" parent="." unique_id=2016410161]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16.677898, -14.138068)

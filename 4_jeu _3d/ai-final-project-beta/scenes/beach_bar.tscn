@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dp7nk3mx2bq5f"]
+
+[ext_resource type="Script" path="res://scripts/beach_bar.gd" id="1_beachbar"]
+
+[node name="BeachBar" type="Node3D"]
+script = ExtResource("1_beachbar")
