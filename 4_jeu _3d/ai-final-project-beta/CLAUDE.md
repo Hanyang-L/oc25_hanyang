@@ -10,8 +10,8 @@ Godot 4.6 — "AI final project BETA" — jeu 3D FPS en GDScript avec Patrick (S
 
 Ce projet s'ouvre et se lance depuis l'éditeur **Godot 4.6**. Il n'y a pas de CLI de build — tout passe par l'éditeur.
 
-- Scène principale de test : `scenes/scene_1_underwater.tscn`
-- Pour lancer : F5 dans Godot (ou bouton Play)
+- Scène principale (point d'entrée) : `scenes/main_menu.tscn`
+- Pour lancer : F5 dans Godot (ou bouton Play) → démarre sur le menu principal
 - Pour lancer une scène spécifique : F6
 
 Il n'y a pas de tests automatisés ni de linter configuré.
@@ -42,12 +42,13 @@ Sans ces autoloads, les appels à `Global.has_key`, `Global.change_scene()` et l
 
 ### État actuel des scènes
 
-Le projet contient actuellement **2 scènes jouables** :
+Le projet contient actuellement **2 scènes jouables** précédées d'un menu principal :
 
 ```
-scene_1_underwater  →  scene_2_plage  →  (à créer : scene_3, scene_4…)
+main_menu  →  scene_1_underwater  →  scene_2_plage  →  (à créer : scene_3, scene_4…)
 ```
 
+- `scenes/main_menu.tscn` — menu principal (bouton START). Scène de démarrage du jeu. Pilotée par `scripts/main_menu.gd`.
 - `scenes/scene_1_underwater.tscn` — scène complète avec terrain CSG, crabes, clé, HUD, particules, transitions eau/plage. Pilotée par `scripts/scene_1.gd`.
 - `scenes/scene_2_plage.tscn` — scène très basique (un seul CSGBox3D), pas encore de gameplay.
 - `scenes/plage.tscn` — doublon/brouillon de scene_2, ignoré en jeu.
@@ -55,6 +56,12 @@ scene_1_underwater  →  scene_2_plage  →  (à créer : scene_3, scene_4…)
 - `scenes/crab.tscn` — scène instanciable du crabe (CSG, pas de GLB).
 - `scenes/key_pickup.tscn` — pickup de clé (CSG + AnimationPlayer).
 - `scenes/patrick_player.tscn` — le joueur.
+
+### Menu principal (`scenes/main_menu.tscn` + `scripts/main_menu.gd`)
+
+- `Control` plein écran avec un `TextureRect` (fond) et un `Button` "START" centré
+- Au `_ready()` : libère la souris (`MOUSE_MODE_VISIBLE`)
+- Bouton START → `Global.change_scene("res://scenes/scene_1_underwater.tscn")`
 
 ### Progression automatique de scènes (`scene_1.gd`)
 
@@ -80,7 +87,7 @@ Unique source de vérité partagée entre scènes :
 - Méthode `die()` — appelée par les crabes, recharge la scène via `Global.reload_current_scene()`
 - La souris est capturée automatiquement au `_ready()` ; Échap la relâche
 
-Paramètres exportés clés : `can_move`, `can_jump`, `can_sprint`, `can_freefly`, `underwater`, vitesses.
+Paramètres exportés clés : `can_move`, `has_gravity`, `can_jump`, `can_sprint`, `can_freefly`, `underwater`, vitesses.
 
 > `addons/proto_controller/` existe encore dans le dépôt mais n'est **plus utilisé** par `patrick.gd`.
 

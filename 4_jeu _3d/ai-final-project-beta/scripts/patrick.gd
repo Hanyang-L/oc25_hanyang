@@ -54,15 +54,17 @@ func _ready() -> void:
 	capture_mouse()
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
+	if mouse_captured and event is InputEventMouseMotion:
+		rotate_look(event.relative)
+
+
+func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		capture_mouse()
 	if Input.is_key_pressed(KEY_ESCAPE):
 		release_mouse()
-	
-	if mouse_captured and event is InputEventMouseMotion:
-		rotate_look(event.relative)
-	
+
 	if can_freefly and Input.is_action_just_pressed(input_freefly):
 		if not freeflying:
 			enable_freefly()

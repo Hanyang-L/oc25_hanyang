@@ -10,6 +10,7 @@ height = 1.4900391
 [node name="Patrick" type="CharacterBody3D" unique_id=851546506]
 script = ExtResource("1_patrick")
 can_sprint = true
+collision_layer = 2
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=1376266756]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.74501956, 0.03903991)
