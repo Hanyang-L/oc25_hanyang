@@ -42,15 +42,16 @@ Sans ces autoloads, les appels à `Global.has_key`, `Global.change_scene()` et l
 
 ### État actuel des scènes
 
-Le projet contient actuellement **2 scènes jouables** précédées d'un menu principal, plus une scène de bar instanciable :
+Le projet contient actuellement **3 scènes jouables** précédées d'un menu principal, plus une scène de bar instanciable :
 
 ```text
-main_menu  →  scene_1_underwater  →  scene_2_plage  →  (à créer : scene_3, scene_4…)
+main_menu  →  scene_1_underwater  →  scene_2_plage  →  scene_3_gpu  →  (à créer : scene_4…)
 ```
 
 - `scenes/main_menu.tscn` — menu principal (bouton START). Scène de démarrage du jeu. Pilotée par `scripts/main_menu.gd`.
 - `scenes/scene_1_underwater.tscn` — scène sous-marine complète avec terrain CSG, crabes, clé, HUD, particules, décor procédural, transitions eau/plage. Pilotée par `scripts/scene_1.gd`.
-- `scenes/scene_2_plage.tscn` — scène très basique (un seul CSGBox3D), pas encore de gameplay.
+- `scenes/scene_2_plage.tscn` — scène très basique (un seul CSGBox3D sol 100×100, Patrick posé dessus). Aucun script, aucun HUD, aucun gameplay — juste un passage.
+- `scenes/scene_3_gpu.tscn` — scène thématique GPU géant (PCB 160×2×100) dans un environnement sombre façon espace. Pilotée par `scripts/scene_3.gd`. Voir section dédiée ci-dessous.
 - `scenes/beach_bar.tscn` — scène de bar intérieur complète avec assets dungeon_assets texturés et collision complète (voir section dédiée ci-dessous).
 - `scenes/plage.tscn` — doublon/brouillon de scene_2, ignoré en jeu.
 - `scenes/transition.tscn` — overlay de fondu noir (autoload `SceneTransition`).
@@ -59,6 +60,8 @@ main_menu  →  scene_1_underwater  →  scene_2_plage  →  (à créer : scene_
 - `scenes/key_pickup.tscn` — pickup de clé (CSG + AnimationPlayer).
 - `scenes/barrel.tscn` — baril décoratif (StaticBody3D + ConcavePolygonShape3D, GLB).
 - `scenes/patrick_player.tscn` — le joueur.
+- `scenes/skeleton_mage.tscn` — instance du GLB skeleton_mage avec pose de bones adjustée (non utilisé en jeu).
+- `scenes/zombie.tscn` — instance du GLB zombie avec animations retravaillées ("move", etc.) (non utilisé en jeu).
 
 ### Menu principal (`scenes/main_menu.tscn` + `scripts/main_menu.gd`)
 
@@ -66,9 +69,14 @@ main_menu  →  scene_1_underwater  →  scene_2_plage  →  (à créer : scene_
 - Au `_ready()` : libère la souris (`MOUSE_MODE_VISIBLE`)
 - Bouton START → `Global.change_scene("res://scenes/scene_1_underwater.tscn")`
 
-### Progression automatique de scènes (`scene_1.gd`)
+### Progression automatique de scènes (`scene_1.gd` et `scene_3.gd`)
 
-`scene_1.gd` détecte automatiquement la prochaine scène par numéro : il lit le dossier `res://scenes/`, cherche le fichier `scene_N+1_*.tscn`, et appelle `Global.change_scene()`. Il suffit d'ajouter un fichier `scene_2_*.tscn`, `scene_3_*.tscn`, etc. pour étendre le jeu.
+`scene_1.gd` et `scene_3.gd` partagent le même pattern : au déclenchement de `NextSceneArea`, ils lisent le dossier `res://scenes/`, cherchent le fichier `scene_N+1_*.tscn`, et appellent `Global.change_scene()`. Il suffit d'ajouter un fichier `scene_4_*.tscn` etc. pour étendre le jeu.
+
+Différences entre les deux :
+
+- `scene_1.gd` est plus riche : gère le mode sous-marin de Patrick, les transitions de fog/lumière, les particules bulles/splash, et passe `Engine.time_scale = 0.5` lors du passage à la scène suivante.
+- `scene_3.gd` est minimal : enregistre le `current_scene_path`, remet `Engine.time_scale = 1.0` au `_ready()`, et écoute `NextSceneArea`. Pas de mode sous-marin, pas de HUD subtitle.
 
 ### Singleton Global (`scripts/Global.gd`)
 
@@ -150,6 +158,39 @@ La scène 1 combine deux couches de décor :
   - Rotation Y aléatoire (360°)
   - Couleur aléatoire parmi 7 teintes de vert (vif, foncé, sarcelle, olive, vert profond, cyan-vert, vert-jaune) — tige + sommet légèrement éclairci
 
+### Scène 3 — GPU géant (`scenes/scene_3_gpu.tscn` + `scripts/scene_3.gd`)
+
+Environnement thématique : Patrick marche sur un GPU géant dans le vide spatial. Tout le décor est en CSG.
+
+**Structure du nœud `GPU` :**
+
+```text
+GPU (Node3D)
+├── PCB (CSGBox3D, 160×2×100, vert PCB, use_collision)
+├── CircuitTraces (Node3D) — Trace1–8 (horizontales) + TraceZ1–8 (verticales) + Stub1–8 (jonctions), matériau doré émissif
+├── GPUCore (Node3D)
+│   ├── Die (CSGBox3D, 50×0.3×50, sombre émissif bleu)
+│   ├── HeatSink (Node3D) — 16 fins CSGBox3D aluminium (48×22×1.2 chacune)
+│   └── VRAM (Node3D) — 16 chips CSGBox3D (ChipL1–8, ChipR1–8, 7×0.5×7, émissif vert)
+├── Fans (Node3D) — 2 cylindres CSGCylinder3D (rayon 12, hauteur 6, 16 côtés)
+├── PowerConnector (CSGBox3D, 14×10×6, connecteur noir)
+├── DisplayOutputs (Node3D) — 4 ports CSGBox3D (5×4×2, Port1–4)
+├── PCIeSlot (CSGBox3D, 80×3×4, doré)
+├── VRMZone (Node3D) — 6 chokes CSGCylinder3D (rayon 1.8, hauteur 3.5)
+└── CapBanks (Node3D) — 8 caps VRM (rayon 1.2) + 3 CapV petits (rayon 0.7), matériau brun
+```
+
+**Environnement et éclairage :**
+
+- `WorldEnvironment` : fond noir spatial, ambient bleu-gris (energy 0.9), glow activé (bloom 0.5), fog sombre (density 0.003)
+- `DirectionalLight3D` : lumière bleutée (energy 1.4, angle 45°)
+- `Lighting` (Node3D) : CoreHeat orange (OmniLight, range 80), EdgeRGB violet (range 95), PCBLeft/Right vert (range 65×2), PCBFront/Back bleu (range 55×2)
+- `SparkParticles` (GPUParticles3D) : 30 particules cyan (sphères 0.04 rayon), vitesse 1–4, légère anti-gravité
+
+**Transition :** `NextSceneArea` à Z=−47 (bord avant du PCB), box 40×8×4.
+
+**Patrick** spawn à Y=2, Z=40 (au fond du PCB). `Engine.time_scale` remis à 1.0 au `_ready()`.
+
 ### Layers de collision
 
 | Layer | Usage |
@@ -196,8 +237,8 @@ Chaque GLB a une scène glTF avec `"Scene"` comme root Node3D et un enfant MeshI
 
 - `patrick_3d.glb` + `patrick_3d_Patrick_texture.png` — modèle joueur (racine du projet)
 - `assets/dungeon_assets/` — pièces de bâtiment (murs, sols, piliers) + props (coffre, clés, tonneaux, chandelles…). Texture atlas : `dungeon_albedo.png`. Matériau partagé : `DungeonMat.tres`.
-- `assets/skeleton/skeleton_mage.glb` — squelette mage (non utilisé)
-- `assets/zombie/zombie.glb` + `zombie_idle.glb`, `zombie_run.glb`, `zombie_jump.glb` — zombie avec animations séparées (non utilisé)
+- `assets/skeleton/skeleton_mage.glb` — squelette mage. Scène wrappée : `scenes/skeleton_mage.tscn` (instance GLB avec pose de bones ajustée, non utilisé en jeu).
+- `assets/zombie/zombie.glb` + `zombie_idle.glb`, `zombie_run.glb`, `zombie_jump.glb` — zombie avec animations séparées. Scène wrappée : `scenes/zombie.tscn` (animations "move" retravaillées, non utilisé en jeu).
 - `assets/import_examples/` — exemples barrel et chest_gold avec matériaux
 - `assets/sky_background/autumn_field_puresky_4k.hdr` — skybox HDR scène 1
 - `addons/proto_controller/` — contrôleur FPS de référence CC0 (ne plus modifier, plus utilisé en jeu)
