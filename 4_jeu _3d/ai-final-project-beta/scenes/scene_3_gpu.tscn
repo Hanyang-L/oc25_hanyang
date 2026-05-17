@@ -443,21 +443,54 @@ material = SubResource("Mat_VRAM")
 
 [node name="Fans" type="Node3D" parent="GPU" unique_id=-1294967251]
 
-[node name="Fan1Housing" type="CSGCylinder3D" parent="GPU/Fans" unique_id=-1294967250]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 26, 0)
+[node name="FanHole" type="CSGBox3D" parent="GPU/Fans" unique_id=228980385]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 26.14656, 0)
+size = Vector3(161, 5.5, 102)
+
+[node name="Fan2Housing" type="CSGCylinder3D" parent="GPU/Fans/FanHole" unique_id=-1294967249]
+transform = Transform3D(1, 0, 0, 0, 0.9999944, -0.003351026, 0, 0.003351026, 0.9999944, 0.80020905, -0.048604965, 0)
+operation = 2
 use_collision = true
-radius = 12.0
+radius = 23.0
 height = 6.0
 sides = 16
 material = SubResource("Mat_Fan")
 
-[node name="Fan2Housing" type="CSGCylinder3D" parent="GPU/Fans" unique_id=-1294967249]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 26, 0)
+[node name="Fan2Glow" type="OmniLight3D" parent="GPU/Fans/FanHole/Fan2Housing" unique_id=-1294967238]
+transform = Transform3D(1, 0, 0, 0, 0.9999944, 0.003351026, 0, -0.003351026, 0.9999944, 0, 3.9020233, -0.013075851)
+light_color = Color(0, 0.8, 1, 1)
+light_energy = 4.0
+omni_range = 65.0
+
+[node name="Fan2Housing3" type="CSGCylinder3D" parent="GPU/Fans/FanHole" unique_id=2028590326]
+transform = Transform3D(1, 0, 0, 0, 0.9999944, -0.003351026, 0, 0.003351026, 0.9999944, -51.33445, -0.048604965, 0)
+operation = 2
 use_collision = true
-radius = 12.0
+radius = 23.0
 height = 6.0
 sides = 16
 material = SubResource("Mat_Fan")
+
+[node name="Fan2Glow" type="OmniLight3D" parent="GPU/Fans/FanHole/Fan2Housing3" unique_id=141447443]
+transform = Transform3D(1, 0, 0, 0, 0.9999944, 0.003351026, 0, -0.003351026, 0.9999944, 0, 3.9020233, -0.013075851)
+light_color = Color(0, 0.8, 1, 1)
+light_energy = 4.0
+omni_range = 65.0
+
+[node name="Fan2Housing2" type="CSGCylinder3D" parent="GPU/Fans/FanHole" unique_id=1005278257]
+transform = Transform3D(1, 0, 0, 0, 0.9999944, -0.003351026, 0, 0.003351026, 0.9999944, 54.180214, -1.8062859, -0.0058900663)
+operation = 2
+use_collision = true
+radius = 23.0
+height = 9.515381
+sides = 16
+material = SubResource("Mat_Fan")
+
+[node name="Fan2Glow" type="OmniLight3D" parent="GPU/Fans/FanHole/Fan2Housing2" unique_id=1506543773]
+transform = Transform3D(1, 0, 0, 0, 0.9999944, 0.003351026, 0, -0.003351026, 0.9999944, 0, 3.9020233, -0.013075851)
+light_color = Color(0, 0.8, 1, 1)
+light_energy = 4.0
+omni_range = 65.0
 
 [node name="PowerConnector" type="CSGBox3D" parent="GPU" unique_id=-1294967248]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 6, 0)
@@ -759,18 +792,6 @@ light_color = Color(0.1, 0.4, 1, 1)
 light_energy = 3.5
 omni_range = 160.0
 
-[node name="Fan1Glow" type="OmniLight3D" parent="Lighting" unique_id=-1294967239]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 30, 0)
-light_color = Color(0, 0.8, 1, 1)
-light_energy = 4.0
-omni_range = 65.0
-
-[node name="Fan2Glow" type="OmniLight3D" parent="Lighting" unique_id=-1294967238]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 30, 0)
-light_color = Color(0, 0.8, 1, 1)
-light_energy = 4.0
-omni_range = 65.0
-
 [node name="CoreHeat" type="OmniLight3D" parent="Lighting" unique_id=-1294967237]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 light_color = Color(1, 0.3, 0, 1)
@@ -819,5 +840,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -47)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=-1294967233]
 shape = SubResource("BoxShape_Next")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=2101878638]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D" unique_id=82797341]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80.48764, 12.996643, 0)
+size = Vector3(1, 26.993286, 102)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D" unique_id=1113860176]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80.488, 12.997, 0)
+size = Vector3(1, 26.993286, 102)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D" unique_id=1309622998]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.515709, 49.607018)
+size = Vector3(161, 27, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D" unique_id=597854778]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.516, -49.607)
+size = Vector3(161, 27, 1)
 
 [connection signal="body_entered" from="NextSceneArea" to="." method="_on_next_scene_area_body_entered"]
