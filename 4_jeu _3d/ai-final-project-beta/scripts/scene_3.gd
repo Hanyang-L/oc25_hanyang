@@ -4,13 +4,75 @@ const SCENES_DIR = "res://scenes/"
 const SCENE_PREFIX = "scene_"
 
 @onready var next_scene_area: Area3D = $NextSceneArea
+@onready var _moving_cap: Node3D = $MovingCap
 
 var _spark_mesh: SphereMesh
+var _fans: Array[Node3D] = []
 
 func _ready() -> void:
 	Engine.time_scale = 1.0
 	Global.current_scene_path = "res://scenes/scene_3_gpu.tscn"
+	next_scene_area.monitoring = false
+	$NextSceneArea/CollisionShape3D.disabled = true
+	_moving_cap.all_placed.connect(_on_all_caps_placed)
 	_setup_trace_hazards()
+	_setup_fans()
+
+func _on_all_caps_placed() -> void:
+	next_scene_area.monitoring = true
+	$NextSceneArea/CollisionShape3D.disabled = false
+
+func _process(delta: float) -> void:
+	for fan in _fans:
+		fan.rotate_y(deg_to_rad(300.0) * delta)
+
+func _setup_fans() -> void:
+	var fan_mat = StandardMaterial3D.new()
+	fan_mat.albedo_color = Color(0.18, 0.18, 0.22)
+	fan_mat.metallic = 0.8
+	fan_mat.roughness = 0.3
+
+	var blade_mesh = BoxMesh.new()
+	blade_mesh.size = Vector3(25.0, 0.6, 5.0)
+	blade_mesh.surface_set_material(0, fan_mat)
+
+	var hub_mesh = CylinderMesh.new()
+	hub_mesh.top_radius = 2.5
+	hub_mesh.bottom_radius = 2.5
+	hub_mesh.height = 1.2
+	hub_mesh.radial_segments = 12
+	hub_mesh.surface_set_material(0, fan_mat)
+
+	var fan_centers = [
+		Vector3(0.8,    25.0, 0.0),
+		Vector3(-51.33, 25.0, 0.0),
+		Vector3(54.18,  25.0, 0.0),
+	]
+	for center in fan_centers:
+		var pivot = _create_fan(center, blade_mesh, hub_mesh)
+		$GPU/Fans.add_child(pivot)
+		_fans.append(pivot)
+
+func _create_fan(center: Vector3, blade_mesh: BoxMesh, hub_mesh: CylinderMesh) -> Node3D:
+	var pivot = Node3D.new()
+	pivot.position = center
+
+	var hub = MeshInstance3D.new()
+	hub.mesh = hub_mesh
+	pivot.add_child(hub)
+
+	for i in 8:
+		var arm = Node3D.new()
+		arm.rotation_degrees.y = i * 45.0
+		pivot.add_child(arm)
+
+		var blade = MeshInstance3D.new()
+		blade.mesh = blade_mesh
+		blade.position = Vector3(9.0, 0.0, 0.0)
+		blade.rotation_degrees.x = 30.0
+		arm.add_child(blade)
+
+	return pivot
 
 func _setup_trace_hazards() -> void:
 	_spark_mesh = SphereMesh.new()
