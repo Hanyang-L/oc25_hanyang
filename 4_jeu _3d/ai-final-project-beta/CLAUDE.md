@@ -76,7 +76,7 @@ main_menu  →  scene_1_underwater  →  scene_2_plage  →  scene_3_gpu  →  (
 Différences entre les deux :
 
 - `scene_1.gd` est plus riche : gère le mode sous-marin de Patrick, les transitions de fog/lumière, les particules bulles/splash, et passe `Engine.time_scale = 0.5` lors du passage à la scène suivante.
-- `scene_3.gd` est minimal : enregistre le `current_scene_path`, remet `Engine.time_scale = 1.0` au `_ready()`, et écoute `NextSceneArea`. Pas de mode sous-marin, pas de HUD subtitle.
+- `scene_3.gd` gère : les zones de danger sur les traces, les étincelles électriques, les ventilateurs rotatifs et le mécanisme des caps à placer (voir section dédiée). La `NextSceneArea` est **désactivée au démarrage** et ne s'active que quand tous les caps sont placés.
 
 ### Singleton Global (`scripts/Global.gd`)
 
@@ -162,41 +162,93 @@ La scène 1 combine deux couches de décor :
 
 Environnement thématique : Patrick marche sur un GPU géant dans le vide spatial. Tout le décor est en CSG.
 
+**Structure globale de la scène (niveau racine) :**
+
+```text
+Scene3GPU (Node3D) — script scene_3.gd
+├── GPU (Node3D) — tout le décor du GPU
+├── Lighting (Node3D) — OmniLights
+├── SparkParticles (GPUParticles3D) — étincelles ambiantes cyan
+├── NextSceneArea (Area3D) — désactivée au démarrage, s'active quand tous les caps sont placés
+├── CSGCombiner3D — 4 murs encadrant l'espace GPU (gauche/droite/avant/arrière)
+└── MovingCap (Node3D) — 7 caps physiques poussables (script moving_cap.gd)
+```
+
 **Structure du nœud `GPU` :**
 
 ```text
 GPU (Node3D)
 ├── PCB (CSGBox3D, 160×2×100, vert PCB, use_collision)
-├── CircuitTraces (Node3D) — Trace1–8 (horizontales) + TraceZ1–8 (verticales) + Stub1–8 (jonctions), matériau doré émissif
+├── CircuitTraces (Node3D) — Trace1–8 (horizontales) + TraceZ1–8 (verticales) + Stub1–8 (jonctions)
+│   — matériau doré émissif. DANGER : contact = mort de Patrick + étincelles cyan (créés au runtime)
 ├── GPUCore (Node3D)
 │   ├── Die (CSGBox3D, 50×0.3×50, sombre émissif bleu)
 │   ├── HeatSink (Node3D) — 16 fins CSGBox3D aluminium (48×22×1.2 chacune)
 │   └── VRAM (Node3D) — 16 chips CSGBox3D (ChipL1–8, ChipR1–8, 7×0.5×7, émissif vert)
-├── Fans (Node3D) — 2 cylindres CSGCylinder3D (rayon 12, hauteur 6, 16 côtés)
+├── Fans (Node3D)
+│   └── FanHole (CSGBox3D, 161×5.5×102, plafond) — 3 trous cylindriques (operation=2) :
+│       ├── Fan2Housing (rayon 23, hauteur 6, centre)
+│       ├── Fan2Housing3 (rayon 23, hauteur 6, gauche X=−51)
+│       └── Fan2Housing2 (rayon 23, hauteur 9.5, droite X=+54)
+│   — 3 hélices à 8 pales créées au runtime par scene_3.gd (rotation 300°/s)
 ├── PowerConnector (CSGBox3D, 14×10×6, connecteur noir)
 ├── DisplayOutputs (Node3D) — 4 ports CSGBox3D (5×4×2, Port1–4)
 ├── PCIeSlot (CSGBox3D, 80×3×4, doré)
 ├── VRMZone (Node3D) — 6 chokes CSGCylinder3D (rayon 1.8, hauteur 3.5)
-└── CapBanks (Node3D) — 8 caps VRM (rayon 1.2) + 3 CapV petits (rayon 0.7), matériau brun
+├── CapBanks (Node3D) — 8 caps VRM (rayon 1.2) + caps CapV petits (rayon 0.7), matériau brun
+└── SMDComponents (Node3D) — résistances décoratives CSGBox3D
 ```
 
 **Environnement et éclairage :**
 
 - `WorldEnvironment` : fond noir spatial, ambient bleu-gris (energy 0.9), glow activé (bloom 0.5), fog sombre (density 0.003)
 - `DirectionalLight3D` : lumière bleutée (energy 1.4, angle 45°)
-- `Lighting` (Node3D) : CoreHeat orange (OmniLight, range 80), EdgeRGB violet (range 95), PCBLeft/Right vert (range 65×2), PCBFront/Back bleu (range 55×2)
-- `SparkParticles` (GPUParticles3D) : 30 particules cyan (sphères 0.04 rayon), vitesse 1–4, légère anti-gravité
+- `Lighting` (Node3D) : AmbientBlue (range 160), CoreHeat orange (range 80), EdgeRGB violet (range 95), PCBLeft/Right vert (range 65×2), PCBFront/Back bleu (range 55×2)
+- `SparkParticles` (GPUParticles3D) : 30 particules cyan ambiantes
 
-**Transition :** `NextSceneArea` à Z=−47 (bord avant du PCB), box 40×8×4.
+**Mécaniques de gameplay (scene_3.gd) :**
+
+- **Traces électriques dangereuses** : `_setup_trace_hazards()` ajoute au runtime pour chaque des 24 `CSGBox3D` de `CircuitTraces` : une `Area3D` kill zone (mask=1) + `GPUParticles3D` d'étincelles cyan émissives (bloom). Contact → `body.die()`.
+- **Ventilateurs** : `_setup_fans()` crée 3 pivots `Node3D` dans `$GPU/Fans`, chacun avec 8 `MeshInstance3D` bras (BoxMesh 25×0.6×5, rotation_degrees.x=30°) + hub `CylinderMesh`. Rotation via `rotate_y(deg_to_rad(300) * delta)` dans `_process`.
+- **NextSceneArea conditionnelle** : désactivée (`monitoring=false`, CollisionShape disabled) au `_ready()`. S'active via `_on_all_caps_placed()` quand `$MovingCap` émet `all_placed`.
+
+**Transition :** `NextSceneArea` à Z=−47 (bord avant du PCB), box 40×8×4. **Verrouillée jusqu'au placement de tous les caps.**
 
 **Patrick** spawn à Y=2, Z=40 (au fond du PCB). `Engine.time_scale` remis à 1.0 au `_ready()`.
+
+### MovingCap (`scenes/scene_3_gpu.tscn` > nœud MovingCap + `scripts/moving_cap.gd`)
+
+7 `RigidBody3D` dans `MovingCap` (layer=1, mask=1, mass=5, linear_damp=2, angular_damp=3) — caps électroniques à pousser sur les traces du circuit imprimé :
+
+| Nœud | Position | Rayon visuel | Hauteur |
+| --- | --- | --- | --- |
+| Cap9 | (−1.5, 2.4, −31.4) | 1.2 | 2.8 |
+| Cap10 | (−4.6, 2.4, −37.3) | 1.886 | 3.398 |
+| Cap12 | (44.5, 2.25, −44.2) | 1.109 | 2.508 |
+| Choke2 | (−50.2, 2.75, 33.6) | 1.8 | 3.5 |
+| Cap11 | (−58.4, 2.4, −46.0) | 1.2 | 2.8 |
+| Cap8 | (50.5, 2.4, 32.2) | 1.2 | 2.8 |
+| Cap1 | (71.3, 2.4, 45.5) | 1.2 | 2.8 |
+
+Chaque cap a : `CollisionShape3D` (CylinderShape3D, rayon = rayon_visuel × 0.5) + `MeshInstance3D` (CylinderMesh rayon complet + matériau).
+
+**`moving_cap.gd` (extends Node3D) :**
+
+- `_ready()` : collecte les 7 `RigidBody3D` enfants dans `_cap_bodies`, collecte les positions XZ des 24 traces, récupère `$"../Patrick"`.
+- `_process()` : pour chaque cap non-freezé → `_apply_push()` + `_check_snap()`.
+- `_apply_push(rb)` : si Patrick est à ≤ `PUSH_RANGE` (1.5 u), applique `apply_central_impulse` de `PUSH_FORCE` (15 N) en direction opposée à Patrick (Y ignoré).
+- `_check_snap(rb)` : si vitesse < 2 m/s ET distance XZ au trace le plus proche < `SNAP_THRESHOLD` (2.5 u) → `rb.freeze = true`, centre le cap sur la trace, incrémente `_placed_count`. Quand tous placés → `all_placed.emit()`.
+- Signal `all_placed` → `scene_3.gd` réactive la NextSceneArea.
 
 ### Layers de collision
 
 | Layer | Usage |
 | --- | --- |
-| 1 | Patrick (layer + mask) + sol/terrain + objets statiques (défaut Godot) |
+| 1 | Patrick (layer) + sol/terrain + objets statiques + caps `MovingCap` |
 | 4 | Crabes + `InteractRay` mask |
+
+Patrick a `collision_mask = 3` (layers 1 et 2) — il voit les objets des deux layers.
+Les `Area3D` kill zones des traces ont `collision_layer=0, collision_mask=1` — détectent Patrick (layer 1) mais pas les caps (aussi layer 1, mais sans `die()` → inoffensif).
 
 ### Beach Bar (`scenes/beach_bar.tscn`)
 
