@@ -1,6 +1,607 @@
 [gd_scene format=3 uid="uid://dp7nk3mx2bq5f"]
 
-[ext_resource type="Script" path="res://scripts/beach_bar.gd" id="1_beachbar"]
+[ext_resource type="PackedScene" uid="uid://c3ubw5rgw8gn5" path="res://assets/dungeon_assets/building/pillar.glb" id="2_pillar"]
+[ext_resource type="PackedScene" uid="uid://jyk56rygew2w" path="res://assets/dungeon_assets/building/wall_arched.glb" id="3_arch"]
+[ext_resource type="PackedScene" uid="uid://dx083ridu2637" path="res://assets/dungeon_assets/building/wall_shelved.glb" id="4_shelf"]
+[ext_resource type="PackedScene" uid="uid://cau0vwjwec03x" path="res://assets/dungeon_assets/building/wall.glb" id="5_wall"]
+[ext_resource type="PackedScene" uid="uid://c43t44gp7p6s1" path="res://assets/dungeon_assets/props/table_medium.glb" id="6_tmed"]
+[ext_resource type="PackedScene" uid="uid://bgmwbmlgygfyg" path="res://assets/dungeon_assets/props/table_small.glb" id="7_tsml"]
+[ext_resource type="PackedScene" uid="uid://dhdjfei3j08ed" path="res://assets/dungeon_assets/props/candles.glb" id="8_candles"]
+[ext_resource type="PackedScene" uid="uid://buvitwn2o6fom" path="res://assets/dungeon_assets/props/plate_food.glb" id="9_plate"]
+[ext_resource type="PackedScene" uid="uid://dt1f3as5m1l3h" path="res://assets/dungeon_assets/props/chair.glb" id="10_chair"]
+[ext_resource type="PackedScene" uid="uid://nqav5eq38brg" path="res://assets/dungeon_assets/props/keg_decorated.glb" id="11_keg"]
+[ext_resource type="PackedScene" uid="uid://cestipjjgff8n" path="res://assets/dungeon_assets/props/crates_stacked.glb" id="12_crates"]
+[ext_resource type="PackedScene" uid="uid://b4i5vs46m0f51" path="res://assets/dungeon_assets/props/banner_mounted.glb" id="13_banner"]
+[ext_resource type="PackedScene" uid="uid://cgldc2i3nb0" path="res://assets/dungeon_assets/props/coin_stack.glb" id="14_coins"]
+[ext_resource type="PackedScene" uid="uid://ptye65brk2jk" path="res://assets/dungeon_assets/props/torch_mounted.glb" id="15_torch"]
 
-[node name="BeachBar" type="Node3D"]
-script = ExtResource("1_beachbar")
+[sub_resource type="StandardMaterial3D" id="mat_dungeon"]
+albedo_color = Color(0.2509804, 0.3137255, 0.35686275, 1)
+roughness = 0.85
+
+[sub_resource type="BoxShape3D" id="shape_pillar"]
+size = Vector3(1.5, 4, 1.5)
+
+[sub_resource type="BoxShape3D" id="shape_arch"]
+size = Vector3(4, 4, 1)
+
+[sub_resource type="BoxShape3D" id="shape_shelf"]
+size = Vector3(4, 4, 1.4)
+
+[sub_resource type="BoxShape3D" id="shape_wall_panel"]
+size = Vector3(4, 4, 1)
+
+[sub_resource type="BoxShape3D" id="shape_table_med"]
+size = Vector3(2, 1, 2)
+
+[sub_resource type="BoxShape3D" id="shape_candles"]
+size = Vector3(0.5, 0.9, 0.4)
+
+[sub_resource type="Gradient" id="grad_flame"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 0.7, 0, 1, 1, 0.25, 0, 0.8, 0.4, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="grad_tex"]
+gradient = SubResource("grad_flame")
+
+[sub_resource type="ParticleProcessMaterial" id="pmat_candle"]
+direction = Vector3(0, 1, 0)
+spread = 18.0
+initial_velocity_min = 0.18
+initial_velocity_max = 0.42
+gravity = Vector3(0, 0.5, 0)
+scale_min = 0.036
+scale_max = 0.084
+color_ramp = SubResource("grad_tex")
+turbulence_enabled = true
+turbulence_noise_strength = 0.6
+
+[sub_resource type="StandardMaterial3D" id="mat_flame"]
+transparency = 1
+shading_mode = 2
+albedo_color = Color(1, 0.5, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.3, 0, 1)
+emission_energy_multiplier = 3.0
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="mesh_candle"]
+material = SubResource("mat_flame")
+size = Vector2(0.06, 0.09)
+
+[sub_resource type="BoxShape3D" id="shape_plate"]
+size = Vector3(1, 0.8, 1)
+
+[sub_resource type="BoxShape3D" id="shape_chair"]
+size = Vector3(0.75, 1.23, 0.75)
+
+[sub_resource type="BoxShape3D" id="shape_coins"]
+size = Vector3(1.4, 1.2, 1.7)
+
+[sub_resource type="BoxShape3D" id="shape_table_sml"]
+
+[sub_resource type="BoxShape3D" id="shape_keg"]
+size = Vector3(2, 2, 1.5)
+
+[sub_resource type="BoxShape3D" id="shape_crates"]
+size = Vector3(2, 2.2, 2.2)
+
+[sub_resource type="BoxShape3D" id="shape_torch"]
+size = Vector3(0.55, 1.1, 0.62)
+
+[sub_resource type="ParticleProcessMaterial" id="pmat_torch"]
+direction = Vector3(0, 1, 0)
+spread = 18.0
+initial_velocity_min = 0.42
+initial_velocity_max = 0.98
+gravity = Vector3(0, 0.5, 0)
+scale_min = 0.084
+scale_max = 0.196
+color_ramp = SubResource("grad_tex")
+turbulence_enabled = true
+turbulence_noise_strength = 0.6
+
+[sub_resource type="QuadMesh" id="mesh_torch"]
+material = SubResource("mat_flame")
+size = Vector2(0.14, 0.21)
+
+[node name="BeachBar" type="Node3D" unique_id=1556869550]
+
+[node name="Structure" type="Node3D" parent="." unique_id=162650594]
+
+[node name="Floor" type="CSGCombiner3D" parent="Structure" unique_id=2098158638]
+use_collision = true
+
+[node name="FloorBase" type="CSGBox3D" parent="Structure/Floor" unique_id=651610456]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+size = Vector3(10, 0.3, 8)
+material = SubResource("mat_dungeon")
+
+[node name="FloorHole" type="CSGCylinder3D" parent="Structure/Floor" unique_id=462232583]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, -0.15, 2.5)
+operation = 1
+radius = 1.3
+height = 0.6
+material = SubResource("mat_dungeon")
+
+[node name="WallBack" type="CSGBox3D" parent="Structure" unique_id=1898558017]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -4)
+use_collision = true
+size = Vector3(10, 3.2, 0.3)
+material = SubResource("mat_dungeon")
+
+[node name="WallLeft" type="CSGBox3D" parent="Structure" unique_id=438185304]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.719652, 1.8246582, 0)
+visible = false
+use_collision = true
+size = Vector3(0.3, 3.6493163, 8)
+material = SubResource("mat_dungeon")
+
+[node name="WallRight" type="CSGBox3D" parent="Structure" unique_id=446390980]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8122435, 1.9899414, 0)
+use_collision = true
+size = Vector3(0.3, 3.9798827, 8)
+material = SubResource("mat_dungeon")
+
+[node name="Ceiling" type="CSGBox3D" parent="Structure" unique_id=1708846175]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8339937, 0)
+use_collision = true
+size = Vector3(10, 0.3, 8)
+material = SubResource("mat_dungeon")
+
+[node name="Counter" type="CSGBox3D" parent="Structure" unique_id=615569365]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -2)
+use_collision = true
+size = Vector3(8, 1, 0.6)
+material = SubResource("mat_dungeon")
+
+[node name="WallDeco" type="Node3D" parent="Structure" unique_id=225750220]
+
+[node name="Pillar1" parent="Structure/WallDeco" unique_id=1315687937 instance=ExtResource("2_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.9, 0, -3.9)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/Pillar1" unique_id=435006594]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/Pillar1/Body" unique_id=1740504214]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_pillar")
+
+[node name="Pillar2" parent="Structure/WallDeco" unique_id=780374435 instance=ExtResource("2_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9, 0, -3.9)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/Pillar2" unique_id=1174524629]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/Pillar2/Body" unique_id=502707940]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_pillar")
+
+[node name="Pillar3" parent="Structure/WallDeco" unique_id=304097160 instance=ExtResource("2_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.9, 0, 3.9)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/Pillar3" unique_id=1862843579]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/Pillar3/Body" unique_id=1487830946]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_pillar")
+
+[node name="Pillar4" parent="Structure/WallDeco" unique_id=1207351704 instance=ExtResource("2_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9, 0, 3.9)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/Pillar4" unique_id=419366975]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/Pillar4/Body" unique_id=1590148939]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_pillar")
+
+[node name="Pillar5" parent="Structure/WallDeco" unique_id=108064255 instance=ExtResource("2_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 3.9)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/Pillar5" unique_id=1482425459]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/Pillar5/Body" unique_id=779954912]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_pillar")
+
+[node name="Pillar6" parent="Structure/WallDeco" unique_id=2093912919 instance=ExtResource("2_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 3.9)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/Pillar6" unique_id=123125105]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/Pillar6/Body" unique_id=167502972]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_pillar")
+
+[node name="ArchLeft" parent="Structure/WallDeco" unique_id=173623457 instance=ExtResource("3_arch")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1.2, 0, 4)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/ArchLeft" unique_id=538946885]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/ArchLeft/Body" unique_id=304563997]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_arch")
+
+[node name="ArchRight" parent="Structure/WallDeco" unique_id=1954442332 instance=ExtResource("3_arch")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.2, 0, 4)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/ArchRight" unique_id=194657739]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/ArchRight/Body" unique_id=1679554534]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_arch")
+
+[node name="Shelf" parent="Structure/WallDeco" unique_id=684239481 instance=ExtResource("4_shelf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -3.6)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/Shelf" unique_id=467091215]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/Shelf/Body" unique_id=591717457]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0.184)
+shape = SubResource("shape_shelf")
+
+[node name="WallPanelLeft" parent="Structure/WallDeco" unique_id=489367801 instance=ExtResource("5_wall")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -4.6, 0, -1.5)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/WallPanelLeft" unique_id=2727432]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/WallPanelLeft/Body" unique_id=323797901]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_wall_panel")
+
+[node name="WallPanelRight" parent="Structure/WallDeco" unique_id=901739772 instance=ExtResource("5_wall")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.6, 0, -1.5)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/WallPanelRight" unique_id=848002815]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/WallPanelRight/Body" unique_id=753258363]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_wall_panel")
+
+[node name="WallPanelRight2" parent="Structure/WallDeco" unique_id=770536662 instance=ExtResource("5_wall")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -4.577815, 0, 2.342804)
+
+[node name="Body" type="StaticBody3D" parent="Structure/WallDeco/WallPanelRight2" unique_id=446154957]
+
+[node name="Shape" type="CollisionShape3D" parent="Structure/WallDeco/WallPanelRight2/Body" unique_id=1534818470]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_wall_panel")
+
+[node name="Props" type="Node3D" parent="." unique_id=1498016126]
+
+[node name="TableMediumLeft" parent="Props" unique_id=677787796 instance=ExtResource("6_tmed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -0.5)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumLeft" unique_id=2096347266]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumLeft/Body" unique_id=1991222147]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("shape_table_med")
+
+[node name="CandlesML" parent="Props/TableMediumLeft" unique_id=1942596329 instance=ExtResource("8_candles")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, -0.39566696)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumLeft/CandlesML" unique_id=1015776155]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumLeft/CandlesML/Body" unique_id=2044228706]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.083, 0.437, 0.035)
+shape = SubResource("shape_candles")
+
+[node name="CandleFlame1" type="GPUParticles3D" parent="Props/TableMediumLeft/CandlesML" unique_id=2102930637]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24619102, 0.8684189, -0.042138815)
+amount = 12
+lifetime = 0.5
+visibility_aabb = AABB(-0.4, -0.1, -0.4, 0.8, 0.9, 0.8)
+local_coords = true
+process_material = SubResource("pmat_candle")
+draw_pass_1 = SubResource("mesh_candle")
+
+[node name="CandleLight1" type="OmniLight3D" parent="Props/TableMediumLeft/CandlesML/CandleFlame1" unique_id=962577066]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.020215034, -0.004419923, 0.009191215)
+light_color = Color(1, 0.55, 0.15, 1)
+light_energy = 0.45
+omni_range = 2.5
+
+[node name="Porc" parent="Props/TableMediumLeft" unique_id=1273116957 instance=ExtResource("9_plate")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.1003499, 0.98598844, 0.7557342)
+
+[node name="PlateMR" parent="Props/TableMediumLeft/Porc" unique_id=2552054 instance=ExtResource("9_plate")]
+transform = Transform3D(-0.23683819, 0, 0.9715491, 0, 1, 0, -0.9715491, 0, -0.23683819, 0.99892163, 0, -1.1555552)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumLeft/Porc/PlateMR" unique_id=1310958328]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumLeft/Porc/PlateMR/Body" unique_id=426486307]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.028, 0.394, 0)
+shape = SubResource("shape_plate")
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumLeft/Porc" unique_id=1873492608]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumLeft/Porc/Body" unique_id=1757898692]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.028, 0.394, 0)
+shape = SubResource("shape_plate")
+
+[node name="ChairML_Back" parent="Props/TableMediumLeft" unique_id=2140420429 instance=ExtResource("10_chair")]
+transform = Transform3D(-0.9971851, 0, -0.07497882, 0, 1, 0, 0.07497882, 0, -0.9971851, -1.0666845, 0, 0.11166084)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumLeft/ChairML_Back" unique_id=1964859100]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumLeft/ChairML_Back/Body" unique_id=1448777303]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.615, 0)
+shape = SubResource("shape_chair")
+
+[node name="ChairML_Front" parent="Props/TableMediumLeft" unique_id=1216220903 instance=ExtResource("10_chair")]
+transform = Transform3D(-0.16332613, 0, -0.98657215, 0, 1, 0, 0.98657215, 0, -0.16332613, 0, 0, 1.1)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumLeft/ChairML_Front" unique_id=1976110892]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumLeft/ChairML_Front/Body" unique_id=303592393]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.615, 0)
+shape = SubResource("shape_chair")
+
+[node name="ChairCounter1" parent="Props/TableMediumLeft" unique_id=1622640069 instance=ExtResource("10_chair")]
+transform = Transform3D(0.9099613, 0, 0.41469324, 0, 1, 0, -0.41469324, 0, 0.9099613, 1.1348782, 0, -0.037738264)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumLeft/ChairCounter1" unique_id=550133817]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumLeft/ChairCounter1/Body" unique_id=437629954]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.615, 0)
+shape = SubResource("shape_chair")
+
+[node name="TableMediumRight" parent="Props" unique_id=1112447621 instance=ExtResource("6_tmed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -0.5)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumRight" unique_id=1707218681]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumRight/Body" unique_id=1000844764]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("shape_table_med")
+
+[node name="CandlesMR" parent="Props/TableMediumRight" unique_id=669099491 instance=ExtResource("8_candles")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumRight/CandlesMR" unique_id=470868037]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumRight/CandlesMR/Body" unique_id=465866057]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.083, 0.437, 0.035)
+shape = SubResource("shape_candles")
+
+[node name="CandleFlameMR" type="GPUParticles3D" parent="Props/TableMediumRight/CandlesMR" unique_id=339883428]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22794056, 0.8542517, -0.07253951)
+amount = 12
+lifetime = 0.5
+visibility_aabb = AABB(-0.4, -0.1, -0.4, 0.8, 0.9, 0.8)
+local_coords = true
+process_material = SubResource("pmat_candle")
+draw_pass_1 = SubResource("mesh_candle")
+
+[node name="CandleLightMR" type="OmniLight3D" parent="Props/TableMediumRight/CandlesMR/CandleFlameMR" unique_id=1262687867]
+light_color = Color(1, 0.55, 0.15, 1)
+light_energy = 0.45
+omni_range = 2.5
+
+[node name="Coins" parent="Props/TableMediumRight" unique_id=1410157458 instance=ExtResource("14_coins")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.2914226, 1.0166023, -0.4074669)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumRight/Coins" unique_id=1206934685]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumRight/Coins/Body" unique_id=1166976152]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.579, 0.014)
+shape = SubResource("shape_coins")
+
+[node name="ChairMR_Front" parent="Props/TableMediumRight" unique_id=1649715515 instance=ExtResource("10_chair")]
+transform = Transform3D(0.13744435, 0, -0.9905095, 0, 1, 0, 0.9905095, 0, 0.13744435, 0, 0, 1.0637531)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumRight/ChairMR_Front" unique_id=1043064442]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumRight/ChairMR_Front/Body" unique_id=1246327123]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.615, 0)
+shape = SubResource("shape_chair")
+
+[node name="ChairMR_Back" parent="Props/TableMediumRight" unique_id=69088265 instance=ExtResource("10_chair")]
+transform = Transform3D(0.9799247, 0, 0.19936793, 0, 1, 0, -0.19936793, 0, 0.9799247, 1.0540016, 0, 0.021877527)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumRight/ChairMR_Back" unique_id=2039176357]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumRight/ChairMR_Back/Body" unique_id=960457062]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.615, 0)
+shape = SubResource("shape_chair")
+
+[node name="ChairCounter2" parent="Props/TableMediumRight" unique_id=1974126461 instance=ExtResource("10_chair")]
+transform = Transform3D(-0.92050487, 0, 0.39073116, 0, 1, 0, -0.39073116, 0, -0.92050487, -1.1461909, 0, -0.3)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableMediumRight/ChairCounter2" unique_id=396949614]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableMediumRight/ChairCounter2/Body" unique_id=305570975]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.615, 0)
+shape = SubResource("shape_chair")
+
+[node name="TableSmallLeft" parent="Props" unique_id=839964695 instance=ExtResource("7_tsml")]
+transform = Transform3D(0.13744453, 0, -0.99050945, 0, 1, 0, 0.99050945, 0, 0.13744453, -0.6185303, -0.0032758713, 2.009382)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableSmallLeft" unique_id=101058847]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableSmallLeft/Body" unique_id=149009097]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("shape_table_sml")
+
+[node name="CandlesSL" parent="Props/TableSmallLeft" unique_id=2040827644 instance=ExtResource("8_candles")]
+transform = Transform3D(0.7000001, 0, 0, 0, 0.7, 0, 0, 0, 0.7000001, 0, 0.783648, 0)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableSmallLeft/CandlesSL" unique_id=1202991890]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableSmallLeft/CandlesSL/Body" unique_id=72075602]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.083, 0.437, 0.035)
+shape = SubResource("shape_candles")
+
+[node name="CandleFlameSL" type="GPUParticles3D" parent="Props/TableSmallLeft/CandlesSL" unique_id=72745906]
+transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 0, 0.6852077, 0)
+amount = 12
+lifetime = 0.5
+visibility_aabb = AABB(-0.4, -0.1, -0.4, 0.8, 0.9, 0.8)
+local_coords = true
+process_material = SubResource("pmat_candle")
+draw_pass_1 = SubResource("mesh_candle")
+
+[node name="CandleLightSL" type="OmniLight3D" parent="Props/TableSmallLeft/CandlesSL/CandleFlameSL" unique_id=1713506939]
+light_color = Color(1, 0.55, 0.15, 1)
+light_energy = 0.45
+omni_range = 2.5
+
+[node name="ChairSL" parent="Props/TableSmallLeft" unique_id=534919456 instance=ExtResource("10_chair")]
+transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 1.0003762, 0, 0.066339254)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableSmallLeft/ChairSL" unique_id=1830165992]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableSmallLeft/ChairSL/Body" unique_id=388645632]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.615, 0)
+shape = SubResource("shape_chair")
+
+[node name="TableSmallRight" parent="Props" unique_id=1857889006 instance=ExtResource("7_tsml")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 2.5)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableSmallRight" unique_id=800972247]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableSmallRight/Body" unique_id=214155792]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("shape_table_sml")
+
+[node name="CandlesSR" parent="Props/TableSmallRight" unique_id=154665135 instance=ExtResource("8_candles")]
+transform = Transform3D(0.2143307, 0, -0.33773118, 0, 0.4, 0, 0.33773118, 0, 0.2143307, 0, 0.9850559, 0)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableSmallRight/CandlesSR" unique_id=556573011]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableSmallRight/CandlesSR/Body" unique_id=808924548]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.083, 0.437, 0.035)
+shape = SubResource("shape_candles")
+
+[node name="CandleFlameSR" type="GPUParticles3D" parent="Props/TableSmallRight/CandlesSR" unique_id=512173755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.026902676, 0.68371916, 0)
+amount = 12
+lifetime = 0.5
+visibility_aabb = AABB(-0.4, -0.1, -0.4, 0.8, 0.9, 0.8)
+local_coords = true
+process_material = SubResource("pmat_candle")
+draw_pass_1 = SubResource("mesh_candle")
+
+[node name="CandleLightSR" type="OmniLight3D" parent="Props/TableSmallRight/CandlesSR/CandleFlameSR" unique_id=1471981453]
+light_color = Color(1, 0.55, 0.15, 1)
+light_energy = 0.45
+omni_range = 2.5
+
+[node name="ChairSR" parent="Props/TableSmallRight" unique_id=1465255605 instance=ExtResource("10_chair")]
+transform = Transform3D(-0.99488074, 0, -0.10105624, 0, 1, 0, 0.10105624, 0, -0.99488074, -0.884789, 0, 0.010394812)
+
+[node name="Body" type="StaticBody3D" parent="Props/TableSmallRight/ChairSR" unique_id=882899229]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TableSmallRight/ChairSR/Body" unique_id=193217767]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.615, 0)
+shape = SubResource("shape_chair")
+
+[node name="KegLeft" parent="Props" unique_id=1450412741 instance=ExtResource("11_keg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -3.3)
+
+[node name="Body" type="StaticBody3D" parent="Props/KegLeft" unique_id=320055169]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/KegLeft/Body" unique_id=1846535849]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.025, 0)
+shape = SubResource("shape_keg")
+
+[node name="KegRight" parent="Props" unique_id=584821108 instance=ExtResource("11_keg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -3.3)
+
+[node name="Body" type="StaticBody3D" parent="Props/KegRight" unique_id=1577399352]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/KegRight/Body" unique_id=482482196]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.025, 0)
+shape = SubResource("shape_keg")
+
+[node name="Crates" parent="Props" unique_id=226774338 instance=ExtResource("12_crates")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -3.5)
+
+[node name="Body" type="StaticBody3D" parent="Props/Crates" unique_id=965396475]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/Crates/Body" unique_id=2026986409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+shape = SubResource("shape_crates")
+
+[node name="TorchCenter" parent="Props" unique_id=1816598075 instance=ExtResource("15_torch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, -3.6)
+
+[node name="Body" type="StaticBody3D" parent="Props/TorchCenter" unique_id=617599271]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TorchCenter/Body" unique_id=488046630]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.151, 0.308)
+shape = SubResource("shape_torch")
+
+[node name="FlameCenter" type="GPUParticles3D" parent="Props/TorchCenter" unique_id=1558167707]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28957057, 0.2898724)
+amount = 12
+lifetime = 0.5
+visibility_aabb = AABB(-0.4, -0.1, -0.4, 0.8, 0.9, 0.8)
+local_coords = true
+process_material = SubResource("pmat_torch")
+draw_pass_1 = SubResource("mesh_torch")
+
+[node name="TorchLightCenter" type="OmniLight3D" parent="Props/TorchCenter/FlameCenter" unique_id=661684435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16872644, 0)
+light_color = Color(1, 0.38, 0.05, 1)
+light_energy = 1.6
+shadow_enabled = true
+omni_range = 4.5
+
+[node name="TorchLeft" parent="Props" unique_id=344765391 instance=ExtResource("15_torch")]
+transform = Transform3D(0.02443221, 0.19930841, 0.9796322, 0, 0.9799247, -0.19936793, -0.9997015, 0.004870999, 0.023941725, -4.3435946, 1.9186764, -1.2422044)
+
+[node name="Body" type="StaticBody3D" parent="Props/TorchLeft" unique_id=1281265460]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TorchLeft/Body" unique_id=1597438005]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.151, 0.308)
+shape = SubResource("shape_torch")
+
+[node name="Flame1" type="GPUParticles3D" parent="Props/TorchLeft" unique_id=232610160]
+transform = Transform3D(0.02443221, 0, -0.9997015, 0, 1, 0, 0.9997015, 0, 0.02443221, -0.011858642, 0.2895906, 0.34393883)
+amount = 12
+lifetime = 0.5
+visibility_aabb = AABB(-0.4, -0.1, -0.4, 0.8, 0.9, 0.8)
+local_coords = true
+process_material = SubResource("pmat_torch")
+draw_pass_1 = SubResource("mesh_torch")
+
+[node name="TorchLightLeft" type="OmniLight3D" parent="Props/TorchLeft/Flame1" unique_id=1228803833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15294242, 0)
+light_color = Color(1, 0.38, 0.05, 1)
+light_energy = 1.6
+shadow_enabled = true
+omni_range = 4.5
+
+[node name="TorchRight" parent="Props" unique_id=1316790202 instance=ExtResource("15_torch")]
+transform = Transform3D(-0.17536674, 0, -0.98450315, 0, 1, 0, 0.98450315, 0, -0.17536674, 4.2029934, 1.9511473, -1)
+
+[node name="Body" type="StaticBody3D" parent="Props/TorchRight" unique_id=1560077404]
+
+[node name="Shape" type="CollisionShape3D" parent="Props/TorchRight/Body" unique_id=300059979]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.151, 0.308)
+shape = SubResource("shape_torch")
+
+[node name="FlameRight" type="GPUParticles3D" parent="Props/TorchRight" unique_id=531878663]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0.3988526, 0.32079458)
+amount = 12
+lifetime = 0.5
+visibility_aabb = AABB(-0.4, -0.1, -0.4, 0.8, 0.9, 0.8)
+local_coords = true
+process_material = SubResource("pmat_torch")
+draw_pass_1 = SubResource("mesh_torch")
+
+[node name="TorchLightRight" type="OmniLight3D" parent="Props/TorchRight/FlameRight" unique_id=1535619020]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.10000014, 0)
+light_color = Color(1, 0.38, 0.05, 1)
+light_energy = 1.6
+shadow_enabled = true
+omni_range = 4.5
+
+[node name="Banner" parent="Props" unique_id=251797721 instance=ExtResource("13_banner")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6650152, -0.14155781, 4.033322)
+
+[node name="AmbientFill" type="OmniLight3D" parent="." unique_id=1591272921]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7, 0)
+light_color = Color(0.85, 0.78, 0.62, 1)
+light_energy = 0.28
+omni_range = 13.0

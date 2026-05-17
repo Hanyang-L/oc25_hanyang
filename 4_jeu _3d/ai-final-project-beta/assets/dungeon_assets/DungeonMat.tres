@@ -1,6 +1,8 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://dnkfdyy7f0n5w"]
 
+[ext_resource type="Texture2D" uid="uid://ddk5rbxljuocc" path="res://assets/dungeon_assets/dungeon_albedo.png" id="1_tex"]
+
 [resource]
 resource_name = "DungeonMat"
-albedo_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
-roughness = 0.0
+albedo_texture = ExtResource("1_tex")
+roughness = 0.85

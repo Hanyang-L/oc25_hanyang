@@ -42,7 +42,7 @@ Sans ces autoloads, les appels à `Global.has_key`, `Global.change_scene()` et l
 
 ### État actuel des scènes
 
-Le projet contient actuellement **2 scènes jouables** précédées d'un menu principal :
+Le projet contient actuellement **2 scènes jouables** précédées d'un menu principal, plus une scène de bar instanciable :
 
 ```text
 main_menu  →  scene_1_underwater  →  scene_2_plage  →  (à créer : scene_3, scene_4…)
@@ -51,6 +51,7 @@ main_menu  →  scene_1_underwater  →  scene_2_plage  →  (à créer : scene_
 - `scenes/main_menu.tscn` — menu principal (bouton START). Scène de démarrage du jeu. Pilotée par `scripts/main_menu.gd`.
 - `scenes/scene_1_underwater.tscn` — scène sous-marine complète avec terrain CSG, crabes, clé, HUD, particules, décor procédural, transitions eau/plage. Pilotée par `scripts/scene_1.gd`.
 - `scenes/scene_2_plage.tscn` — scène très basique (un seul CSGBox3D), pas encore de gameplay.
+- `scenes/beach_bar.tscn` — scène de bar intérieur complète avec assets dungeon_assets texturés et collision complète (voir section dédiée ci-dessous).
 - `scenes/plage.tscn` — doublon/brouillon de scene_2, ignoré en jeu.
 - `scenes/transition.tscn` — overlay de fondu noir (autoload `SceneTransition`).
 - `scenes/crab.tscn` — scène instanciable du crabe (CSG, pas de GLB).
@@ -156,10 +157,45 @@ La scène 1 combine deux couches de décor :
 | 1 | Patrick (layer + mask) + sol/terrain + objets statiques (défaut Godot) |
 | 4 | Crabes + `InteractRay` mask |
 
+### Beach Bar (`scenes/beach_bar.tscn`)
+
+Scène instanciable d'un bar intérieur (10×8×3.2 m) construite avec les assets `dungeon_assets`. Pas de script propre — tout est déclaratif dans le .tscn.
+
+**Structure de la scène :**
+
+```text
+BeachBar (Node3D)
+├── Structure (Node3D)
+│   ├── Floor (CSGCombiner3D, use_collision) — sol avec trou circulaire
+│   ├── WallBack/WallLeft/WallRight (CSGBox3D, use_collision)
+│   ├── Ceiling (CSGBox3D, use_collision)
+│   ├── Counter (CSGBox3D, use_collision) — comptoir central
+│   └── WallDeco (Node3D) — piliers, arches, étagère, panneaux
+├── Props (Node3D) — tables, chaises, barils, caisses, bannière, pièces, torches
+├── Particles (Node3D) — flammes GPUParticles3D (torches + bougies)
+└── Lights (Node3D) — OmniLight3D (torches orange + bougies jaunes + AmbientFill)
+```
+
+**Texture dungeon_assets — pattern important :**
+
+Tous les GLB de `assets/dungeon_assets/` partagent une unique texture atlas : `assets/dungeon_assets/dungeon_albedo.png`. Le matériau externe est `assets/dungeon_assets/DungeonMat.tres` (StandardMaterial3D, roughness 0.85).
+
+- Les `.glb.import` de chaque asset doivent avoir dans `_subresources` la clé `"DungeonMat"` (ou `"texture"` pour `chair.glb`) pointant vers `DungeonMat.tres` via `uid://dnkfdyy7f0n5w`.
+- Si un asset GLB apparaît blanc/gris sans texture : ouvrir son `.glb.import`, vérifier que `_subresources` n'est pas `{}`, y ajouter la config DungeonMat, puis laisser Godot re-importer.
+- Les CSG (murs, sol…) utilisent `mat_dungeon` défini en sub_resource inline dans le .tscn (même texture, même roughness).
+
+**Collision :**
+
+Chaque GLB instancié possède un enfant `StaticBody3D > CollisionShape3D` (BoxShape3D) ajouté directement dans le .tscn. Les formes sont définies en sub_resource dans le .tscn (`shape_pillar`, `shape_table_med`, `shape_chair`, etc.). Tous les objets ont une collision : piliers, arches, étagère, panneaux, tables, chaises, barils, caisses, bougies, assiettes, bannière, pièces, torches.
+
+**Structure interne des GLB dungeon_assets :**
+
+Chaque GLB a une scène glTF avec `"Scene"` comme root Node3D et un enfant MeshInstance3D nommé d'après le mesh. Godot importe donc chaque GLB comme `Node3D (root) > MeshInstance3D (mesh)`. Le `surface_material_override` sur le root Node3D n'a aucun effet — le matériau doit être configuré via `DungeonMat.tres` dans le `.glb.import`.
+
 ### Assets
 
 - `patrick_3d.glb` + `patrick_3d_Patrick_texture.png` — modèle joueur (racine du projet)
-- `assets/dungeon_assets/` — pièces de bâtiment (murs, sols, piliers) + props (coffre, clés, tonneaux, chandelles…) pour futures scènes
+- `assets/dungeon_assets/` — pièces de bâtiment (murs, sols, piliers) + props (coffre, clés, tonneaux, chandelles…). Texture atlas : `dungeon_albedo.png`. Matériau partagé : `DungeonMat.tres`.
 - `assets/skeleton/skeleton_mage.glb` — squelette mage (non utilisé)
 - `assets/zombie/zombie.glb` + `zombie_idle.glb`, `zombie_run.glb`, `zombie_jump.glb` — zombie avec animations séparées (non utilisé)
 - `assets/import_examples/` — exemples barrel et chest_gold avec matériaux

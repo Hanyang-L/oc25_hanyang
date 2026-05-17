@@ -1,0 +1,823 @@
+[gd_scene format=3 uid="uid://c2hixq15bi755"]
+
+[ext_resource type="PackedScene" uid="uid://dqxuo7idfxwvg" path="res://scenes/patrick_player.tscn" id="1_patrick"]
+[ext_resource type="PackedScene" uid="uid://bhudpatrick01" path="res://ui/hud.tscn" id="2_hud"]
+[ext_resource type="Script" uid="uid://cfquqqcuwxx0r" path="res://scripts/scene_3.gd" id="3_script"]
+
+[sub_resource type="Environment" id="Env_GPU"]
+background_mode = 1
+background_color = Color(0.01, 0.01, 0.02, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.18, 0.28, 0.35, 1)
+ambient_light_energy = 0.9
+glow_enabled = true
+glow_bloom = 0.5
+fog_enabled = true
+fog_light_color = Color(0.05, 0.08, 0.12, 1)
+fog_density = 0.003
+
+[sub_resource type="StandardMaterial3D" id="Mat_PCB"]
+albedo_color = Color(0.12, 0.42, 0.15, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="Mat_Gold"]
+albedo_color = Color(0.9, 0.7, 0.05, 1)
+metallic = 0.9
+roughness = 0.15
+emission_enabled = true
+emission = Color(0.9, 0.6, 0, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_Die"]
+albedo_color = Color(0.12, 0.12, 0.15, 1)
+metallic = 0.4
+roughness = 0.5
+emission_enabled = true
+emission = Color(0.05, 0.1, 0.3, 1)
+emission_energy_multiplier = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_HeatSink"]
+albedo_color = Color(0.72, 0.72, 0.76, 1)
+metallic = 0.8
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_VRAM"]
+albedo_color = Color(0.08, 0.08, 0.09, 1)
+metallic = 0.3
+roughness = 0.6
+emission_enabled = true
+emission = Color(0, 0.6, 0.15, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_Fan"]
+albedo_color = Color(0.12, 0.12, 0.15, 1)
+metallic = 0.5
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_Connector"]
+albedo_color = Color(0.05, 0.05, 0.05, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Port"]
+albedo_color = Color(0.15, 0.15, 0.15, 1)
+metallic = 0.6
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_PCIe"]
+albedo_color = Color(0.7, 0.5, 0, 1)
+metallic = 0.9
+roughness = 0.2
+
+[sub_resource type="StandardMaterial3D" id="Mat_Choke"]
+albedo_color = Color(0.15, 0.15, 0.15, 1)
+metallic = 0.5
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="Mat_Cap"]
+albedo_color = Color(0.18, 0.1, 0.06, 1)
+roughness = 0.8
+
+[sub_resource type="ParticleProcessMaterial" id="PPM_Sparks"]
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 1.0
+initial_velocity_max = 4.0
+gravity = Vector3(0, 0.3, 0)
+scale_min = 0.5
+scale_max = 2.0
+color = Color(0.2, 0.8, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_Sparks"]
+radius = 0.04
+height = 0.08
+
+[sub_resource type="BoxShape3D" id="BoxShape_Next"]
+size = Vector3(40, 8, 4)
+
+[node name="Scene3GPU" type="Node3D" unique_id=-1294967295]
+script = ExtResource("3_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=-1294967294]
+environment = SubResource("Env_GPU")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=-1294967293]
+transform = Transform3D(1, 0, 0, 0, 0.7071, -0.7071, 0, 0.7071, 0.7071, 0, 40, 0)
+light_color = Color(0.6, 0.75, 1, 1)
+light_energy = 1.4
+
+[node name="Patrick" parent="." unique_id=-1294967292 instance=ExtResource("1_patrick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 40)
+
+[node name="HUD" parent="." unique_id=-1294967291 instance=ExtResource("2_hud")]
+
+[node name="GPU" type="Node3D" parent="." unique_id=-1294967290]
+
+[node name="PCB" type="CSGBox3D" parent="GPU" unique_id=-1294967289]
+use_collision = true
+size = Vector3(160, 2, 100)
+material = SubResource("Mat_PCB")
+
+[node name="CircuitTraces" type="Node3D" parent="GPU" unique_id=-1294967288]
+
+[node name="Trace1" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1294967287]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 1.06, -35)
+size = Vector3(40, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Trace2" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1294967286]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.06, -28)
+size = Vector3(40, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Trace3" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1294967285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.06, -20)
+size = Vector3(40, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Trace4" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1294967284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 1.06, -12)
+size = Vector3(40, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Trace5" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1294967283]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 1.06, 0)
+size = Vector3(40, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Trace6" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1294967282]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1.06, 12)
+size = Vector3(40, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Trace7" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1294967281]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 1.06, 22)
+size = Vector3(40, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Trace8" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1294967280]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1.06, 30)
+size = Vector3(40, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="TraceZ1" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967295]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 1.06, 0)
+size = Vector3(0.8, 0.3, 88)
+material = SubResource("Mat_Gold")
+
+[node name="TraceZ2" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 1.06, 0)
+size = Vector3(0.8, 0.3, 88)
+material = SubResource("Mat_Gold")
+
+[node name="TraceZ3" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967293]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42, 1.06, 0)
+size = Vector3(0.8, 0.3, 88)
+material = SubResource("Mat_Gold")
+
+[node name="TraceZ4" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1.06, 0)
+size = Vector3(0.8, 0.3, 88)
+material = SubResource("Mat_Gold")
+
+[node name="TraceZ5" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967291]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.06, 0)
+size = Vector3(0.8, 0.3, 88)
+material = SubResource("Mat_Gold")
+
+[node name="TraceZ6" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967290]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 1.06, 0)
+size = Vector3(0.8, 0.3, 88)
+material = SubResource("Mat_Gold")
+
+[node name="TraceZ7" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967289]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 1.06, 0)
+size = Vector3(0.8, 0.3, 88)
+material = SubResource("Mat_Gold")
+
+[node name="TraceZ8" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967288]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 1.06, 0)
+size = Vector3(0.8, 0.3, 88)
+material = SubResource("Mat_Gold")
+
+[node name="Stub1" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967287]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 1.06, -22)
+size = Vector3(8, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Stub2" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967286]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 1.06, 22)
+size = Vector3(8, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Stub3" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 1.06, -22)
+size = Vector3(8, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Stub4" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 1.06, 22)
+size = Vector3(8, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Stub5" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967283]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 1.06, -30)
+size = Vector3(8, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Stub6" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967282]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 1.06, -30)
+size = Vector3(8, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Stub7" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967281]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 1.06, 30)
+size = Vector3(8, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="Stub8" type="CSGBox3D" parent="GPU/CircuitTraces" unique_id=-1194967280]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 1.06, 30)
+size = Vector3(8, 0.3, 0.8)
+material = SubResource("Mat_Gold")
+
+[node name="GPUCore" type="Node3D" parent="GPU" unique_id=-1294967279]
+
+[node name="Die" type="CSGBox3D" parent="GPU/GPUCore" unique_id=-1294967278]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+size = Vector3(50, 0.3, 50)
+material = SubResource("Mat_Die")
+
+[node name="HeatSink" type="Node3D" parent="GPU/GPUCore" unique_id=-1294967277]
+
+[node name="Fin1" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967276]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -22.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin2" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967275]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -19.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin3" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967274]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -16.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin4" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967273]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -13.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin5" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967272]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -10.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin6" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967271]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -7.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin7" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -4.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin8" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967269]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -1.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin9" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967268]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 1.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin10" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967267]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 4.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin11" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967266]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 7.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin12" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 10.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin13" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 13.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin14" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967263]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 16.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin15" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967262]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 19.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="Fin16" type="CSGBox3D" parent="GPU/GPUCore/HeatSink" unique_id=-1294967261]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 22.5)
+use_collision = true
+size = Vector3(48, 22, 1.2)
+material = SubResource("Mat_HeatSink")
+
+[node name="VRAM" type="Node3D" parent="GPU/GPUCore" unique_id=-1294967260]
+
+[node name="ChipL1" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1294967259]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 1.25, -15)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipL2" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1294967258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 1.25, -5)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipL3" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1294967257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 1.25, 5)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipL4" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1294967256]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 1.25, 15)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipR1" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1294967255]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.25, -15)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipR2" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1294967254]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.25, -5)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipR3" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1294967253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.25, 5)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipR4" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1294967252]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.25, 15)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipL5" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1194967255]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 1.25, -25)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipL6" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1194967254]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 1.25, 25)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipL7" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1194967253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 1.25, -35)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipL8" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1194967252]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 1.25, 35)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipR5" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1194967251]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.25, -25)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipR6" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1194967250]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.25, 25)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipR7" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1194967249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.25, -35)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="ChipR8" type="CSGBox3D" parent="GPU/GPUCore/VRAM" unique_id=-1194967248]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.25, 35)
+use_collision = true
+size = Vector3(7, 0.5, 7)
+material = SubResource("Mat_VRAM")
+
+[node name="Fans" type="Node3D" parent="GPU" unique_id=-1294967251]
+
+[node name="Fan1Housing" type="CSGCylinder3D" parent="GPU/Fans" unique_id=-1294967250]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 26, 0)
+use_collision = true
+radius = 12.0
+height = 6.0
+sides = 16
+material = SubResource("Mat_Fan")
+
+[node name="Fan2Housing" type="CSGCylinder3D" parent="GPU/Fans" unique_id=-1294967249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 26, 0)
+use_collision = true
+radius = 12.0
+height = 6.0
+sides = 16
+material = SubResource("Mat_Fan")
+
+[node name="PowerConnector" type="CSGBox3D" parent="GPU" unique_id=-1294967248]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 6, 0)
+use_collision = true
+size = Vector3(14, 10, 6)
+material = SubResource("Mat_Connector")
+
+[node name="DisplayOutputs" type="Node3D" parent="GPU" unique_id=-1294967247]
+
+[node name="Port1" type="CSGBox3D" parent="GPU/DisplayOutputs" unique_id=-1294967246]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 2, -49)
+use_collision = true
+size = Vector3(5, 4, 2)
+material = SubResource("Mat_Port")
+
+[node name="Port2" type="CSGBox3D" parent="GPU/DisplayOutputs" unique_id=-1294967245]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, -49)
+use_collision = true
+size = Vector3(5, 4, 2)
+material = SubResource("Mat_Port")
+
+[node name="Port3" type="CSGBox3D" parent="GPU/DisplayOutputs" unique_id=-1294967244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, -49)
+use_collision = true
+size = Vector3(5, 4, 2)
+material = SubResource("Mat_Port")
+
+[node name="Port4" type="CSGBox3D" parent="GPU/DisplayOutputs" unique_id=-1294967243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, -49)
+use_collision = true
+size = Vector3(5, 4, 2)
+material = SubResource("Mat_Port")
+
+[node name="PCIeSlot" type="CSGBox3D" parent="GPU" unique_id=-1294967242]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 48)
+use_collision = true
+size = Vector3(80, 3, 4)
+material = SubResource("Mat_PCIe")
+
+[node name="VRMZone" type="Node3D" parent="GPU" unique_id=-1194967279]
+
+[node name="Choke1" type="CSGCylinder3D" parent="GPU/VRMZone" unique_id=-1194967278]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 2.75, -4)
+use_collision = true
+radius = 1.8
+height = 3.5
+sides = 12
+material = SubResource("Mat_Choke")
+
+[node name="Choke2" type="CSGCylinder3D" parent="GPU/VRMZone" unique_id=-1194967277]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 2.75, 0)
+use_collision = true
+radius = 1.8
+height = 3.5
+sides = 12
+material = SubResource("Mat_Choke")
+
+[node name="Choke3" type="CSGCylinder3D" parent="GPU/VRMZone" unique_id=-1194967276]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 2.75, 4)
+use_collision = true
+radius = 1.8
+height = 3.5
+sides = 12
+material = SubResource("Mat_Choke")
+
+[node name="Choke4" type="CSGCylinder3D" parent="GPU/VRMZone" unique_id=-1194967275]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 63, 2.75, -4)
+use_collision = true
+radius = 1.8
+height = 3.5
+sides = 12
+material = SubResource("Mat_Choke")
+
+[node name="Choke5" type="CSGCylinder3D" parent="GPU/VRMZone" unique_id=-1194967274]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 63, 2.75, 0)
+use_collision = true
+radius = 1.8
+height = 3.5
+sides = 12
+material = SubResource("Mat_Choke")
+
+[node name="Choke6" type="CSGCylinder3D" parent="GPU/VRMZone" unique_id=-1194967273]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 63, 2.75, 4)
+use_collision = true
+radius = 1.8
+height = 3.5
+sides = 12
+material = SubResource("Mat_Choke")
+
+[node name="CapBanks" type="Node3D" parent="GPU" unique_id=-1194967272]
+
+[node name="Cap1" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967271]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 2.4, -6)
+use_collision = true
+radius = 1.2
+height = 2.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="Cap2" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 2.4, -2)
+use_collision = true
+radius = 1.2
+height = 2.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="Cap3" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967269]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 2.4, 2)
+use_collision = true
+radius = 1.2
+height = 2.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="Cap4" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967268]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 2.4, 6)
+use_collision = true
+radius = 1.2
+height = 2.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="Cap5" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967267]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 2.4, -6)
+use_collision = true
+radius = 1.2
+height = 2.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="Cap6" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967266]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 2.4, -2)
+use_collision = true
+radius = 1.2
+height = 2.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="Cap7" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 2.4, 2)
+use_collision = true
+radius = 1.2
+height = 2.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="Cap8" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 2.4, 6)
+use_collision = true
+radius = 1.2
+height = 2.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="CapV1" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967263]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 1.9, -12)
+use_collision = true
+radius = 0.7
+height = 1.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="CapV2" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967262]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 1.9, -6)
+use_collision = true
+radius = 0.7
+height = 1.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="CapV3" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967261]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 1.9, 6)
+use_collision = true
+radius = 0.7
+height = 1.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="CapV4" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967260]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 1.9, 12)
+use_collision = true
+radius = 0.7
+height = 1.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="CapV5" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967259]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 1.9, -12)
+use_collision = true
+radius = 0.7
+height = 1.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="CapV6" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 1.9, -6)
+use_collision = true
+radius = 0.7
+height = 1.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="CapV7" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 1.9, 6)
+use_collision = true
+radius = 0.7
+height = 1.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="CapV8" type="CSGCylinder3D" parent="GPU/CapBanks" unique_id=-1194967256]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 1.9, 12)
+use_collision = true
+radius = 0.7
+height = 1.8
+sides = 10
+material = SubResource("Mat_Cap")
+
+[node name="IOBracket" type="CSGBox3D" parent="GPU" unique_id=-1194967247]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024474144, 7.0000005, -48.99245)
+use_collision = true
+size = Vector3(42, 14, 1.5)
+material = SubResource("Mat_HeatSink")
+
+[node name="PCIeBracket" type="CSGBox3D" parent="GPU" unique_id=-1194967246]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 49)
+use_collision = true
+size = Vector3(5, 22, 1.5)
+material = SubResource("Mat_HeatSink")
+
+[node name="SMDComponents" type="Node3D" parent="GPU" unique_id=-1194967245]
+
+[node name="Res1" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 1.28, -42)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res2" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 1.28, -38)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res3" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967242]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 1.28, -15)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res4" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 1.28, 10)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res5" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 1.28, 28)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res6" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967239]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 1.28, 42)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res7" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967238]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 1.28, -42)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res8" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967237]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 1.28, -38)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res9" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 1.28, -15)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res10" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 1.28, 10)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res11" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967234]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 1.28, 28)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Res12" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967233]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 1.28, 42)
+size = Vector3(2, 0.5, 0.8)
+material = SubResource("Mat_Connector")
+
+[node name="Lighting" type="Node3D" parent="." unique_id=-1294967241]
+
+[node name="AmbientBlue" type="OmniLight3D" parent="Lighting" unique_id=-1294967240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25, 0)
+light_color = Color(0.1, 0.4, 1, 1)
+light_energy = 3.5
+omni_range = 160.0
+
+[node name="Fan1Glow" type="OmniLight3D" parent="Lighting" unique_id=-1294967239]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 30, 0)
+light_color = Color(0, 0.8, 1, 1)
+light_energy = 4.0
+omni_range = 65.0
+
+[node name="Fan2Glow" type="OmniLight3D" parent="Lighting" unique_id=-1294967238]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 30, 0)
+light_color = Color(0, 0.8, 1, 1)
+light_energy = 4.0
+omni_range = 65.0
+
+[node name="CoreHeat" type="OmniLight3D" parent="Lighting" unique_id=-1294967237]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+light_color = Color(1, 0.3, 0, 1)
+light_energy = 4.0
+omni_range = 80.0
+
+[node name="EdgeRGB" type="OmniLight3D" parent="Lighting" unique_id=-1294967236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -46)
+light_color = Color(0.5, 0, 1, 1)
+light_energy = 2.5
+omni_range = 95.0
+
+[node name="PCBLeft" type="OmniLight3D" parent="Lighting" unique_id=-1294967232]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 3, 0)
+light_color = Color(0.2, 0.8, 0.3, 1)
+light_energy = 2.5
+omni_range = 65.0
+
+[node name="PCBRight" type="OmniLight3D" parent="Lighting" unique_id=-1294967231]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 3, 0)
+light_color = Color(0.2, 0.8, 0.3, 1)
+light_energy = 2.5
+omni_range = 65.0
+
+[node name="PCBFront" type="OmniLight3D" parent="Lighting" unique_id=-1294967230]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -38)
+light_color = Color(0.3, 0.5, 1, 1)
+light_energy = 2.0
+omni_range = 55.0
+
+[node name="PCBBack" type="OmniLight3D" parent="Lighting" unique_id=-1294967229]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 38)
+light_color = Color(0.3, 0.5, 1, 1)
+light_energy = 2.0
+omni_range = 55.0
+
+[node name="SparkParticles" type="GPUParticles3D" parent="." unique_id=-1294967235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, 0)
+amount = 30
+lifetime = 1.5
+process_material = SubResource("PPM_Sparks")
+draw_pass_1 = SubResource("SphereMesh_Sparks")
+
+[node name="NextSceneArea" type="Area3D" parent="." unique_id=-1294967234]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -47)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=-1294967233]
+shape = SubResource("BoxShape_Next")
+
+[connection signal="body_entered" from="NextSceneArea" to="." method="_on_next_scene_area_body_entered"]

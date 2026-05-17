@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b4haqph50vcjw" path="res://assets/sky_background/autumn_field_puresky_4k.hdr" id="4_hdr"]
 [ext_resource type="PackedScene" uid="uid://dgoyhqmxxy4e4" path="res://scenes/barrel.tscn" id="5_6uhad"]
 [ext_resource type="PackedScene" uid="uid://bylherkifio65" path="res://scenes/crab.tscn" id="5_crab"]
+[ext_resource type="PackedScene" uid="uid://dp7nk3mx2bq5f" path="res://scenes/beach_bar.tscn" id="5_iq35e"]
 [ext_resource type="Script" uid="uid://wnej6oc4k3rv" path="res://scripts/ocean_populator.gd" id="6_populator"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_pb48c"]
@@ -149,6 +150,9 @@ face_patrol_axis = false
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 14, 0.1, 20)
 patrol_distance = 5.0
 face_patrol_axis = false
+
+[node name="BeachBar" parent="Crab" unique_id=1556869550 instance=ExtResource("5_iq35e")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.8038046, 0.03016901, 30.282831)
 
 [node name="HUD" parent="." unique_id=1232840243 instance=ExtResource("2_hud")]
 
@@ -396,7 +400,7 @@ size = Vector3(2, 0.7, 2)
 material = SubResource("Mat_CoralTeal")
 
 [node name="CoralMosaic" type="CSGCombiner3D" parent="OceanObjects/Coral" unique_id=-1294967258]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -3, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -2.013826, 0.28297424)
 use_collision = true
 
 [node name="Boule" type="CSGSphere3D" parent="OceanObjects/Coral/CoralMosaic" unique_id=-1294967257]

@@ -20,6 +20,11 @@ config/icon="res://icon.svg"
 Global="*uid://bacy5j0hkfff4"
 SceneTransition="*uid://86yxvc6jwxoo"
 
+[display]
+
+window/size/viewport_width=5120
+window/size/viewport_height=2880
+
 [input]
 
 ui_left={
