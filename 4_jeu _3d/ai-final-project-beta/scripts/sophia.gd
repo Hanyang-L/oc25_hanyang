@@ -15,6 +15,8 @@ extends CharacterBody3D
 @export var jump_velocity: float = 4.5
 @export var sprint_speed: float = 10.0
 @export var freefly_speed: float = 25.0
+@export var air_drag: float = 0.5
+@export var air_acceleration: float = 4.0
 
 @export_group("Underwater")
 ## Active le mode sous-marin (mouvement plus lent, gravité réduite)
@@ -37,6 +39,7 @@ var mouse_captured: bool = false
 var look_rotation: Vector2
 var move_speed: float = 0.0
 var freeflying: bool = false
+var topdown_mode: bool = false
 
 # === Signaux ===
 signal interact_pressed  ## Émis quand le joueur appuie sur E
@@ -44,6 +47,11 @@ signal interact_pressed  ## Émis quand le joueur appuie sur E
 # === Références ===
 @onready var head: Node3D = $Head
 @onready var collider: CollisionShape3D = $Collider
+@onready var fps_camera: Camera3D = $Head/Camera3D
+@onready var topdown_camera: Camera3D = $TopDownCamera
+@onready var _anim: AnimationPlayer = $SophiaMesh/AnimationPlayer
+
+var _current_anim: String = ""
 
 
 func _ready() -> void:
@@ -51,6 +59,11 @@ func _ready() -> void:
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
 	capture_mouse()
+	if _anim == null:
+		push_warning("sophia.gd: AnimationPlayer introuvable à SophiaMesh/AnimationPlayer")
+	# Layer 2 seulement → invisible pour la caméra FPS (cull_mask=1), visible pour TopDown (cull_mask=3)
+	for vi in $SophiaMesh.find_children("*", "VisualInstance3D", true, false):
+		vi.layers = 2
 
 
 func _notification(what: int) -> void:
@@ -60,7 +73,9 @@ func _notification(what: int) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if mouse_captured and event is InputEventMouseMotion:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB:
+		_toggle_camera()
+	if mouse_captured and not topdown_mode and event is InputEventMouseMotion:
 		rotate_look(event.relative)
 
 
@@ -116,17 +131,47 @@ func _physics_process(delta: float) -> void:
 	if can_move:
 		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
 		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-		if move_dir:
-			velocity.x = move_dir.x * move_speed
-			velocity.z = move_dir.z * move_speed
+		if is_on_floor():
+			if move_dir:
+				velocity.x = move_dir.x * move_speed
+				velocity.z = move_dir.z * move_speed
+			else:
+				velocity.x = move_toward(velocity.x, 0, move_speed)
+				velocity.z = move_toward(velocity.z, 0, move_speed)
 		else:
-			velocity.x = move_toward(velocity.x, 0, move_speed)
-			velocity.z = move_toward(velocity.z, 0, move_speed)
+			if move_dir:
+				velocity.x = move_toward(velocity.x, move_dir.x * move_speed, air_acceleration * delta)
+				velocity.z = move_toward(velocity.z, move_dir.z * move_speed, air_acceleration * delta)
+			else:
+				velocity.x = move_toward(velocity.x, 0, air_drag * delta)
+				velocity.z = move_toward(velocity.z, 0, air_drag * delta)
 	else:
 		velocity.x = 0
 		velocity.z = 0
 	
 	move_and_slide()
+	_update_animation()
+
+
+func _update_animation() -> void:
+	if _anim == null:
+		return
+	var anim: String
+	if not is_on_floor():
+		anim = "Jump" if velocity.y > 0.1 else "Fall"
+	else:
+		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
+		if input_dir.length() < 0.1:
+			anim = "Idle"
+		elif input_dir.x < -0.3:
+			anim = "RunTiltL"
+		elif input_dir.x > 0.3:
+			anim = "RunTiltR"
+		else:
+			anim = "Run"
+	if anim != _current_anim:
+		_current_anim = anim
+		_anim.play(anim)
 
 
 func rotate_look(rot_input: Vector2):
@@ -158,6 +203,18 @@ func capture_mouse():
 func release_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	mouse_captured = false
+
+
+func _toggle_camera() -> void:
+	topdown_mode = not topdown_mode
+	if topdown_mode:
+		fps_camera.current = false
+		topdown_camera.current = true
+		release_mouse()
+	else:
+		topdown_camera.current = false
+		fps_camera.current = true
+		capture_mouse()
 
 
 ## Quand un crabe touche Sophia → recharge la scène

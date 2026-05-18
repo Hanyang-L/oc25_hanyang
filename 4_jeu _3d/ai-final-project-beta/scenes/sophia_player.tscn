@@ -26,6 +26,11 @@ shape = SubResource("SphereShape3D_u5a8m")
 [node name="SophiaMesh" parent="." unique_id=853671357 instance=ExtResource("2_glb_sophia")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
+[node name="TopDownCamera" type="Camera3D" parent="." unique_id=234567891]
+transform = Transform3D(-0.75731874, -0.39880344, 0.5171306, -0.085064806, 0.84537095, 0.5273632, -0.64748144, 0.35539243, -0.67413944, 0.90952444, 2.0268645, -2.3118925)
+fov = 70.0
+cull_mask = 3
+
 [node name="Head" type="Node3D" parent="." unique_id=415305662]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0294024, -0.31039643)
 
@@ -33,6 +38,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0294024, -0.31039643)
 transform = Transform3D(1, 0, 0, 0, 0.9945219, 0.104528464, 0, -0.104528464, 0.9945219, 0.0012867451, 0.040358424, -0.08126582)
 current = true
 fov = 56.98687
+cull_mask = 1
 
 [node name="InteractRay" type="RayCast3D" parent="." unique_id=135756441]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0140513, -0.045634866)

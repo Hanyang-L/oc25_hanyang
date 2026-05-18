@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Godot 4.6 — "AI final project BETA" — jeu 3D FPS en GDScript avec Patrick (SpongeBob) comme personnage. Moteur physique : Jolt Physics. Renderer : Forward Plus.
+Godot 4.6 — "AI final project BETA" — jeu 3D FPS en GDScript avec Sophia comme personnage jouable. Moteur physique : Jolt Physics. Renderer : Forward Plus.
 
 ## Lancer le jeu
 
@@ -36,7 +36,7 @@ Sans ces autoloads, les appels à `Global.has_key`, `Global.change_scene()` et l
 | `interact` | E |
 | `sprint` | Shift |
 
-> `freefly` n'est **pas** dans `project.godot`. Le paramètre `can_freefly` de `patrick.gd` est `false` par défaut, donc ce n'est pas nécessaire.
+> `freefly` n'est **pas** dans `project.godot`. Le paramètre `can_freefly` de `sophia.gd` est `false` par défaut, donc ce n'est pas nécessaire.
 
 ## Architecture
 
@@ -59,8 +59,8 @@ main_menu  →  scene_1_underwater  →  scene_2_data  →  scene_3_gpu  →  (�
 - `scenes/algue.tscn` — scène instanciable d'une plante marine animée (CSGCylinder + CSGSphere + AnimationPlayer). Pilotée par `scripts/algue.gd`.
 - `scenes/key_pickup.tscn` — pickup de clé (CSG + AnimationPlayer).
 - `scenes/barrel.tscn` — baril décoratif (StaticBody3D + ConcavePolygonShape3D, GLB).
-- `scenes/sophia_player.tscn` — le joueur actif dans les scènes 1, 2 et 3 (Sophia). Référencé dans les scènes par le nœud `$Sophia`.
-- `scenes/patrick_player.tscn` — ancien joueur (Patrick/SpongeBob), remplacé par Sophia dans les scènes jouables.
+- `scenes/sophia_player.tscn` — le joueur actif dans les scènes 1, 2 et 3 (Sophia). Référencé dans les scènes par le nœud `$Sophia`. Piloté par `scripts/sophia.gd`.
+- `scenes/patrick_player.tscn` — ancien joueur (Patrick/SpongeBob), remplacé par Sophia dans les scènes jouables. Non utilisé en jeu.
 - `scenes/skeleton_mage.tscn` — instance du GLB skeleton_mage avec pose de bones adjustée (non utilisé en jeu).
 - `scenes/zombie.tscn` — instance du GLB zombie avec animations retravaillées ("move", etc.) (non utilisé en jeu).
 
@@ -90,19 +90,36 @@ Unique source de vérité partagée entre scènes :
 - `reload_current_scene()` — recharge la scène courante (appelé par `die()`)
 - `reset_game()` — remet `has_key = false` et `current_scene_path = ""`
 
-### Joueur (`scenes/patrick_player.tscn` + `scripts/patrick.gd`)
+### Joueur actif — Sophia (`scenes/sophia_player.tscn` + `scripts/sophia.gd`)
 
-`patrick.gd` étend **directement `CharacterBody3D`** (pas `proto_controller.gd` — le contrôleur a été réécrit de zéro). Fonctionnalités :
+`sophia.gd` étend **directement `CharacterBody3D`**. Fonctionnalités :
 
 - Mouvement FPS complet avec rotation souris, saut, sprint optionnel
+- **Air momentum** : en l'air sans input, `air_drag = 0.5` u/s² (élan conservé) ; en l'air avec input, `air_acceleration = 4.0` u/s² (guidage limité). Au sol : décélération instantanée comme avant.
 - Mode sous-marin (`underwater: bool`) : vitesse × `underwater_speed_factor`, gravité × `underwater_gravity_factor`
 - Signal `interact_pressed` (touche E) — écouté par `key_pickup.gd`
 - Méthode `die()` — appelée par les crabes, recharge la scène via `Global.reload_current_scene()`
-- La souris est capturée directement au `_ready()` ; `_notification(WM_WINDOW_FOCUS_IN)` la re-capture si la fenêtre reprend le focus. Échap la relâche, clic gauche la recapture.
+- La souris est capturée au `_ready()` ; `_notification(WM_WINDOW_FOCUS_IN)` la re-capture. Échap la relâche, clic gauche la recapture.
+- **Animations** : `AnimationPlayer` récupéré à `$SophiaMesh/AnimationPlayer`. 8 animations disponibles dans `sophia.glb` : `EdgeGrab`, `Fall`, `Idle`, `Jump`, `Run`, `RunTiltL`, `RunTiltR`, `WallSlide`. `_update_animation()` appelé chaque frame : Idle/Run/RunTiltL/RunTiltR au sol, Jump/Fall en l'air.
+- **Caméra double** : Tab bascule entre la caméra FPS (`$Head/Camera3D`, `cull_mask=1`) et la caméra top-down (`$TopDownCamera`, `cull_mask=3`). Le mesh de Sophia (`VisualInstance3D` enfants de `$SophiaMesh`) est mis à `layers=2` au `_ready()` → invisible en FPS, visible en top-down.
 
-Paramètres exportés clés : `can_move`, `has_gravity`, `can_jump`, `can_sprint`, `can_freefly`, `underwater`, vitesses.
+**Structure de `sophia_player.tscn` :**
 
-> `addons/proto_controller/` existe encore dans le dépôt mais n'est **plus utilisé** par `patrick.gd`.
+```text
+Sophia (CharacterBody3D) — script sophia.gd, collision_mask=3
+├── Collider (CollisionShape3D, CapsuleShape3D)
+├── CollisionShape3D (SphereShape3D)
+├── SophiaMesh (Node3D, instance sophia.glb) — VisualInstance3D enfants mis layers=2 au runtime
+├── TopDownCamera (Camera3D, cull_mask=3) — vue 3/4 dessus
+├── Head (Node3D)
+│   └── Camera3D (Camera3D, cull_mask=1, current=true) — vue FPS
+└── InteractRay (RayCast3D, mask=4)
+```
+
+Paramètres exportés clés : `can_move`, `has_gravity`, `can_jump`, `can_sprint`, `can_freefly`, `underwater`, `air_drag`, `air_acceleration`, vitesses.
+
+> `addons/proto_controller/` existe encore dans le dépôt mais n'est **plus utilisé**.
+> `scenes/patrick_player.tscn` + `scripts/patrick.gd` existent encore mais ne sont plus utilisés en jeu.
 
 ### Crabe (`scenes/crab.tscn` + `scripts/crab.gd`)
 
@@ -209,7 +226,7 @@ DataCenter (Node3D) — script scene_2.gd
 
 ### Scène 3 — GPU géant (`scenes/scene_3_gpu.tscn` + `scripts/scene_3.gd`)
 
-Environnement thématique : Patrick marche sur un GPU géant dans le vide spatial. Tout le décor est en CSG.
+Environnement thématique : Sophia marche sur un GPU géant dans le vide spatial. Tout le décor est en CSG.
 
 **Structure globale de la scène (niveau racine) :**
 
@@ -263,7 +280,7 @@ GPU (Node3D)
 
 **Transition :** `NextSceneArea` à Z=−47 (bord avant du PCB), box 40×8×4. **Verrouillée jusqu'au placement de tous les caps.**
 
-**Patrick** spawn à Y=2, Z=40 (au fond du PCB). `Engine.time_scale` remis à 1.0 au `_ready()`.
+**Sophia** spawn à Y=2, Z=40 (au fond du PCB). `Engine.time_scale` remis à 1.0 au `_ready()`.
 
 ### MovingCap (`scenes/scene_3_gpu.tscn` > nœud MovingCap + `scripts/moving_cap.gd`)
 
@@ -283,9 +300,9 @@ Chaque cap a : `CollisionShape3D` (CylinderShape3D, rayon = rayon_visuel × 0.5)
 
 **`moving_cap.gd` (extends Node3D) :**
 
-- `_ready()` : collecte les 7 `RigidBody3D` enfants dans `_cap_bodies`, collecte les positions XZ des 24 traces, récupère `$"../Patrick"`.
+- `_ready()` : collecte les 7 `RigidBody3D` enfants dans `_cap_bodies`, collecte les positions XZ des 24 traces, récupère `$"../Sophia"`. Pour chaque RigidBody3D : `axis_lock_linear_y=true`, `axis_lock_angular_x/z=true`, `linear_damp=14`, `angular_damp=14`, `PhysicsMaterial(friction=1.0, rough=true)`.
 - `_process()` : pour chaque cap non-freezé → `_apply_push()` + `_check_snap()`.
-- `_apply_push(rb)` : si Patrick est à ≤ `PUSH_RANGE` (1.5 u), applique `apply_central_impulse` de `PUSH_FORCE` (15 N) en direction opposée à Patrick (Y ignoré).
+- `_apply_push(rb)` : si Sophia est à ≤ `PUSH_RANGE` (1.5 u), applique `apply_central_impulse` de `PUSH_FORCE` (15 N) en direction opposée à Sophia (Y ignoré).
 - `_check_snap(rb)` : si vitesse < 2 m/s ET distance XZ au trace le plus proche < `SNAP_THRESHOLD` (2.5 u) → `rb.freeze = true`, centre le cap sur la trace, incrémente `_placed_count`. Quand tous placés → `all_placed.emit()`.
 - Signal `all_placed` → `scene_3.gd` réactive la NextSceneArea.
 
@@ -293,11 +310,12 @@ Chaque cap a : `CollisionShape3D` (CylinderShape3D, rayon = rayon_visuel × 0.5)
 
 | Layer | Usage |
 | --- | --- |
-| 1 | Patrick (layer) + sol/terrain + objets statiques + caps `MovingCap` |
+| 1 | Sophia (layer) + sol/terrain + objets statiques + caps `MovingCap` |
+| 2 | Mesh de rendu de Sophia (`VisualInstance3D.layers=2`) — invisible pour la caméra FPS (`cull_mask=1`), visible pour la caméra top-down (`cull_mask=3`) |
 | 4 | Crabes + `InteractRay` mask |
 
-Patrick a `collision_mask = 3` (layers 1 et 2) — il voit les objets des deux layers.
-Les `Area3D` kill zones des traces ont `collision_layer=0, collision_mask=1` — détectent Patrick (layer 1) mais pas les caps (aussi layer 1, mais sans `die()` → inoffensif).
+Sophia a `collision_mask = 3` (layers 1 et 2) — elle voit les objets des deux layers.
+Les `Area3D` kill zones des traces ont `collision_layer=0, collision_mask=1` — détectent Sophia (layer 1) mais pas les caps (aussi layer 1, mais sans `die()` → inoffensif).
 
 ### Beach Bar (`scenes/beach_bar.tscn`)
 
@@ -343,3 +361,44 @@ Chaque GLB a une scène glTF avec `"Scene"` comme root Node3D et un enfant MeshI
 - `assets/import_examples/` — exemples barrel et chest_gold avec matériaux
 - `assets/sky_background/autumn_field_puresky_4k.hdr` — skybox HDR scène 1
 - `addons/proto_controller/` — contrôleur FPS de référence CC0 (ne plus modifier, plus utilisé en jeu)
+
+## Workflow Godot
+
+- **Avant tout renommage ou déplacement de fichier** (.tscn, .gd, .glb, .import) : demander à l'utilisateur de fermer l'éditeur Godot. L'éditeur écrase silencieusement les fichiers renommés s'il est ouvert.
+- **Après toute modification de `project.godot`** (autoloads, input map) : rappeler que l'éditeur doit être rechargé manuellement (Project > Reload) pour que les changements prennent effet.
+- **Par défaut, utiliser uniquement des CSG** (CSGBox3D, CSGCylinder3D, CSGSphere3D…) pour construire le décor — ne jamais mélanger avec des instances GLB sauf demande explicite.
+- **Avant de proposer un fix**, relire le fichier concerné (.tscn, .import, .tres) directement — ne pas se fier à la mémoire de contexte ou à des UIDs copiés depuis l'extérieur.
+
+## Gotchas connus
+
+Ces erreurs ont causé des redos — ne pas les répéter :
+
+| Problème | À ne pas faire | À faire |
+| --- | --- | --- |
+| Transparence invisible | `alpha = 0` sur un mesh (Forward Plus l'ignore) | `layers = 0` pour rendre invisible ; `collision_layer/mask = 0` pour les Area3D |
+| Matériau GLB sans effet | `surface_material_override` sur le Node3D racine | Configurer via `DungeonMat.tres` dans le `.glb.import` (clé `"DungeonMat"`) |
+| Physique Jolt incompatible | Conversion runtime StaticBody3D → RigidBody3D | Déclarer le type correct dès le `.tscn` ; Jolt ne supporte pas la conversion runtime |
+| Grille mal interprétée | Deviner l'axe d'une spec "8 en X, 4 en Z" | Reformuler l'interprétation à l'utilisateur **avant** de générer le code |
+| Ventilateur mauvais axe | `rotate_z` pour un ventilateur face Y+ | Vérifier l'orientation : face Z+ → `rotate_z`, face Y+ → `rotate_y` |
+| Autoload casse-sensitive | Corriger le nom dans `project.godot` sans recharger | Toujours rappeler Project > Reload après tout changement dans `project.godot` |
+| `layers` sur Node3D ignoré | Mettre `layers = 2` sur un Node3D (instance GLB) dans le .tscn | Itérer les enfants `VisualInstance3D` en script : `find_children("*", "VisualInstance3D")` puis `vi.layers = 2` |
+
+## Pipeline import GLB
+
+Pour tout nouvel asset GLB dans `assets/dungeon_assets/` :
+
+1. Placer le `.glb` dans `assets/dungeon_assets/`
+2. Laisser Godot créer le `.glb.import` automatiquement
+3. Ouvrir le `.glb.import` et ajouter dans `_subresources` :
+
+   ```ini
+   "materials/0/use_external/enabled": true,
+   "materials/0/use_external/path": "res://assets/dungeon_assets/DungeonMat.tres"
+   ```
+
+4. Sauvegarder — Godot re-importe automatiquement
+5. Si l'asset apparaît blanc/gris en scène → vérifier que `_subresources` n'est pas `{}`
+
+Structure interne attendue : `Node3D (root) > MeshInstance3D (mesh)`. Le `surface_material_override` sur le root **n'a aucun effet** — toujours passer par le `.import`.
+
+Pour les GLBs hors dungeon_assets : créer un `.tres` StandardMaterial3D dédié et le référencer de la même façon.

@@ -16,6 +16,15 @@ func _ready() -> void:
 	_gather_trace_positions()
 	for child in get_children():
 		if child is RigidBody3D:
+			child.axis_lock_linear_y  = true
+			child.axis_lock_angular_x = true
+			child.axis_lock_angular_z = true
+			child.linear_damp  = 14.0
+			child.angular_damp = 14.0
+			var phys_mat = PhysicsMaterial.new()
+			phys_mat.friction = 1.0
+			phys_mat.rough = true
+			child.physics_material_override = phys_mat
 			_cap_bodies.append(child)
 
 func _gather_trace_positions() -> void:

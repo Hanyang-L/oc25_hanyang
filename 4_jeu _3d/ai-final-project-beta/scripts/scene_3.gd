@@ -100,7 +100,7 @@ func _add_trace_kill_zone(trace: CSGBox3D) -> void:
 
 	var shape = CollisionShape3D.new()
 	var box = BoxShape3D.new()
-	box.size = Vector3(trace.size.x, 0.5, trace.size.z)
+	box.size = Vector3(trace.size.x, 0.3, trace.size.z)
 	shape.shape = box
 	area.add_child(shape)
 	area.body_entered.connect(_on_trace_body_entered)

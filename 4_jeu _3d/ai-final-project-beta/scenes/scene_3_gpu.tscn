@@ -50,6 +50,9 @@ emission_enabled = true
 emission = Color(0, 0.6, 0.15, 1)
 emission_energy_multiplier = 0.6
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yqvgk"]
+albedo_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+
 [sub_resource type="StandardMaterial3D" id="Mat_Fan"]
 albedo_color = Color(0.12, 0.12, 0.15, 1)
 metallic = 0.5
@@ -93,6 +96,18 @@ height = 0.08
 
 [sub_resource type="BoxShape3D" id="BoxShape_Next"]
 size = Vector3(40, 8, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xxsey"]
+albedo_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eq7gr"]
+albedo_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jty7t"]
+albedo_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hitrk"]
+albedo_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
 
 [sub_resource type="CylinderShape3D" id="CylShape_12_28"]
 height = 2.8
@@ -146,7 +161,7 @@ light_color = Color(0.6, 0.75, 1, 1)
 light_energy = 1.4
 
 [node name="Sophia" parent="." unique_id=-1294967292 instance=ExtResource("1_sophia")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -56.543957, 2.0601633, 8.962746)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -56.543957, 1.4305196, 8.962746)
 
 [node name="HUD" parent="." unique_id=-1294967291 instance=ExtResource("2_hud")]
 
@@ -324,6 +339,7 @@ material = SubResource("Mat_Gold")
 
 [node name="Die" type="CSGBox3D" parent="GPU/GPUCore" unique_id=-1294967278]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+use_collision = true
 size = Vector3(50, 0.3, 50)
 material = SubResource("Mat_Die")
 
@@ -526,8 +542,9 @@ material = SubResource("Mat_VRAM")
 [node name="Fans" type="Node3D" parent="GPU" unique_id=-1294967251]
 
 [node name="FanHole" type="CSGBox3D" parent="GPU/Fans" unique_id=228980385]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 26.14656, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.013847351, 26.151947, -0.008051872)
 size = Vector3(161, 5.5, 102)
+material = SubResource("StandardMaterial3D_yqvgk")
 
 [node name="Fan2Housing" type="CSGCylinder3D" parent="GPU/Fans/FanHole" unique_id=-1294967249]
 transform = Transform3D(1, 0, 0, 0, 0.9999944, -0.003351026, 0, 0.003351026, 0.9999944, 0.80020905, -0.048604965, 0)
@@ -955,23 +972,28 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -47)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=-1294967233]
 shape = SubResource("BoxShape_Next")
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=2101878638]
+[node name="Walls" type="CSGCombiner3D" parent="." unique_id=2101878638]
+use_collision = true
 
-[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D" unique_id=82797341]
+[node name="CSGBox3D" type="CSGBox3D" parent="Walls" unique_id=82797341]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80.48764, 12.996643, 0)
 size = Vector3(1, 26.993286, 102)
+material = SubResource("StandardMaterial3D_xxsey")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D" unique_id=1113860176]
+[node name="CSGBox3D2" type="CSGBox3D" parent="Walls" unique_id=1113860176]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80.488, 12.997, 0)
 size = Vector3(1, 26.993286, 102)
+material = SubResource("StandardMaterial3D_eq7gr")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D" unique_id=1309622998]
+[node name="CSGBox3D3" type="CSGBox3D" parent="Walls" unique_id=1309622998]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.515709, 49.607018)
 size = Vector3(161, 27, 1)
+material = SubResource("StandardMaterial3D_jty7t")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D" unique_id=597854778]
+[node name="CSGBox3D4" type="CSGBox3D" parent="Walls" unique_id=597854778]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.516, -49.607)
 size = Vector3(161, 27, 1)
+material = SubResource("StandardMaterial3D_hitrk")
 
 [node name="MovingCap" type="Node3D" parent="." unique_id=2069035446]
 script = ExtResource("4_mc")
