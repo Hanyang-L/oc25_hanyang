@@ -9,10 +9,10 @@ const PUSH_FORCE     = 15.0
 var _cap_bodies: Array[RigidBody3D] = []
 var _placed_count: int = 0
 var _trace_positions: Array[Vector3] = []
-var _patrick: Node3D
+var _sophia: Node3D
 
 func _ready() -> void:
-	_patrick = get_node("../Patrick")
+	_sophia = get_node("../Sophia")
 	_gather_trace_positions()
 	for child in get_children():
 		if child is RigidBody3D:
@@ -31,7 +31,7 @@ func _process(_delta: float) -> void:
 		_check_snap(rb)
 
 func _apply_push(rb: RigidBody3D) -> void:
-	var diff = rb.global_position - _patrick.global_position
+	var diff = rb.global_position - _sophia.global_position
 	diff.y = 0.0
 	var dist = diff.length()
 	if dist < PUSH_RANGE and dist > 0.01:

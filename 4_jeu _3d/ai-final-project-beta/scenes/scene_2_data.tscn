@@ -1,0 +1,1224 @@
+[gd_scene format=3 uid="uid://hmgmjwsgysxq"]
+
+[ext_resource type="PackedScene" uid="uid://dqxuo7idfxwvg" path="res://scenes/sophia_player.tscn" id="1_sophia"]
+[ext_resource type="PackedScene" uid="uid://bhudpatrick01" path="res://ui/hud.tscn" id="2_hud"]
+[ext_resource type="Script" uid="uid://c5h224h5nuohn" path="res://scripts/scene_2.gd" id="3_script"]
+
+[sub_resource type="Environment" id="env_res"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.05, 0.07, 0.12, 1)
+ambient_light_energy = 0.4
+tonemap_mode = 2
+glow_enabled = true
+glow_levels/7 = 0.8
+glow_bloom = 0.4
+fog_enabled = true
+fog_light_color = Color(0.02, 0.04, 0.1, 1)
+fog_density = 0.008
+
+[sub_resource type="StandardMaterial3D" id="mat_concrete"]
+albedo_color = Color(0.1, 0.1, 0.12, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="mat_rack"]
+albedo_color = Color(0.07, 0.08, 0.09, 1)
+metallic = 0.4
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="mat_rack_panel"]
+albedo_color = Color(0.12, 0.14, 0.13, 1)
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="mat_led_green"]
+albedo_color = Color(0, 1, 0.2, 1)
+emission_enabled = true
+emission = Color(0, 1, 0.2, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="StandardMaterial3D" id="mat_led_yellow"]
+albedo_color = Color(1, 0.85, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.85, 0, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="StandardMaterial3D" id="mat_led_red"]
+albedo_color = Color(1, 0.1, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.1, 0, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="StandardMaterial3D" id="mat_case"]
+albedo_color = Color(0.05, 0.05, 0.06, 1)
+metallic = 0.7
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="mat_glass"]
+transparency = 1
+albedo_color = Color(0.6, 0.8, 1, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="mat_gpu"]
+albedo_color = Color(0.08, 0.08, 0.1, 1)
+metallic = 0.6
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="mat_gpu_led"]
+albedo_color = Color(0, 0.9, 0.2, 1)
+emission_enabled = true
+emission = Color(0, 0.9, 0.2, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="StandardMaterial3D" id="mat_fan_ring"]
+albedo_color = Color(0.04, 0.04, 0.05, 1)
+metallic = 0.9
+roughness = 0.2
+
+[sub_resource type="StandardMaterial3D" id="mat_cable_purple"]
+albedo_color = Color(0.4, 0, 0.8, 1)
+emission_enabled = true
+emission = Color(0.5, 0, 1.2, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="StandardMaterial3D" id="mat_cable_white"]
+albedo_color = Color(0.92, 0.92, 0.92, 1)
+roughness = 0.8
+
+[sub_resource type="BoxShape3D" id="shape_exit"]
+size = Vector3(22, 5, 1)
+
+[node name="DataCenter" type="Node3D" unique_id=264586001]
+script = ExtResource("3_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=214442619]
+environment = SubResource("env_res")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=50410040]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 10, 0)
+light_color = Color(0.6, 0.7, 1, 1)
+light_energy = 0.3
+
+[node name="Room" type="Node3D" parent="." unique_id=1369994462]
+
+[node name="Floor" type="CSGBox3D" parent="Room" unique_id=1490197212]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+use_collision = true
+size = Vector3(22, 0.5, 34)
+material = SubResource("mat_concrete")
+
+[node name="Ceiling" type="CSGBox3D" parent="Room" unique_id=312219240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.25, 0)
+use_collision = true
+size = Vector3(22, 0.5, 34)
+material = SubResource("mat_concrete")
+
+[node name="WallBack" type="CSGBox3D" parent="Room" unique_id=1977647624]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -16.75)
+use_collision = true
+size = Vector3(23, 5, 0.5)
+material = SubResource("mat_concrete")
+
+[node name="WallL" type="CSGBox3D" parent="Room" unique_id=1028496382]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.25, 2, 0)
+use_collision = true
+size = Vector3(0.5, 5, 35)
+material = SubResource("mat_concrete")
+
+[node name="WallR" type="CSGBox3D" parent="Room" unique_id=1167391329]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.25, 2, 0)
+use_collision = true
+size = Vector3(0.5, 5, 35)
+material = SubResource("mat_concrete")
+
+[node name="ServerRacks" type="Node3D" parent="." unique_id=644269199]
+
+[node name="Row1Col1" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row1Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.75, 1.75, 9)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row1Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.27, 1.75, 9)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row1Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.35, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row1Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.18, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row1Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.35, 9.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row1Col2" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row1Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.25, 1.75, 9)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row1Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.77, 1.75, 9)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row1Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.35, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row1Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.18, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row1Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.35, 9.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row1Col3" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row1Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.75, 1.75, 9)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row1Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.27, 1.75, 9)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row1Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.35, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row1Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.18, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row1Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.35, 9.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row1Col4" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row1Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 1.75, 9)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row1Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77, 1.75, 9)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row1Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.35, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row1Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.18, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row1Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.35, 9.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row1Col5" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row1Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 1.75, 9)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row1Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73, 1.75, 9)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row1Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.35, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row1Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.18, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row1Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.35, 9.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row1Col6" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row1Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75, 1.75, 9)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row1Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.23, 1.75, 9)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row1Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.35, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row1Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.18, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row1Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.35, 9.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row1Col7" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row1Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.25, 1.75, 9)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row1Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.73, 1.75, 9)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row1Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.35, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row1Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.18, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row1Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.35, 9.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row1Col8" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row1Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.75, 1.75, 9)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row1Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.23, 1.75, 9)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row1Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.35, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row1Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.18, 9)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row1Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.35, 9.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row2Col1" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row2Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.75, 1.75, 4)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row2Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.27, 1.75, 4)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row2Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.35, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row2Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.18, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row2Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.35, 4.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row2Col2" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row2Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.25, 1.75, 4)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row2Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.77, 1.75, 4)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row2Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.35, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row2Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.18, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row2Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.35, 4.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row2Col3" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row2Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.75, 1.75, 4)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row2Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.27, 1.75, 4)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row2Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.35, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row2Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.18, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row2Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.35, 4.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row2Col4" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row2Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 1.75, 4)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row2Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77, 1.75, 4)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row2Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.35, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row2Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.18, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row2Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.35, 4.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row2Col5" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row2Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 1.75, 4)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row2Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73, 1.75, 4)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row2Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.35, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row2Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.18, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row2Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.35, 4.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row2Col6" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row2Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75, 1.75, 4)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row2Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.23, 1.75, 4)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row2Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.35, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row2Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.18, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row2Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.35, 4.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row2Col7" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row2Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.25, 1.75, 4)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row2Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.73, 1.75, 4)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row2Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.35, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row2Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.18, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row2Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.35, 4.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row2Col8" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row2Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.75, 1.75, 4)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row2Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.23, 1.75, 4)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row2Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.35, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row2Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.18, 4)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row2Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.35, 4.8)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row3Col1" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row3Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.75, 1.75, -1)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row3Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.27, 1.75, -1)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row3Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.35, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row3Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.18, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row3Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.35, -0.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row3Col2" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row3Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.25, 1.75, -1)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row3Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.77, 1.75, -1)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row3Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.35, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row3Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.18, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row3Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.35, -0.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row3Col3" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row3Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.75, 1.75, -1)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row3Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.27, 1.75, -1)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row3Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.35, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row3Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.18, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row3Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.35, -0.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row3Col4" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row3Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 1.75, -1)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row3Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77, 1.75, -1)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row3Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.35, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row3Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.18, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row3Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.35, -0.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row3Col5" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row3Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 1.75, -1)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row3Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73, 1.75, -1)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row3Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.35, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row3Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.18, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row3Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.35, -0.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row3Col6" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row3Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75, 1.75, -1)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row3Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.23, 1.75, -1)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row3Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.35, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row3Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.18, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row3Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.35, -0.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row3Col7" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row3Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.25, 1.75, -1)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row3Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.73, 1.75, -1)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row3Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.35, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row3Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.18, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row3Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.35, -0.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row3Col8" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row3Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.75, 1.75, -1)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row3Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.23, 1.75, -1)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row3Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.35, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row3Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.18, -1)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row3Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.35, -0.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row4Col1" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row4Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.75, 1.75, -6)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row4Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.27, 1.75, -6)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row4Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.35, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row4Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.18, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row4Col1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 3.35, -5.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row4Col2" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row4Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.25, 1.75, -6)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row4Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.77, 1.75, -6)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row4Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.35, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row4Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.18, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row4Col2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 3.35, -5.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row4Col3" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row4Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.75, 1.75, -6)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row4Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.27, 1.75, -6)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row4Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.35, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row4Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.18, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row4Col3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.35, -5.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row4Col4" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row4Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 1.75, -6)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row4Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77, 1.75, -6)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row4Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.35, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row4Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.18, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row4Col4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.35, -5.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row4Col5" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row4Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 1.75, -6)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row4Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.73, 1.75, -6)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row4Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.35, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row4Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.18, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row4Col5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 3.35, -5.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row4Col6" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row4Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75, 1.75, -6)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row4Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.23, 1.75, -6)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row4Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.35, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row4Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.18, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row4Col6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 3.35, -5.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row4Col7" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row4Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.25, 1.75, -6)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row4Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.73, 1.75, -6)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row4Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.35, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row4Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.18, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row4Col7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 3.35, -5.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="Row4Col8" type="Node3D" parent="ServerRacks"]
+
+[node name="Body" type="CSGBox3D" parent="ServerRacks/Row4Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.75, 1.75, -6)
+use_collision = true
+size = Vector3(0.9, 3.5, 2.0)
+material = SubResource("mat_rack")
+
+[node name="Panel" type="CSGBox3D" parent="ServerRacks/Row4Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.23, 1.75, -6)
+size = Vector3(0.06, 3.4, 1.9)
+material = SubResource("mat_rack_panel")
+
+[node name="LedGreen" type="CSGBox3D" parent="ServerRacks/Row4Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.35, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_green")
+
+[node name="LedYellow" type="CSGBox3D" parent="ServerRacks/Row4Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.18, -6)
+size = Vector3(0.05, 0.08, 1.8)
+material = SubResource("mat_led_yellow")
+
+[node name="LedRed" type="CSGBox3D" parent="ServerRacks/Row4Col8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.35, -5.2)
+size = Vector3(0.05, 0.15, 0.15)
+material = SubResource("mat_led_red")
+
+[node name="PC" type="Node3D" parent="." unique_id=1305882955]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13.5)
+
+[node name="CaseBody" type="CSGBox3D" parent="PC" unique_id=1272138268]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+use_collision = true
+size = Vector3(2, 2, 1.5)
+material = SubResource("mat_case")
+
+[node name="GlassPanel" type="CSGBox3D" parent="PC" unique_id=663087171]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.77)
+size = Vector3(1.98, 1.98, 0.04)
+material = SubResource("mat_glass")
+
+[node name="GPU" type="Node3D" parent="PC" unique_id=2000131680]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, 0)
+
+[node name="GpuBody" type="CSGBox3D" parent="PC/GPU" unique_id=1254877511]
+size = Vector3(1.8, 0.55, 0.12)
+material = SubResource("mat_gpu")
+
+[node name="GpuLed" type="CSGBox3D" parent="PC/GPU" unique_id=481528103]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
+size = Vector3(1.7, 0.03, 0.04)
+material = SubResource("mat_gpu_led")
+
+[node name="GpuFan1" type="CSGCylinder3D" parent="PC/GPU" unique_id=1132538971]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.55, 0, 0.07)
+radius = 0.2
+height = 0.08
+material = SubResource("mat_fan_ring")
+
+[node name="GpuFan2" type="CSGCylinder3D" parent="PC/GPU" unique_id=254105221]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.07)
+radius = 0.2
+height = 0.08
+material = SubResource("mat_fan_ring")
+
+[node name="GpuFan3" type="CSGCylinder3D" parent="PC/GPU" unique_id=582564206]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.55, 0, 0.07)
+radius = 0.2
+height = 0.08
+material = SubResource("mat_fan_ring")
+
+[node name="Radiator" type="CSGBox3D" parent="PC" unique_id=738088210]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
+size = Vector3(1.42, 0.55, 0.1)
+material = SubResource("mat_case")
+
+[node name="CablePurple" type="CSGBox3D" parent="PC" unique_id=2053750172]
+transform = Transform3D(0.766, 0.643, 0, -0.643, 0.766, 0, 0, 0, 1, -0.3, 1.1, 0.3)
+size = Vector3(0.08, 1.2, 0.08)
+material = SubResource("mat_cable_purple")
+
+[node name="CableWhite" type="CSGBox3D" parent="PC" unique_id=1092384029]
+transform = Transform3D(0.819, -0.574, 0, 0.574, 0.819, 0, 0, 0, 1, 0.2, 1.3, 0.25)
+size = Vector3(0.12, 0.8, 0.08)
+material = SubResource("mat_cable_white")
+
+[node name="FanRings" type="Node3D" parent="PC" unique_id=108868957]
+
+[node name="FanRing1" type="CSGCylinder3D" parent="PC/FanRings" unique_id=793596207]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.62, 0.35, 0.76)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="FanRing2" type="CSGCylinder3D" parent="PC/FanRings" unique_id=2095430584]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.35, 0.76)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="FanRing3" type="CSGCylinder3D" parent="PC/FanRings" unique_id=174240587]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.62, 0.35, 0.76)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="FanRing4" type="CSGCylinder3D" parent="PC/FanRings" unique_id=1488045145]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.62, 0.97, 0.76)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="FanRing5" type="CSGCylinder3D" parent="PC/FanRings" unique_id=445324184]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.97, 0.76)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="FanRing6" type="CSGCylinder3D" parent="PC/FanRings" unique_id=1369211412]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.62, 0.97, 0.76)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="FanRing7" type="CSGCylinder3D" parent="PC/FanRings" unique_id=545786158]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.62, 1.59, 0.76)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="FanRing8" type="CSGCylinder3D" parent="PC/FanRings" unique_id=329606655]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 1.59, 0.76)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="FanRing9" type="CSGCylinder3D" parent="PC/FanRings" unique_id=1541283323]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.62, 1.59, 0.76)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="TopFanRings" type="Node3D" parent="PC" unique_id=1018321782]
+
+[node name="TopRing1" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=2110208333]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.62, 2.01, 0)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="TopRing2" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=1308110802]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01, 0)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="TopRing3" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=695550483]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.62, 2.01, 0)
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="Fans" type="Node3D" parent="PC" unique_id=694807364]
+
+[node name="TopFans" type="Node3D" parent="PC" unique_id=738246963]
+
+[node name="PCLights" type="Node3D" parent="PC" unique_id=195384425]
+
+[node name="RgbYellow" type="OmniLight3D" parent="PC/PCLights" unique_id=1620512029]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.6)
+light_color = Color(0.8, 1, 0.05, 1)
+light_energy = 2.5
+omni_range = 3.0
+
+[node name="RgbPurple" type="OmniLight3D" parent="PC/PCLights" unique_id=921177732]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0.4)
+light_color = Color(0.55, 0, 1, 1)
+light_energy = 2.0
+omni_range = 2.5
+
+[node name="AmbientLights" type="Node3D" parent="." unique_id=847441964]
+
+[node name="ServerGlowF" type="OmniLight3D" parent="AmbientLights" unique_id=2119127853]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 6)
+light_color = Color(0, 1, 0.2, 1)
+light_energy = 1.0
+omni_range = 14.0
+
+[node name="ServerGlowB" type="OmniLight3D" parent="AmbientLights" unique_id=1393332186]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, -4)
+light_color = Color(0, 1, 0.2, 1)
+light_energy = 1.0
+omni_range = 14.0
+
+[node name="CeilingL" type="OmniLight3D" parent="AmbientLights" unique_id=862835561]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 4, 0)
+light_color = Color(0.2, 0.3, 1, 1)
+light_energy = 0.7
+omni_range = 15.0
+
+[node name="CeilingR" type="OmniLight3D" parent="AmbientLights" unique_id=890107127]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 4, 0)
+light_color = Color(0.2, 0.3, 1, 1)
+light_energy = 0.7
+omni_range = 15.0
+
+[node name="PCGlow" type="OmniLight3D" parent="AmbientLights" unique_id=2013969827]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -13.5)
+light_color = Color(0.7, 1, 0.1, 1)
+light_energy = 1.5
+omni_range = 6.0
+
+[node name="NextSceneArea" type="Area3D" parent="." unique_id=1800427570]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -15.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=315651905]
+shape = SubResource("shape_exit")
+
+[node name="Sophia" parent="." unique_id=2106063097 instance=ExtResource("1_sophia")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 13)
+
+[node name="HUD" parent="." unique_id=81398406 instance=ExtResource("2_hud")]

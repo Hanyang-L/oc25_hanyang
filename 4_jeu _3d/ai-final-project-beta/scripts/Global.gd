@@ -4,7 +4,7 @@ extends Node
 ## CONFIGURATION : Project Settings > Autoload > ajouter ce fichier avec le nom "Global"
 
 # === État du joueur ===
-var has_key: bool = false  ## Patrick a-t-il ramassé la clé ?
+var has_key: bool = false  ## Sophia a-t-elle ramassé la clé ?
 var current_scene_path: String = ""  ## Pour respawn (scène 2)
 
 
@@ -18,7 +18,7 @@ func change_scene(scene_path: String) -> void:
 		get_tree().change_scene_to_file(scene_path)
 
 
-## Recharge la scène actuelle (quand un crabe touche Patrick).
+## Recharge la scène actuelle (quand un crabe touche Sophia).
 func reload_current_scene() -> void:
 	if current_scene_path != "":
 		change_scene(current_scene_path)

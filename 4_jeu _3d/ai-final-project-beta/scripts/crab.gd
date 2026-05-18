@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-## Crabe — patrouille entre deux points et tue Patrick au contact.
+## Crabe — patrouille entre deux points et tue Sophia au contact.
 
 @export var patrol_distance: float = 6.0  ## Distance de patrouille (de chaque côté)
 @export var move_speed: float = 2.5
@@ -44,7 +44,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-## Appelé quand Patrick entre dans la zone d'attaque du crabe.
+## Appelé quand Sophia entre dans la zone d'attaque du crabe.
 func _on_attack_area_body_entered(body: Node3D) -> void:
 	if body.has_method("die"):
 		body.die()

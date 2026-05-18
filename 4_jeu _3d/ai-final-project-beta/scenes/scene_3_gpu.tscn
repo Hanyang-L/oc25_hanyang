@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://c2hixq15bi755"]
 
-[ext_resource type="PackedScene" uid="uid://dqxuo7idfxwvg" path="res://scenes/patrick_player.tscn" id="1_patrick"]
+[ext_resource type="PackedScene" uid="uid://dqxuo7idfxwvg" path="res://scenes/sophia_player.tscn" id="1_sophia"]
 [ext_resource type="PackedScene" uid="uid://bhudpatrick01" path="res://ui/hud.tscn" id="2_hud"]
 [ext_resource type="Script" uid="uid://cfquqqcuwxx0r" path="res://scripts/scene_3.gd" id="3_script"]
-[ext_resource type="Script" path="res://scripts/moving_cap.gd" id="4_mc"]
+[ext_resource type="Script" uid="uid://bcuro45t2l5rp" path="res://scripts/moving_cap.gd" id="4_mc"]
 
 [sub_resource type="Environment" id="Env_GPU"]
 background_mode = 1
@@ -95,8 +95,8 @@ height = 0.08
 size = Vector3(40, 8, 4)
 
 [sub_resource type="CylinderShape3D" id="CylShape_12_28"]
-radius = 0.6
 height = 2.8
+radius = 0.6
 
 [sub_resource type="CylinderMesh" id="CylMesh_12_28"]
 top_radius = 1.2
@@ -105,8 +105,8 @@ height = 2.8
 radial_segments = 10
 
 [sub_resource type="CylinderShape3D" id="CylShape_Cap10"]
-radius = 0.943
 height = 3.398
+radius = 0.943
 
 [sub_resource type="CylinderMesh" id="CylMesh_Cap10"]
 top_radius = 1.886
@@ -115,8 +115,8 @@ height = 3.398
 radial_segments = 10
 
 [sub_resource type="CylinderShape3D" id="CylShape_Cap12"]
-radius = 0.5544434
 height = 2.5079103
+radius = 0.5544434
 
 [sub_resource type="CylinderMesh" id="CylMesh_Cap12"]
 top_radius = 1.1088867
@@ -125,8 +125,8 @@ height = 2.5079103
 radial_segments = 10
 
 [sub_resource type="CylinderShape3D" id="CylShape_Choke2"]
-radius = 0.9
 height = 3.5
+radius = 0.9
 
 [sub_resource type="CylinderMesh" id="CylMesh_Choke2"]
 top_radius = 1.8
@@ -145,8 +145,8 @@ transform = Transform3D(1, 0, 0, 0, 0.7071, -0.7071, 0, 0.7071, 0.7071, 0, 40, 0
 light_color = Color(0.6, 0.75, 1, 1)
 light_energy = 1.4
 
-[node name="Patrick" parent="." unique_id=-1294967292 instance=ExtResource("1_patrick")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -56.325027, 2.0601633, 8.962746)
+[node name="Sophia" parent="." unique_id=-1294967292 instance=ExtResource("1_sophia")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -56.543957, 2.0601633, 8.962746)
 
 [node name="HUD" parent="." unique_id=-1294967291 instance=ExtResource("2_hud")]
 
@@ -978,8 +978,6 @@ script = ExtResource("4_mc")
 
 [node name="Cap9" type="RigidBody3D" parent="MovingCap" unique_id=524529184]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5064249, 2.4, -31.42611)
-collision_layer = 1
-collision_mask = 1
 mass = 5.0
 linear_damp = 2.0
 angular_damp = 3.0
@@ -993,8 +991,6 @@ surface_material_override/0 = SubResource("Mat_Cap")
 
 [node name="Cap10" type="RigidBody3D" parent="MovingCap" unique_id=1643881596]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.600724, 2.4, -37.321243)
-collision_layer = 1
-collision_mask = 1
 mass = 5.0
 linear_damp = 2.0
 angular_damp = 3.0
@@ -1008,8 +1004,6 @@ surface_material_override/0 = SubResource("Mat_Cap")
 
 [node name="Cap12" type="RigidBody3D" parent="MovingCap" unique_id=2134894649]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.476162, 2.2539554, -44.2197)
-collision_layer = 1
-collision_mask = 1
 mass = 5.0
 linear_damp = 2.0
 angular_damp = 3.0
@@ -1023,8 +1017,6 @@ surface_material_override/0 = SubResource("Mat_Cap")
 
 [node name="Choke2" type="RigidBody3D" parent="MovingCap" unique_id=1000000015]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.21647, 2.75, 33.642002)
-collision_layer = 1
-collision_mask = 1
 mass = 5.0
 linear_damp = 2.0
 angular_damp = 3.0
@@ -1038,8 +1030,6 @@ surface_material_override/0 = SubResource("Mat_Choke")
 
 [node name="Cap11" type="RigidBody3D" parent="MovingCap" unique_id=538682221]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -58.424877, 2.4, -45.957844)
-collision_layer = 1
-collision_mask = 1
 mass = 5.0
 linear_damp = 2.0
 angular_damp = 3.0
@@ -1053,8 +1043,6 @@ surface_material_override/0 = SubResource("Mat_Cap")
 
 [node name="Cap8" type="RigidBody3D" parent="MovingCap" unique_id=1000000016]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.466923, 2.4, 32.221268)
-collision_layer = 1
-collision_mask = 1
 mass = 5.0
 linear_damp = 2.0
 angular_damp = 3.0
@@ -1068,8 +1056,6 @@ surface_material_override/0 = SubResource("Mat_Cap")
 
 [node name="Cap1" type="RigidBody3D" parent="MovingCap" unique_id=1000000017]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 71.31296, 2.4, 45.46489)
-collision_layer = 1
-collision_mask = 1
 mass = 5.0
 linear_damp = 2.0
 angular_damp = 3.0

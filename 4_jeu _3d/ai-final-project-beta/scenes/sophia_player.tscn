@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dqxuo7idfxwvg"]
+
+[ext_resource type="Script" uid="uid://df8y1mxhkfypq" path="res://scripts/sophia.gd" id="1_sophia"]
+[ext_resource type="PackedScene" uid="uid://16iu10wxub40" path="res://sophia/source/sophia/sophia.glb" id="2_glb_sophia"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sophia"]
+radius = 0.35058594
+height = 1.4900391
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_u5a8m"]
+radius = 0.2
+
+[node name="Sophia" type="CharacterBody3D" unique_id=851546506]
+collision_mask = 3
+script = ExtResource("1_sophia")
+can_sprint = true
+
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=1376266756]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.74501956, 0.03903991)
+shape = SubResource("CapsuleShape3D_sophia")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=645305430]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.97802997, -0.2594029)
+shape = SubResource("SphereShape3D_u5a8m")
+
+[node name="SophiaMesh" parent="." unique_id=853671357 instance=ExtResource("2_glb_sophia")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="Head" type="Node3D" parent="." unique_id=415305662]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0294024, -0.31039643)
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=1466978533]
+transform = Transform3D(1, 0, 0, 0, 0.9945219, 0.104528464, 0, -0.104528464, 0.9945219, 0.0012867451, 0.040358424, -0.08126582)
+current = true
+fov = 56.98687
+
+[node name="InteractRay" type="RayCast3D" parent="." unique_id=135756441]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0140513, -0.045634866)
+target_position = Vector3(0, 0, -3)
+collision_mask = 4

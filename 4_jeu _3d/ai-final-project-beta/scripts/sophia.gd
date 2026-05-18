@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-## Patrick — joueur FPS avec mouvement, saut, interaction (touche E) et mode sous-marin.
+## Sophia — joueur FPS avec mouvement, saut, interaction (touche E) et mode sous-marin.
 
 # === Paramètres exposés ===
 @export var can_move: bool = true
@@ -131,7 +131,7 @@ func _physics_process(delta: float) -> void:
 
 func rotate_look(rot_input: Vector2):
 	look_rotation.x -= rot_input.y * look_speed
-	look_rotation.x = clamp(look_rotation.x, deg_to_rad(-85), deg_to_rad(85))
+	look_rotation.x = clamp(look_rotation.x, deg_to_rad(-80), deg_to_rad(45))
 	look_rotation.y -= rot_input.x * look_speed
 	transform.basis = Basis()
 	rotate_y(look_rotation.y)
@@ -160,7 +160,7 @@ func release_mouse():
 	mouse_captured = false
 
 
-## Quand un crabe touche Patrick → recharge la scène
+## Quand un crabe touche Sophia → recharge la scène
 func die():
 	Global.reload_current_scene()
 

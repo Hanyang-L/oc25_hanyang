@@ -1,6 +1,6 @@
 extends Area3D
 
-## Pickup pour la clé. Quand Patrick s'en approche → message + appui E pour ramasser.
+## Pickup pour la clé. Quand Sophia s'en approche → message + appui E pour ramasser.
 
 @export var pickup_message: String = "Appuie sur E pour ramasser la clé"
 
@@ -15,7 +15,7 @@ func _ready() -> void:
 
 
 func _on_body_entered(body: Node3D) -> void:
-	if body.has_method("die"):  # Patrick
+	if body.has_method("die"):  # Sophia
 		player_in_range = true
 		player_ref = body
 		hud = get_tree().current_scene.get_node_or_null("HUD")

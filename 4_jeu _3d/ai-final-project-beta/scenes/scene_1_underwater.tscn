@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bb1jvxrrnrpgw"]
 
-[ext_resource type="PackedScene" uid="uid://dqxuo7idfxwvg" path="res://scenes/patrick_player.tscn" id="1_patrick"]
+[ext_resource type="PackedScene" uid="uid://dqxuo7idfxwvg" path="res://scenes/sophia_player.tscn" id="1_sophia"]
 [ext_resource type="PackedScene" uid="uid://bhudpatrick01" path="res://ui/hud.tscn" id="2_hud"]
 [ext_resource type="Script" uid="uid://db1r6aoc6f3o7" path="res://scripts/scene_1.gd" id="3_script"]
 [ext_resource type="Texture2D" uid="uid://b4haqph50vcjw" path="res://assets/sky_background/autumn_field_puresky_4k.hdr" id="4_hdr"]
@@ -96,7 +96,7 @@ height = 0.16
 size = Vector3(20, 1.5, 4)
 
 [sub_resource type="BoxShape3D" id="BoxShape_NextScene"]
-size = Vector3(22, 3, 2)
+size = Vector3(3.4689941, 3.0830078, 2.2947998)
 
 [node name="Scene1Underwater" type="Node3D" unique_id=1831204530]
 script = ExtResource("3_script")
@@ -104,7 +104,7 @@ script = ExtResource("3_script")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=896994798]
 environment = SubResource("Environment_6uhad")
 
-[node name="Patrick" parent="." unique_id=1903857522 instance=ExtResource("1_patrick")]
+[node name="Sophia" parent="." unique_id=1903857522 instance=ExtResource("1_sophia")]
 transform = Transform3D(-0.9893868, 0, 0.14530589, 0, 1, 0, -0.14530589, 0, -0.9893868, 0, -2.3658712, -13.552637)
 
 [node name="Crab" type="Node3D" parent="." unique_id=97439458]
@@ -152,7 +152,7 @@ patrol_distance = 5.0
 face_patrol_axis = false
 
 [node name="BeachBar" parent="Crab" unique_id=1556869550 instance=ExtResource("5_iq35e")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.8038046, 0.03016901, 30.282831)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.7592404, 0.013332367, 30.306726)
 
 [node name="HUD" parent="." unique_id=1232840243 instance=ExtResource("2_hud")]
 
@@ -515,9 +515,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65632486, 0.6349602)
 shape = SubResource("BoxShape_WaterExit")
 
 [node name="NextSceneArea" type="Area3D" parent="." unique_id=1800748889]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5136628, 1, 112.12129)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.3410397, 1, 22.884275)
 collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=1800748890]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.1635098)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12194824, -0.041503906, 1.0999718)
 shape = SubResource("BoxShape_NextScene")

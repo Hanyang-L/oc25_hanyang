@@ -710,7 +710,7 @@ shadow_enabled = true
 omni_range = 4.5
 
 [node name="Banner" parent="Props" unique_id=251797721 instance=ExtResource("13_banner")]
-transform = Transform3D(1, 0, 0, 0, 1.3, 0, 0, 0, 1, 3.3105354, -0.98170567, 6.366315)
+transform = Transform3D(1, 0, 0, 0, 1.3, 0, 0, 0, 1, 3.3105354, -0.98170567, 6.4525127)
 
 [node name="AmbientFill" type="OmniLight3D" parent="." unique_id=1591272921]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7, -2.5655017)

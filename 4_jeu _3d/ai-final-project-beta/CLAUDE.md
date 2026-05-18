@@ -45,21 +45,22 @@ Sans ces autoloads, les appels à `Global.has_key`, `Global.change_scene()` et l
 Le projet contient actuellement **3 scènes jouables** précédées d'un menu principal, plus une scène de bar instanciable :
 
 ```text
-main_menu  →  scene_1_underwater  →  scene_2_plage  →  scene_3_gpu  →  (à créer : scene_4…)
+main_menu  →  scene_1_underwater  →  scene_2_data  →  scene_3_gpu  →  (à créer : scene_4…)
 ```
 
 - `scenes/main_menu.tscn` — menu principal (bouton START). Scène de démarrage du jeu. Pilotée par `scripts/main_menu.gd`.
 - `scenes/scene_1_underwater.tscn` — scène sous-marine complète avec terrain CSG, crabes, clé, HUD, particules, décor procédural, transitions eau/plage. Pilotée par `scripts/scene_1.gd`.
-- `scenes/scene_2_plage.tscn` — scène très basique (un seul CSGBox3D sol 100×100, Patrick posé dessus). Aucun script, aucun HUD, aucun gameplay — juste un passage.
+- `scenes/scene_2_data.tscn` — salle de data center (22×4.5×34 m, béton sombre). Grille 8×4 de racks serveurs CSG (LED verts/jaunes/rouges). Grand PC RGB au fond (Z=−13.5) : boîtier noir, panneau vitré, GPU avec 3 ventilateurs, 9 anneaux ventilateurs (3×3) animés, câbles violet émissif + blanc, OmniLights RGB. Pilotée par `scripts/scene_2.gd`.
 - `scenes/scene_3_gpu.tscn` — scène thématique GPU géant (PCB 160×2×100) dans un environnement sombre façon espace. Pilotée par `scripts/scene_3.gd`. Voir section dédiée ci-dessous.
 - `scenes/beach_bar.tscn` — scène de bar intérieur complète avec assets dungeon_assets texturés et collision complète (voir section dédiée ci-dessous).
-- `scenes/plage.tscn` — doublon/brouillon de scene_2, ignoré en jeu.
+- `scenes/plage.tscn` — doublon/brouillon ignoré en jeu.
 - `scenes/transition.tscn` — overlay de fondu noir (autoload `SceneTransition`).
 - `scenes/crab.tscn` — scène instanciable du crabe (CSG, pas de GLB).
 - `scenes/algue.tscn` — scène instanciable d'une plante marine animée (CSGCylinder + CSGSphere + AnimationPlayer). Pilotée par `scripts/algue.gd`.
 - `scenes/key_pickup.tscn` — pickup de clé (CSG + AnimationPlayer).
 - `scenes/barrel.tscn` — baril décoratif (StaticBody3D + ConcavePolygonShape3D, GLB).
-- `scenes/patrick_player.tscn` — le joueur.
+- `scenes/sophia_player.tscn` — le joueur actif dans les scènes 1, 2 et 3 (Sophia). Référencé dans les scènes par le nœud `$Sophia`.
+- `scenes/patrick_player.tscn` — ancien joueur (Patrick/SpongeBob), remplacé par Sophia dans les scènes jouables.
 - `scenes/skeleton_mage.tscn` — instance du GLB skeleton_mage avec pose de bones adjustée (non utilisé en jeu).
 - `scenes/zombie.tscn` — instance du GLB zombie avec animations retravaillées ("move", etc.) (non utilisé en jeu).
 
@@ -69,14 +70,15 @@ main_menu  →  scene_1_underwater  →  scene_2_plage  →  scene_3_gpu  →  (
 - Au `_ready()` : libère la souris (`MOUSE_MODE_VISIBLE`)
 - Bouton START → `Global.change_scene("res://scenes/scene_1_underwater.tscn")`
 
-### Progression automatique de scènes (`scene_1.gd` et `scene_3.gd`)
+### Progression automatique de scènes (`scene_1.gd`, `scene_2.gd`, `scene_3.gd`)
 
-`scene_1.gd` et `scene_3.gd` partagent le même pattern : au déclenchement de `NextSceneArea`, ils lisent le dossier `res://scenes/`, cherchent le fichier `scene_N+1_*.tscn`, et appellent `Global.change_scene()`. Il suffit d'ajouter un fichier `scene_4_*.tscn` etc. pour étendre le jeu.
+Les trois scripts partagent le même pattern de transition : au déclenchement de `NextSceneArea.body_entered`, ils lisent le dossier `res://scenes/`, cherchent le fichier `scene_N+1_*.tscn`, et appellent `Global.change_scene()`. Il suffit d'ajouter un fichier `scene_4_*.tscn` etc. pour étendre le jeu.
 
-Différences entre les deux :
+Différences :
 
-- `scene_1.gd` est plus riche : gère le mode sous-marin de Patrick, les transitions de fog/lumière, les particules bulles/splash, et passe `Engine.time_scale = 0.5` lors du passage à la scène suivante.
-- `scene_3.gd` gère : les zones de danger sur les traces, les étincelles électriques, les ventilateurs rotatifs et le mécanisme des caps à placer (voir section dédiée). La `NextSceneArea` est **désactivée au démarrage** et ne s'active que quand tous les caps sont placés.
+- `scene_1.gd` : gère le mode sous-marin de Sophia, les transitions de fog/lumière, les particules bulles/splash, et passe `Engine.time_scale = 0.5` lors du passage à la scène suivante.
+- `scene_2.gd` : crée au runtime les ventilateurs du PC RGB (`_setup_fans()` — 9 ventilateurs face Z+ + 3 ventilateurs dessus), les anime via `_process` (`rotate_z` pour côté, `rotate_y` pour dessus). Affiche le sous-titre "Trouve la sortie du data center".
+- `scene_3.gd` : gère les zones de danger sur les traces, les étincelles électriques, les ventilateurs rotatifs et le mécanisme des caps à placer. La `NextSceneArea` est **désactivée au démarrage** et ne s'active que quand tous les caps sont placés.
 
 ### Singleton Global (`scripts/Global.gd`)
 
@@ -157,6 +159,53 @@ La scène 1 combine deux couches de décor :
   - Scale aléatoire (×0.7–1.6)
   - Rotation Y aléatoire (360°)
   - Couleur aléatoire parmi 7 teintes de vert (vif, foncé, sarcelle, olive, vert profond, cyan-vert, vert-jaune) — tige + sommet légèrement éclairci
+
+### Scène 2 — Data Center (`scenes/scene_2_data.tscn` + `scripts/scene_2.gd`)
+
+Environnement thématique : salle de data center sombre (béton gris, 22×4.5×34 m). Tout le décor est en CSG.
+
+**Structure de la scène :**
+
+```text
+DataCenter (Node3D) — script scene_2.gd
+├── WorldEnvironment — fond noir, ambient bleu-gris, glow, fog (density 0.008)
+├── DirectionalLight3D — lumière bleutée (energy 0.3)
+├── Room (Node3D) — Floor/Ceiling/WallBack/WallL/WallR (CSGBox3D béton)
+├── ServerRacks (Node3D) — 32 racks en grille 8×4
+│   └── Row{1-4}Col{1-8} (Node3D) — chaque rack contient :
+│       ├── Body (CSGBox3D 0.9×3.5×2.0, mat_rack)
+│       ├── Panel (CSGBox3D 0.06×3.4×1.9, mat_rack_panel — face X+)
+│       ├── LedGreen (CSGBox3D, émissif vert, en haut du panel)
+│       ├── LedYellow (CSGBox3D, émissif jaune)
+│       └── LedRed (CSGBox3D, émissif rouge, point indicateur)
+├── PC (Node3D, Z=−13.5) — grand PC RGB au fond
+│   ├── CaseBody (CSGBox3D 2×2×1.5, boîtier noir)
+│   ├── GlassPanel (CSGBox3D transparent, face Z+)
+│   ├── GPU / GpuBody / GpuLed / GpuFan1-3 (CSGCylinder3D)
+│   ├── Radiator, CablePurple (émissif violet), CableWhite
+│   ├── FanRings (9 CSGCylinder3D statiques, grille 3×3 face Z+)
+│   ├── TopFanRings (3 CSGCylinder3D, dessus)
+│   ├── Fans / TopFans (Node3D vides — remplis par scene_2.gd)
+│   └── PCLights / RgbYellow / RgbPurple (OmniLight3D)
+├── AmbientLights — ServerGlowF/B (vert), CeilingL/R (bleu), PCGlow (jaune-vert)
+├── NextSceneArea (Area3D, Z=−15.5)
+├── Sophia (sophia_player.tscn, spawn Z=+13)
+└── HUD (ui/hud.tscn)
+```
+
+**Disposition des racks :**
+
+- Grille 8 colonnes × 4 rangées : X ∈ {−8.75, −6.25, −3.75, −1.25, +1.25, +3.75, +6.25, +8.75}, Z ∈ {+9, +4, −1, −6}
+- Racks tournés 90° sur Y : corps 0.9m en X, 2m en Z — **panel face X+**
+- 4m de couloir entre chaque rangée (Z) pour circuler
+- Sophia entre par Z=+13, traverse les rangées, atteint le PC au fond (Z=−13.5)
+
+**Ventilateurs PC (créés au runtime par `scene_2.gd._setup_fans()`) :**
+
+- 9 ventilateurs face Z+ (grille 3×3) : lames jaune-vert émissives, hub métallique, 8 bras à 45°. Pivots à X∈{−0.62, 0, +0.62}, Y∈{0.35, 0.97, 1.59}, Z=0.76 relatif au PC. Rotation via `rotate_z(480°/s)`.
+- 3 ventilateurs dessus : X∈{−0.62, 0, +0.62}, Y=2.02. Rotation via `rotate_y(360°/s)`.
+
+**Matériaux définis en sub_resource dans le .tscn :** `mat_concrete`, `mat_rack`, `mat_rack_panel`, `mat_led_green`, `mat_led_yellow`, `mat_led_red`, `mat_case`, `mat_glass` (transparent 15%), `mat_gpu`, `mat_gpu_led`, `mat_cable_purple`, `mat_cable_white`, `mat_fan_ring`.
 
 ### Scène 3 — GPU géant (`scenes/scene_3_gpu.tscn` + `scripts/scene_3.gd`)
 

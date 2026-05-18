@@ -3,7 +3,7 @@ extends Node3D
 const SCENES_DIR = "res://scenes/"
 const SCENE_PREFIX = "scene_"
 
-@onready var patrick: CharacterBody3D = $Patrick
+@onready var sophia: CharacterBody3D = $Sophia
 @onready var hud = $HUD
 @onready var water_exit_area: Area3D = $WaterExitArea
 @onready var next_scene_area: Area3D = $NextSceneArea
@@ -17,7 +17,7 @@ var exited_water: bool = false
 func _ready() -> void:
 	Engine.time_scale = 1.0
 	Global.current_scene_path = "res://scenes/scene_1_underwater.tscn"
-	patrick.underwater = true
+	sophia.underwater = true
 	water_exit_area.body_entered.connect(_on_water_exit)
 	next_scene_area.body_entered.connect(_on_next_scene)
 	hud.set_subtitle("Remonte vers la surface !")
@@ -26,7 +26,7 @@ func _on_water_exit(body: Node3D) -> void:
 	if exited_water or not body.has_method("die"):
 		return
 	exited_water = true
-	patrick.underwater = false
+	sophia.underwater = false
 	bubbles.emitting = false
 	splash.emitting = true
 	_transition_to_beach_env()
