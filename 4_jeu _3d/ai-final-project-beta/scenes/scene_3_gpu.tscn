@@ -111,7 +111,7 @@ albedo_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
 
 [sub_resource type="CylinderShape3D" id="CylShape_12_28"]
 height = 2.8
-radius = 0.6
+radius = 0.2
 
 [sub_resource type="CylinderMesh" id="CylMesh_12_28"]
 top_radius = 1.2
@@ -121,7 +121,7 @@ radial_segments = 10
 
 [sub_resource type="CylinderShape3D" id="CylShape_Cap10"]
 height = 3.398
-radius = 0.943
+radius = 0.3143
 
 [sub_resource type="CylinderMesh" id="CylMesh_Cap10"]
 top_radius = 1.886
@@ -131,7 +131,7 @@ radial_segments = 10
 
 [sub_resource type="CylinderShape3D" id="CylShape_Cap12"]
 height = 2.5079103
-radius = 0.5544434
+radius = 0.1848
 
 [sub_resource type="CylinderMesh" id="CylMesh_Cap12"]
 top_radius = 1.1088867
@@ -141,7 +141,7 @@ radial_segments = 10
 
 [sub_resource type="CylinderShape3D" id="CylShape_Choke2"]
 height = 3.5
-radius = 0.9
+radius = 0.3
 
 [sub_resource type="CylinderMesh" id="CylMesh_Choke2"]
 top_radius = 1.8
@@ -857,61 +857,73 @@ material = SubResource("Mat_HeatSink")
 
 [node name="Res1" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967244]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 1.28, -42)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res2" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967243]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 1.28, -38)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res3" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967242]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 1.28, -15)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res4" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967241]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 1.28, 10)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res5" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967240]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 1.28, 28)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res6" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967239]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 1.28, 42)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res7" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967238]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 1.28, -42)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res8" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967237]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 1.28, -38)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res9" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967236]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 1.28, -15)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res10" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967235]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 1.28, 10)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res11" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967234]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 1.28, 28)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
 [node name="Res12" type="CSGBox3D" parent="GPU/SMDComponents" unique_id=-1194967233]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 1.28, 42)
+use_collision = true
 size = Vector3(2, 0.5, 0.8)
 material = SubResource("Mat_Connector")
 
@@ -921,6 +933,15 @@ material = SubResource("Mat_Connector")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25, 0)
 light_color = Color(0.1, 0.4, 1, 1)
 light_energy = 3.5
+omni_range = 160.0
+
+[node name="Ambient" type="OmniLight3D" parent="Lighting" unique_id=238777595]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.60131, 99.92709, 0)
+light_color = Color(0.7440026, 0.86877835, 0.86542404, 1)
+light_energy = 3.183
+light_indirect_energy = 3.455
+light_volumetric_fog_energy = 7.97
+light_specular = 7.787
 omni_range = 160.0
 
 [node name="CoreHeat" type="OmniLight3D" parent="Lighting" unique_id=-1294967237]

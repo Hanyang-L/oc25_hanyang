@@ -96,7 +96,7 @@ height = 0.16
 size = Vector3(20, 1.5, 4)
 
 [sub_resource type="BoxShape3D" id="BoxShape_NextScene"]
-size = Vector3(2.0934448, 3.0830078, 2.052185)
+size = Vector3(1.5519257, 3.0830078, 0.80571747)
 
 [node name="Scene1Underwater" type="Node3D" unique_id=1831204530]
 script = ExtResource("3_script")
@@ -519,5 +519,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.3410397, 1, 21.1821)
 collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=1800748890]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18722534, -0.041503906, 1.2212791)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28594208, -0.041503906, 1.8445129)
 shape = SubResource("BoxShape_NextScene")

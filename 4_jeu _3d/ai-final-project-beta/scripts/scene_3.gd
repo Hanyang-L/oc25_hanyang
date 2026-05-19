@@ -103,7 +103,7 @@ func _add_trace_kill_zone(trace: CSGBox3D) -> void:
 	box.size = Vector3(trace.size.x, 0.3, trace.size.z)
 	shape.shape = box
 	area.add_child(shape)
-	area.body_entered.connect(_on_trace_body_entered)
+	area.body_entered.connect(func(body): _on_trace_body_entered(body, area.global_position))
 
 func _add_trace_sparks(trace: CSGBox3D) -> void:
 	var particles = GPUParticles3D.new()
@@ -126,9 +126,11 @@ func _add_trace_sparks(trace: CSGBox3D) -> void:
 	particles.draw_pass_1 = _spark_mesh
 	$GPU/CircuitTraces.add_child(particles)
 
-func _on_trace_body_entered(body: Node3D) -> void:
+func _on_trace_body_entered(body: Node3D, trace_pos: Vector3) -> void:
 	if body.has_method("die"):
 		body.die()
+	elif body is RigidBody3D:
+		_moving_cap.call("on_cap_entered_trace", body, trace_pos)
 
 func _on_next_scene_area_body_entered(body: Node3D) -> void:
 	if not body.has_method("die"):
