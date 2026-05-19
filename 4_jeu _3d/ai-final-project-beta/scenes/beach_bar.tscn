@@ -23,8 +23,8 @@ roughness = 0.85
 albedo_color = Color(0.38647768, 0.18027437, 0.12606552, 1)
 roughness = 0.85
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qas7t"]
-albedo_color = Color(0.4998893, 0.25890297, 0.20530766, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i1f1n"]
+albedo_color = Color(0.18039216, 0.1882353, 0.1764706, 1)
 roughness = 0.85
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4l6nm"]
@@ -137,13 +137,13 @@ use_collision = true
 size = Vector3(15.169922, 1, 14.135933)
 material = SubResource("StandardMaterial3D_thatp")
 
-[node name="FloorHole" type="CSGCylinder3D" parent="Structure/Floor" unique_id=462232583]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3116474, -0.74503404, 4.426951)
+[node name="FloorHole2" type="CSGCylinder3D" parent="Structure/Floor" unique_id=576658166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.607352, -2.8007686, 3.1593094)
 operation = 2
-radius = 2.479
-height = 3.1853633
+radius = 3.367
+height = 25.482
 sides = 10
-material = SubResource("StandardMaterial3D_qas7t")
+material = SubResource("StandardMaterial3D_i1f1n")
 
 [node name="Counter" type="CSGBox3D" parent="Structure" unique_id=615569365]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1931152, 0.5, -1.9749099)
@@ -547,7 +547,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.615, 0)
 shape = SubResource("shape_chair")
 
 [node name="TableSmallRight" parent="Props" unique_id=1857889006 instance=ExtResource("7_tsml")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.151505, 0.256446, 0.2834556)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.151505, 0.256446, -0.7715738)
 
 [node name="Body" type="StaticBody3D" parent="Props/TableSmallRight" unique_id=800972247]
 
