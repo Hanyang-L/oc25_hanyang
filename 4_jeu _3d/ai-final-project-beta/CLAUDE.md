@@ -42,16 +42,17 @@ Sans ces autoloads, les appels à `Global.has_key`, `Global.change_scene()` et l
 
 ### État actuel des scènes
 
-Le projet contient actuellement **3 scènes jouables** précédées d'un menu principal, plus une scène de bar instanciable :
+Le projet contient actuellement **4 scènes jouables** précédées d'un menu principal, plus une scène de bar instanciable :
 
 ```text
-main_menu  →  scene_1_underwater  →  scene_2_data  →  scene_3_gpu  →  (à créer : scene_4…)
+main_menu  →  scene_1_underwater  →  scene_2_data  →  scene_3_gpu  →  scene_4_neuralnet
 ```
 
 - `scenes/main_menu.tscn` — menu principal (bouton START). Scène de démarrage du jeu. Pilotée par `scripts/main_menu.gd`.
-- `scenes/scene_1_underwater.tscn` — scène sous-marine complète avec terrain CSG, crabes, clé, HUD, particules, décor procédural, transitions eau/plage. Pilotée par `scripts/scene_1.gd`.
+- `scenes/scene_1_underwater.tscn` — scène sous-marine complète avec terrain CSG, crabes, clé, HUD, particules, décor procédural, transitions eau/plage. Pilotée par `scripts/scene_1.gd`. **Double jump activé** (`can_double_jump = true`).
 - `scenes/scene_2_data.tscn` — salle de data center (22×4.5×34 m, béton sombre). Grille 8×4 de racks serveurs CSG (LED verts/jaunes/rouges). Grand PC RGB au fond (Z=−13.5) : boîtier noir, panneau vitré, GPU avec 3 ventilateurs, 9 anneaux ventilateurs (3×3) animés, câbles violet émissif + blanc, OmniLights RGB. Pilotée par `scripts/scene_2.gd`.
-- `scenes/scene_3_gpu.tscn` — scène thématique GPU géant (PCB 160×2×100) dans un environnement sombre façon espace. Pilotée par `scripts/scene_3.gd`. Voir section dédiée ci-dessous.
+- `scenes/scene_3_gpu.tscn` — scène thématique GPU géant (PCB 160×2×100) dans un environnement sombre façon espace. Pilotée par `scripts/scene_3.gd`. Voir section dédiée ci-dessous. **Double jump activé** (`can_double_jump = true`).
+- `scenes/scene_4_neuralnet.tscn` — platformer thématique réseau de neurones : sauter de neurone en neurone (CSGCylinder3D) sur des chemins lumineux bleus dans le vide. Pilotée par `scripts/scene_4.gd`. Voir section dédiée ci-dessous.
 - `scenes/beach_bar.tscn` — scène de bar intérieur complète avec assets dungeon_assets texturés et collision complète (voir section dédiée ci-dessous).
 - `scenes/plage.tscn` — doublon/brouillon ignoré en jeu.
 - `scenes/transition.tscn` — overlay de fondu noir (autoload `SceneTransition`).
@@ -70,15 +71,16 @@ main_menu  →  scene_1_underwater  →  scene_2_data  →  scene_3_gpu  →  (�
 - Au `_ready()` : libère la souris (`MOUSE_MODE_VISIBLE`)
 - Bouton START → `Global.change_scene("res://scenes/scene_1_underwater.tscn")`
 
-### Progression automatique de scènes (`scene_1.gd`, `scene_2.gd`, `scene_3.gd`)
+### Progression automatique de scènes (`scene_1.gd`, `scene_2.gd`, `scene_3.gd`, `scene_4.gd`)
 
-Les trois scripts partagent le même pattern de transition : au déclenchement de `NextSceneArea.body_entered`, ils lisent le dossier `res://scenes/`, cherchent le fichier `scene_N+1_*.tscn`, et appellent `Global.change_scene()`. Il suffit d'ajouter un fichier `scene_4_*.tscn` etc. pour étendre le jeu.
+Les quatre scripts partagent le même pattern de transition : au déclenchement de `NextSceneArea.body_entered`, ils lisent le dossier `res://scenes/`, cherchent le fichier `scene_N+1_*.tscn`, et appellent `Global.change_scene()`. Il suffit d'ajouter un fichier `scene_5_*.tscn` etc. pour étendre le jeu.
 
 Différences :
 
 - `scene_1.gd` : gère le mode sous-marin de Sophia, les transitions de fog/lumière, les particules bulles/splash, et passe `Engine.time_scale = 0.5` lors du passage à la scène suivante.
 - `scene_2.gd` : crée au runtime les ventilateurs du PC RGB (`_setup_fans()` — 9 ventilateurs face Z+ + 3 ventilateurs dessus), les anime via `_process` (`rotate_z` pour côté, `rotate_y` pour dessus). Affiche le sous-titre "Trouve la sortie du data center".
 - `scene_3.gd` : gère les zones de danger sur les traces, les étincelles électriques, les ventilateurs rotatifs et le mécanisme des caps à placer. La `NextSceneArea` est **désactivée au démarrage** et ne s'active que quand tous les caps sont placés.
+- `scene_4.gd` : crée au runtime les collisions sur les chemins (`_setup_path_collision()` — ajoute `StaticBody3D + BoxShape3D` sur chaque CSGBox3D de `$Paths`) et les bandes lumineuses sur leurs bords (`_setup_edge_strips()` — deux strips bleus émissifs par chemin). Gère kill zone (chute) et NextSceneArea.
 
 ### Singleton Global (`scripts/Global.gd`)
 
@@ -116,7 +118,14 @@ Sophia (CharacterBody3D) — script sophia.gd, collision_mask=3
 └── InteractRay (RayCast3D, mask=4)
 ```
 
-Paramètres exportés clés : `can_move`, `has_gravity`, `can_jump`, `can_sprint`, `can_freefly`, `underwater`, `air_drag`, `air_acceleration`, vitesses.
+Paramètres exportés clés : `can_move`, `has_gravity`, `can_jump`, `can_double_jump`, `can_sprint`, `can_freefly`, `underwater`, `air_drag`, `air_acceleration`, vitesses.
+
+**Double jump (`can_double_jump: bool = false`) :**
+
+- Désactivé par défaut — activé dans scene_1 et scene_3 (et scene_4).
+- Premier saut : `velocity.y = jump_velocity * 1.2` (boost léger).
+- Deuxième saut (en l'air) : `velocity.y = jump_velocity`, consomme `_double_jump_available`.
+- `_double_jump_available` est reset à `true` chaque frame où Sophia est au sol.
 
 > `addons/proto_controller/` existe encore dans le dépôt mais n'est **plus utilisé**.
 > `scenes/patrick_player.tscn` + `scripts/patrick.gd` existent encore mais ne sont plus utilisés en jeu.
@@ -305,6 +314,42 @@ Chaque cap a : `CollisionShape3D` (CylinderShape3D, rayon = rayon_visuel × 0.5)
 - `_apply_push(rb)` : si Sophia est à ≤ `PUSH_RANGE` (1.5 u), applique `apply_central_impulse` de `PUSH_FORCE` (15 N) en direction opposée à Sophia (Y ignoré).
 - `_check_snap(rb)` : si vitesse < 2 m/s ET distance XZ au trace le plus proche < `SNAP_THRESHOLD` (2.5 u) → `rb.freeze = true`, centre le cap sur la trace, incrémente `_placed_count`. Quand tous placés → `all_placed.emit()`.
 - Signal `all_placed` → `scene_3.gd` réactive la NextSceneArea.
+
+### Scène 4 — Réseau de neurones (`scenes/scene_4_neuralnet.tscn` + `scripts/scene_4.gd`)
+
+Environnement thématique : platformer dans le vide spatial violet. Sophia saute de neurone en neurone en suivant les connexions d'un réseau de neurones (Input → Hidden1 → Hidden2 → Output).
+
+**Structure de la scène :**
+
+```text
+Scene4NeuralNet (Node3D) — script scene_4.gd
+├── WorldEnvironment — fond noir-violet, ambient violet, glow, fog (density 0.002)
+├── DirectionalLight3D — lumière bleue-blanche (energy 1.2)
+├── LightInput / LightHidden / LightOutput / UnderGlow1-3 (OmniLight3D)
+├── InputLayer (Node3D) — I1/I2/I3 (CSGCylinder3D rayon=4, Z=50, Y décroissant)
+├── HiddenLayer1 (Node3D) — H1–H4 (Z=15, Y et X variables)
+├── HiddenLayer2 (Node3D) — H5–H8 (Z=−20, Y et X variables)
+├── OutputLayer (Node3D) — O (CSGCylinder3D, Z=−55, Y=11)
+├── Paths (Node3D) — 28 CSGBox3D inclinés (I1H1…H8O) — chemins entre neurones
+├── KillZone (Area3D, Y=−29) — mort si tombée dans le vide
+├── NextSceneArea (Area3D, Z=−55) — sortie après l'output
+├── Sophia — spawn (0, 18, 50), can_double_jump=true, jump_velocity=5.5
+│   underwater=true, underwater_speed_factor=1.0, underwater_gravity_factor=0.55
+└── HUD (ui/hud.tscn)
+```
+
+**Neurones :** CSGCylinder3D rayon=4, hauteur=1, 16 côtés, matériau blanc nacré émissif (emission_energy=0.35). `use_collision = true`.
+
+**Chemins (`$Paths`) :** CSGBox3D inclinés (size.y=0.4, size.z=3), matériau bleu semi-transparent émissif. Pas de collision native (CSG) — collisions ajoutées au runtime par `_setup_path_collision()`. Connexions full-mesh : I×H1 (12 chemins), H1×H2 (16 chemins), H2×O (4 chemins).
+
+**`scene_4.gd` — runtime :**
+
+- `_setup_path_collision()` : pour chaque CSGBox3D dans `$Paths` → ajoute `StaticBody3D > CollisionShape3D(BoxShape3D)` avec `box.size = path.size`.
+- `_setup_edge_strips()` : pour chaque chemin → crée 2 `CSGBox3D` bleus émissifs (size ×0.06×0.12) décalés de ±1.45 u le long de l'axe Z local du chemin. Matériau bleu vif émissif (energy=4.0).
+
+**Sophia dans cette scène :** `underwater_gravity_factor=0.55` → gravité réduite à 55% (sauts plus longs). `jump_velocity=5.5` (plus élevée que le défaut 4.5). Double jump obligatoire pour certains sauts entre couches.
+
+**Transition :** `NextSceneArea` à Z=−55 (au niveau du neurone Output). Kill zone plat à Y=−29 (chute = `die()`).
 
 ### Layers de collision
 

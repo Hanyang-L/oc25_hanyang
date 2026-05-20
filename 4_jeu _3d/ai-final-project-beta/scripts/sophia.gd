@@ -6,6 +6,7 @@ extends CharacterBody3D
 @export var can_move: bool = true
 @export var has_gravity: bool = true
 @export var can_jump: bool = true
+@export var can_double_jump: bool = false
 @export var can_sprint: bool = false
 @export var can_freefly: bool = false
 
@@ -39,6 +40,7 @@ var mouse_captured: bool = false
 var look_rotation: Vector2
 var move_speed: float = 0.0
 var freeflying: bool = false
+var _double_jump_available: bool = false
 var topdown_mode: bool = false
 
 # === Signaux ===
@@ -114,8 +116,13 @@ func _physics_process(delta: float) -> void:
 	
 	# Saut
 	if can_jump:
-		if Input.is_action_just_pressed(input_jump) and is_on_floor():
+		if is_on_floor():
+			_double_jump_available = can_double_jump
+			if Input.is_action_just_pressed(input_jump):
+				velocity.y = jump_velocity * 1.2
+		elif can_double_jump and _double_jump_available and Input.is_action_just_pressed(input_jump):
 			velocity.y = jump_velocity
+			_double_jump_available = false
 	
 	# Vitesse
 	if can_sprint and Input.is_action_pressed(input_sprint):
