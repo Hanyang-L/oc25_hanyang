@@ -123,6 +123,10 @@ transform = Transform3D(1, 0, 0, 0, 0.70710677, -0.70710677, 0, 0.70710677, 0.70
 light_color = Color(0.6, 0.7, 1, 1)
 light_energy = 0.3
 
+[node name="Sophia" parent="." unique_id=2106063097 instance=ExtResource("1_sophia")]
+transform = Transform3D(0.9500211, 0, 0.3121857, 0, 1, 0, -0.3121857, 0, 0.9500211, 15, 9.46963, 21.775503)
+can_double_jump = true
+
 [node name="Room" type="Node3D" parent="." unique_id=1369994462]
 
 [node name="Floor" type="CSGBox3D" parent="Room" unique_id=1490197212]
@@ -227,7 +231,7 @@ size = Vector3(17, 4.9594727, 4.309326)
 [node name="Bariere" type="CSGCombiner3D" parent="Room/CeilingStairs/Barriere" unique_id=1423740731]
 transform = Transform3D(0.97723854, 0, 0.21214356, 0, 1, 0, -0.21214356, 0, 0.97723854, 9.2920265, 5.5737906, 14.355286)
 
-[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere"]
+[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere" unique_id=264007034]
 size = Vector3(2.1735382, 0.9682617, 0.1265625)
 material = SubResource("StandardMaterial3D_7ro8w")
 
@@ -252,7 +256,7 @@ material = SubResource("StandardMaterial3D_7ro8w")
 [node name="Bariere2" type="CSGCombiner3D" parent="Room/CeilingStairs/Barriere" unique_id=220585445]
 transform = Transform3D(0.32262915, 0, -0.94652545, 0, 1, 0, 0.94652545, 0, 0.32262915, 9.949833, 5.5737906, 13.136744)
 
-[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere2"]
+[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere2" unique_id=416943368]
 size = Vector3(2.1735382, 0.9682617, 0.1265625)
 material = SubResource("StandardMaterial3D_7ro8w")
 
@@ -277,7 +281,7 @@ material = SubResource("StandardMaterial3D_7ro8w")
 [node name="Bariere4" type="CSGCombiner3D" parent="Room/CeilingStairs/Barriere" unique_id=2039949781]
 transform = Transform3D(1.0499696, 0, -0.0076095387, 0, 1, 0, 0.007990016, 0, 0.99997103, 6.665787, 5.5737906, 10.750536)
 
-[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere4"]
+[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere4" unique_id=1748660251]
 size = Vector3(2.1735382, 0.9682617, 0.1265625)
 material = SubResource("StandardMaterial3D_7ro8w")
 
@@ -302,7 +306,7 @@ material = SubResource("StandardMaterial3D_7ro8w")
 [node name="Bariere5" type="CSGCombiner3D" parent="Room/CeilingStairs/Barriere" unique_id=1184108252]
 transform = Transform3D(0.874867, 0, 0.5863442, 0, 1, 0, -0.6332517, 0, 0.81006205, 4.6056, 5.5737906, 11.441595)
 
-[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere5"]
+[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere5" unique_id=1243030044]
 size = Vector3(2.1735382, 0.9682617, 0.1265625)
 material = SubResource("StandardMaterial3D_7ro8w")
 
@@ -327,7 +331,7 @@ material = SubResource("StandardMaterial3D_7ro8w")
 [node name="Bariere3" type="CSGCombiner3D" parent="Room/CeilingStairs/Barriere" unique_id=209256569]
 transform = Transform3D(0.87411255, 0, -0.6070708, 0, 1, 0, 0.6677779, 0, 0.79464775, 8.677202, 5.5737906, 11.453396)
 
-[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere3"]
+[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere3" unique_id=1303901164]
 size = Vector3(2.1735382, 0.9682617, 0.1265625)
 material = SubResource("StandardMaterial3D_7ro8w")
 
@@ -352,7 +356,7 @@ material = SubResource("StandardMaterial3D_7ro8w")
 [node name="Bariere6" type="CSGCombiner3D" parent="Room/CeilingStairs/Barriere" unique_id=1853311645]
 transform = Transform3D(-0.35015163, 0, 0.942758, 0, 0.99999994, 0, -0.9898957, 0, -0.33347774, 3.369353, 5.5737906, 15.313631)
 
-[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere6"]
+[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere6" unique_id=2037862415]
 size = Vector3(2.1735382, 0.9682617, 0.1265625)
 material = SubResource("StandardMaterial3D_7ro8w")
 
@@ -377,7 +381,7 @@ material = SubResource("StandardMaterial3D_7ro8w")
 [node name="Bariere7" type="CSGCombiner3D" parent="Room/CeilingStairs/Barriere" unique_id=673303923]
 transform = Transform3D(-0.8933952, 0, 0.5618811, 0, 1, 0, -0.60683167, 0, -0.8272179, 4.720869, 5.5737906, 17.015203)
 
-[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere7"]
+[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere7" unique_id=1494187380]
 size = Vector3(2.1735382, 0.9682617, 0.1265625)
 material = SubResource("StandardMaterial3D_7ro8w")
 
@@ -402,7 +406,7 @@ material = SubResource("StandardMaterial3D_7ro8w")
 [node name="Bariere9" type="CSGCombiner3D" parent="Room/CeilingStairs/Barriere" unique_id=1040052313]
 transform = Transform3D(-1.0797807, 0, -0.02013986, 0, 1, 0, 0.021750957, 0, -0.99979705, 6.785321, 5.5737906, 17.629547)
 
-[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere9"]
+[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere9" unique_id=2010798948]
 size = Vector3(2.1735382, 0.9682617, 0.1265625)
 material = SubResource("StandardMaterial3D_7ro8w")
 
@@ -427,7 +431,7 @@ material = SubResource("StandardMaterial3D_7ro8w")
 [node name="Bariere8" type="CSGCombiner3D" parent="Room/CeilingStairs/Barriere" unique_id=1116214609]
 transform = Transform3D(0.3300807, 0, 0.95391625, 0, 1, 0, -1.0493078, 0, 0.30007333, 3.345005, 5.5737906, 13.18309)
 
-[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere8"]
+[node name="BarBox" type="CSGBox3D" parent="Room/CeilingStairs/Barriere/Bariere8" unique_id=477981754]
 size = Vector3(2.1735382, 0.9682617, 0.1265625)
 material = SubResource("StandardMaterial3D_7ro8w")
 
@@ -1556,9 +1560,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -15.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=315651905]
 shape = SubResource("shape_exit")
-
-[node name="Sophia" parent="." unique_id=2106063097 instance=ExtResource("1_sophia")]
-transform = Transform3D(0.9500211, 0, 0.3121857, 0, 1, 0, -0.3121857, 0, 0.9500211, 15, 9.46963, 21.775503)
 
 [node name="HUD" parent="." unique_id=81398406 instance=ExtResource("2_hud")]
 
