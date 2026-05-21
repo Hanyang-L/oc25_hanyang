@@ -224,7 +224,6 @@ func _toggle_camera() -> void:
 		capture_mouse()
 
 
-## Quand un crabe touche Sophia → recharge la scène
 func die():
 	Global.reload_current_scene()
 

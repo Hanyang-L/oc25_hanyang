@@ -4,8 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://bhudpatrick01" path="res://ui/hud.tscn" id="2_hud"]
 [ext_resource type="Texture2D" uid="uid://b4haqph50vcjw" path="res://assets/sky_background/autumn_field_puresky_4k.hdr" id="2_lwuvj"]
 [ext_resource type="PackedScene" uid="uid://dp7nk3mx2bq5f" path="res://scenes/beach_bar.tscn" id="3_rg0s2"]
-[ext_resource type="Script" uid="uid://c5h224h5nuohn" path="res://scripts/scene_2.gd" id="3_script"]
-[ext_resource type="Script" uid="uid://deuuxmoatwhxs" path="res://scenes/stairs.gd" id="6_ucjih"]
+[ext_resource type="Script" uid="uid://c5h224h5nuohn" path="res://scripts/scene_1.gd" id="3_script"]
+[ext_resource type="PackedScene" uid="uid://bogbm7nei4ffw" path="res://scenes/chest_gold.tscn" id="4_chest"]
+[ext_resource type="Script" uid="uid://dtl2fs4vfurjc" path="res://scripts/chest.gd" id="5_chest_script"]
+[ext_resource type="Script" uid="uid://deuuxmoatwhxs" path="res://scripts/stairs.gd" id="6_ucjih"]
+[ext_resource type="PackedScene" uid="uid://dgoyhqmxxy4e4" path="res://scenes/barrel.tscn" id="9_4ts44"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_rg0s2"]
 panorama = ExtResource("2_lwuvj")
@@ -30,6 +33,9 @@ albedo_color = Color(0.14901961, 0.16078432, 0.18039216, 1)
 albedo_color = Color(0.2567053, 0.26687875, 0.25161994, 1)
 roughness = 0.85
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rdkdp"]
+albedo_color = Color(0.2627451, 0.28627452, 0.2901961, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rg0s2"]
 albedo_color = Color(0.26666668, 0.25882354, 0.20392157, 1)
 roughness = 0.85
@@ -40,6 +46,15 @@ roughness = 0.85
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jqm0e"]
 albedo_color = Color(0.14901961, 0.16078432, 0.18039216, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0vmfs"]
+albedo_color = Color(0.2627451, 0.28627452, 0.2901961, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jbwhf"]
+albedo_color = Color(0.2627451, 0.28627452, 0.2901961, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_01xdi"]
+albedo_color = Color(0.2627451, 0.28627452, 0.2901961, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7ro8w"]
 albedo_color = Color(0.35686275, 0.21568628, 0.2, 1)
@@ -105,6 +120,12 @@ emission_energy_multiplier = 2.0
 [sub_resource type="StandardMaterial3D" id="mat_cable_white"]
 albedo_color = Color(0.92, 0.92, 0.92, 1)
 roughness = 0.8
+
+[sub_resource type="BoxShape3D" id="shape_chest_col"]
+size = Vector3(1.8040283, 1.3458008, 1.4219726)
+
+[sub_resource type="BoxShape3D" id="shape_chest_area"]
+size = Vector3(3, 2, 3)
 
 [sub_resource type="BoxShape3D" id="shape_exit"]
 size = Vector3(22, 5, 1)
@@ -189,6 +210,7 @@ script = ExtResource("6_ucjih")
 repeat = 36
 size = Vector3(4, 0.5, 9)
 rotate_3d = Vector3(0, 30, 0)
+material = SubResource("StandardMaterial3D_rdkdp")
 
 [node name="BigTube" type="CSGCylinder3D" parent="Room/CeilingStairs" unique_id=1535552217]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5943317, -1.8641894, 14.215908)
@@ -215,16 +237,19 @@ material = SubResource("StandardMaterial3D_jqm0e")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.66549, 4.934409, 14.24044)
 radius = 3.468
 height = 0.5
+material = SubResource("StandardMaterial3D_0vmfs")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Room/CeilingStairs/StStair" unique_id=1181021303]
 transform = Transform3D(0.9796209, 0, 0.20085564, 0, 1, 0, -0.20085564, 0, 0.9796209, 0.13912058, -1.8984127, -1.6488037)
 operation = 2
 size = Vector3(17, 4.9594727, 4.309326)
+material = SubResource("StandardMaterial3D_jbwhf")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Room/CeilingStairs/StStair" unique_id=2000430741]
 transform = Transform3D(0.3154504, 0, 0.9489421, 0, 1, 0, -0.9489421, 0, 0.3154504, -0.97951746, -1.8984127, -1.6488037)
 operation = 2
 size = Vector3(17, 4.9594727, 4.309326)
+material = SubResource("StandardMaterial3D_01xdi")
 
 [node name="Barriere" type="CSGCombiner3D" parent="Room/CeilingStairs" unique_id=1375670285]
 
@@ -1555,6 +1580,26 @@ light_color = Color(0.7, 1, 0.1, 1)
 light_energy = 1.5
 omni_range = 6.0
 
+[node name="Chest" type="Node3D" parent="." unique_id=2100000001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -13.5)
+script = ExtResource("5_chest_script")
+
+[node name="ChestMesh" parent="Chest" unique_id=2100000002 instance=ExtResource("4_chest")]
+
+[node name="ChestBody" type="StaticBody3D" parent="Chest" unique_id=2100000003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07343483, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Chest/ChestBody" unique_id=2100000004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12972426, 0.67290044, 0.31098652)
+shape = SubResource("shape_chest_col")
+
+[node name="InteractArea" type="Area3D" parent="Chest" unique_id=2100000005]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Chest/InteractArea" unique_id=2100000006]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("shape_chest_area")
+
 [node name="NextSceneArea" type="Area3D" parent="." unique_id=1800427570]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -15.5)
 
@@ -1568,3 +1613,9 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 16.0
 use_collision = true
 size = Vector3(645.21216, 1, 628.306)
 material = SubResource("StandardMaterial3D_ontf5")
+
+[node name="Barrel" parent="." unique_id=653704603 instance=ExtResource("9_4ts44")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 11.0820875, 9.440131, 10.604499)
+
+[node name="Barrel2" parent="." unique_id=610965226 instance=ExtResource("9_4ts44")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.967909, 10.210388, 22.576036)

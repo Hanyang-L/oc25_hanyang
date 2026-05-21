@@ -42,25 +42,25 @@ Sans ces autoloads, les appels à `Global.has_key`, `Global.change_scene()` et l
 
 ### État actuel des scènes
 
-Le projet contient actuellement **4 scènes jouables** précédées d'un menu principal, plus une scène de bar instanciable :
+Le projet contient actuellement **4 scènes jouables** précédées d'un menu principal, plus une scène de bar instanciable. La progression est **non-linéaire** : scene_4 renvoie dans scene_1 avec la clé pour ouvrir le coffre final.
 
 ```text
-main_menu  →  scene_1_underwater  →  scene_2_data  →  scene_3_gpu  →  scene_4_neuralnet
+main_menu → scene_1_data → scene_2_gpu → scene_3_llm → scene_4_neuralnet
+                ↑                                              │ (clé)
+                └──────────────────────────────────────────────┘
 ```
 
 - `scenes/main_menu.tscn` — menu principal (bouton START). Scène de démarrage du jeu. Pilotée par `scripts/main_menu.gd`.
-- `scenes/scene_1_underwater.tscn` — scène sous-marine complète avec terrain CSG, crabes, clé, HUD, particules, décor procédural, transitions eau/plage. Pilotée par `scripts/scene_1.gd`. **Double jump activé** (`can_double_jump = true`).
-- `scenes/scene_2_data.tscn` — salle de data center (22×4.5×34 m, béton sombre). Grille 8×4 de racks serveurs CSG (LED verts/jaunes/rouges). Grand PC RGB au fond (Z=−13.5) : boîtier noir, panneau vitré, GPU avec 3 ventilateurs, 9 anneaux ventilateurs (3×3) animés, câbles violet émissif + blanc, OmniLights RGB. Pilotée par `scripts/scene_2.gd`.
-- `scenes/scene_3_gpu.tscn` — scène thématique GPU géant (PCB 160×2×100) dans un environnement sombre façon espace. Pilotée par `scripts/scene_3.gd`. Voir section dédiée ci-dessous. **Double jump activé** (`can_double_jump = true`).
-- `scenes/scene_4_neuralnet.tscn` — platformer thématique réseau de neurones : sauter de neurone en neurone (CSGCylinder3D) sur des chemins lumineux bleus dans le vide. Pilotée par `scripts/scene_4.gd`. Voir section dédiée ci-dessous.
+- `scenes/scene_1_data.tscn` — salle de data center (22×4.5×34 m, béton sombre). Grille 8×4 de racks serveurs CSG. Grand PC RGB au fond (Z=−13.5). **Coffre chest_gold (X=3.5, Z=−13.5)** ouvrable avec la clé. Pilotée par `scripts/scene_1.gd`.
+- `scenes/scene_2_gpu.tscn` — scène thématique GPU géant (PCB 160×2×100) dans un environnement sombre façon espace. Pilotée par `scripts/scene_2.gd`. Voir section dédiée ci-dessous. **Double jump activé** (`can_double_jump = true`).
+- `scenes/scene_3_llm.tscn` — puzzle LLM : ranger des blocs-mots sur des panneaux pour compléter 3 phrases. Pilotée par `scripts/scene_4.gd`. Voir section dédiée ci-dessous.
+- `scenes/scene_4_neuralnet.tscn` — platformer réseau de neurones : sauter de neurone en neurone (I→H1→H2→O). Sur le neurone Output, une clé flotte — la ramasser (E) déclenche la transition vers scene_1_data. **Pas de NextSceneArea.** Pilotée par `scripts/scene_3.gd`. Voir section dédiée ci-dessous.
+- `scenes/chest_gold.tscn` — coffre interactif (instance de `chest_gold.glb` + AnimationPlayer "open"). Utilisé dans scene_1_data. Piloté par `scripts/chest.gd`.
 - `scenes/beach_bar.tscn` — scène de bar intérieur complète avec assets dungeon_assets texturés et collision complète (voir section dédiée ci-dessous).
-- `scenes/plage.tscn` — doublon/brouillon ignoré en jeu.
 - `scenes/transition.tscn` — overlay de fondu noir (autoload `SceneTransition`).
-- `scenes/crab.tscn` — scène instanciable du crabe (CSG, pas de GLB).
-- `scenes/algue.tscn` — scène instanciable d'une plante marine animée (CSGCylinder + CSGSphere + AnimationPlayer). Pilotée par `scripts/algue.gd`.
-- `scenes/key_pickup.tscn` — pickup de clé (CSG + AnimationPlayer).
+- `scenes/key_pickup.tscn` — pickup de clé (CSG + AnimationPlayer). Export `next_scene_override: String` : si renseigné, appelle `Global.change_scene()` après ramassage.
 - `scenes/barrel.tscn` — baril décoratif (StaticBody3D + ConcavePolygonShape3D, GLB).
-- `scenes/sophia_player.tscn` — le joueur actif dans les scènes 1, 2 et 3 (Sophia). Référencé dans les scènes par le nœud `$Sophia`. Piloté par `scripts/sophia.gd`.
+- `scenes/sophia_player.tscn` — le joueur actif dans toutes les scènes (Sophia). Référencé dans les scènes par le nœud `$Sophia`. Piloté par `scripts/sophia.gd`.
 - `scenes/patrick_player.tscn` — ancien joueur (Patrick/SpongeBob), remplacé par Sophia dans les scènes jouables. Non utilisé en jeu.
 - `scenes/skeleton_mage.tscn` — instance du GLB skeleton_mage avec pose de bones adjustée (non utilisé en jeu).
 - `scenes/zombie.tscn` — instance du GLB zombie avec animations retravaillées ("move", etc.) (non utilisé en jeu).
@@ -69,24 +69,26 @@ main_menu  →  scene_1_underwater  →  scene_2_data  →  scene_3_gpu  →  sc
 
 - `Control` plein écran avec un `TextureRect` (fond) et un `Button` "START" centré
 - Au `_ready()` : libère la souris (`MOUSE_MODE_VISIBLE`)
-- Bouton START → `Global.change_scene("res://scenes/scene_1_underwater.tscn")`
+- Bouton START → `Global.change_scene("res://scenes/scene_1_data.tscn")`
 
-### Progression automatique de scènes (`scene_1.gd`, `scene_2.gd`, `scene_3.gd`, `scene_4.gd`)
+### Progression des scènes
 
-Les quatre scripts partagent le même pattern de transition : au déclenchement de `NextSceneArea.body_entered`, ils lisent le dossier `res://scenes/`, cherchent le fichier `scene_N+1_*.tscn`, et appellent `Global.change_scene()`. Il suffit d'ajouter un fichier `scene_5_*.tscn` etc. pour étendre le jeu.
+Les scènes 1–3 utilisent un pattern commun : `NextSceneArea.body_entered` → lecture de `res://scenes/` → `scene_N+1_*.tscn` → `Global.change_scene()`.
 
-Différences :
+**Exception scene_4_neuralnet** : pas de `NextSceneArea`. La sortie se fait via `KeyPickup` sur le neurone Output (`next_scene_override = "res://scenes/scene_1_data.tscn"`). Quand Sophia appuie E, `key_pickup.gd` pose `Global.has_key = true` puis appelle `Global.change_scene()`.
 
-- `scene_1.gd` : gère le mode sous-marin de Sophia, les transitions de fog/lumière, les particules bulles/splash, et passe `Engine.time_scale = 0.5` lors du passage à la scène suivante.
-- `scene_2.gd` : crée au runtime les ventilateurs du PC RGB (`_setup_fans()` — 9 ventilateurs face Z+ + 3 ventilateurs dessus), les anime via `_process` (`rotate_z` pour côté, `rotate_y` pour dessus). Affiche le sous-titre "Trouve la sortie du data center".
-- `scene_3.gd` : gère les zones de danger sur les traces, les étincelles électriques, les ventilateurs rotatifs et le mécanisme des caps à placer. La `NextSceneArea` est **désactivée au démarrage** et ne s'active que quand tous les caps sont placés.
-- `scene_4.gd` : crée au runtime les collisions sur les chemins (`_setup_path_collision()` — ajoute `StaticBody3D + BoxShape3D` sur chaque CSGBox3D de `$Paths`) et les bandes lumineuses sur leurs bords (`_setup_edge_strips()` — deux strips bleus émissifs par chemin). Gère kill zone (chute) et NextSceneArea.
+Différences script par script :
+
+- `scene_1.gd` : crée au runtime les ventilateurs du PC RGB (`_setup_fans()` — 9 ventilateurs face Z+ + 3 ventilateurs dessus), les anime via `_process` (`rotate_z` pour côté, `rotate_y` pour dessus). Affiche le sous-titre "Trouve la sortie du data center".
+- `scene_2.gd` : gère les zones de danger sur les traces, les étincelles électriques, les ventilateurs rotatifs et le mécanisme des caps à placer. La `NextSceneArea` est **désactivée au démarrage** et ne s'active que quand tous les caps sont placés.
+- `scene_3.gd` (utilisé par **scene_4_neuralnet**) : crée au runtime les collisions sur les chemins (`_setup_path_collision()`) et les bandes lumineuses (`_setup_edge_strips()`). Gère uniquement la kill zone — **pas de `_on_next_scene_area_body_entered`**.
+- `scene_4.gd` (utilisé par **scene_3_llm**) : puzzle de blocs-mots (3 phrases × 5 slots). Gère `NextSceneArea` activée quand `_correct_count >= 15`.
 
 ### Singleton Global (`scripts/Global.gd`)
 
 Unique source de vérité partagée entre scènes :
 
-- `has_key: bool` — Patrick a-t-il ramassé la clé ?
+- `has_key: bool` — Sophia a-t-elle ramassé la clé ? (posé à `true` par `key_pickup.gd` en scene_4_neuralnet, lu par `chest.gd` en scene_1)
 - `current_scene_path: String` — utilisé par `reload_current_scene()` pour le respawn après mort
 - `change_scene(path)` — passe par `SceneTransition` si disponible, sinon change directement
 - `reload_current_scene()` — recharge la scène courante (appelé par `die()`)
@@ -100,7 +102,7 @@ Unique source de vérité partagée entre scènes :
 - **Air momentum** : en l'air sans input, `air_drag = 0.5` u/s² (élan conservé) ; en l'air avec input, `air_acceleration = 4.0` u/s² (guidage limité). Au sol : décélération instantanée comme avant.
 - Mode sous-marin (`underwater: bool`) : vitesse × `underwater_speed_factor`, gravité × `underwater_gravity_factor`
 - Signal `interact_pressed` (touche E) — écouté par `key_pickup.gd`
-- Méthode `die()` — appelée par les crabes, recharge la scène via `Global.reload_current_scene()`
+- Méthode `die()` — recharge la scène via `Global.reload_current_scene()`
 - La souris est capturée au `_ready()` ; `_notification(WM_WINDOW_FOCUS_IN)` la re-capture. Échap la relâche, clic gauche la recapture.
 - **Animations** : `AnimationPlayer` récupéré à `$SophiaMesh/AnimationPlayer`. 8 animations disponibles dans `sophia.glb` : `EdgeGrab`, `Fall`, `Idle`, `Jump`, `Run`, `RunTiltL`, `RunTiltR`, `WallSlide`. `_update_animation()` appelé chaque frame : Idle/Run/RunTiltL/RunTiltR au sol, Jump/Fall en l'air.
 - **Caméra double** : Tab bascule entre la caméra FPS (`$Head/Camera3D`, `cull_mask=1`) et la caméra top-down (`$TopDownCamera`, `cull_mask=3`). Le mesh de Sophia (`VisualInstance3D` enfants de `$SophiaMesh`) est mis à `layers=2` au `_ready()` → invisible en FPS, visible en top-down.
@@ -122,7 +124,7 @@ Paramètres exportés clés : `can_move`, `has_gravity`, `can_jump`, `can_double
 
 **Double jump (`can_double_jump: bool = false`) :**
 
-- Désactivé par défaut — activé dans scene_1 et scene_3 (et scene_4).
+- Désactivé par défaut — activé dans scene_2 et scene_4.
 - Premier saut : `velocity.y = jump_velocity * 1.2` (boost léger).
 - Deuxième saut (en l'air) : `velocity.y = jump_velocity`, consomme `_double_jump_available`.
 - `_double_jump_available` est reset à `true` chaque frame où Sophia est au sol.
@@ -130,21 +132,14 @@ Paramètres exportés clés : `can_move`, `has_gravity`, `can_jump`, `can_double
 > `addons/proto_controller/` existe encore dans le dépôt mais n'est **plus utilisé**.
 > `scenes/patrick_player.tscn` + `scripts/patrick.gd` existent encore mais ne sont plus utilisés en jeu.
 
-### Crabe (`scenes/crab.tscn` + `scripts/crab.gd`)
-
-- `CharacterBody3D` construit entièrement en CSG (corps, pinces, yeux, pattes)
-- Patrouille entre deux points selon `patrol_axis` et `patrol_distance` (exportés)
-- `face_patrol_axis: bool` — si `true`, se tourne vers la direction de marche
-- Signal `_on_attack_area_body_entered` : si le corps entrant a `die()`, il l'appelle
-- Désynchronisation aléatoire au démarrage (`randf() * 0.5` secondes)
-
 ### Clé (`scenes/key_pickup.tscn` + `scripts/key_pickup.gd`)
 
 - `Area3D` avec visuel CSG (anneau + tige + dents + lumière) et `AnimationPlayer`
+- Export `next_scene_override: String = ""` — si renseigné, appelle `Global.change_scene(next_scene_override)` après disparition
 - Pattern d'interaction :
-  1. `body_entered` → connecte `patrick.interact_pressed` à `_on_interact()`
+  1. `body_entered` → connecte `sophia.interact_pressed` à `_on_interact()`
   2. `body_exited` → déconnecte le signal, remet le sous-titre
-  3. `_on_interact()` → `Global.has_key = true`, animation de disparition (tween montée + scale 0)
+  3. `_on_interact()` → `Global.has_key = true`, animation de disparition (tween montée + scale 0), puis `Global.change_scene()` si `next_scene_override != ""`
 
 ### HUD (`ui/hud.tscn` + `scripts/hud.gd`)
 
@@ -156,44 +151,14 @@ Trois méthodes publiques :
 
 Les scènes récupèrent le HUD avec `$HUD`.
 
-### Décor sous-marin — scène 1
-
-La scène 1 combine deux couches de décor :
-
-**Objets statiques (`OceanObjects` dans la scène)** — placés à la main, avec opérations CSG :
-
-- Rochers (Rock1–3, RocksExtra avec RockLentille/RockArche/RockCreux) — `use_collision = true`
-- Coraux (Coral, CorauxExtra : CoralBuisson/CoralTube/CoralFan/CoralBranche/CoralDome/CoralMosaic) — couleurs violet, sarcelle, jaune, rouge
-- Baril (StaticBody3D GLB), Ancre, MatBrise, Boulets, Planches — zone proche du spawn
-- Algues animées (`AlguesVivantes`) — 6 plants Node3D avec AnimationPlayer "sway"
-
-**Décor procédural (`OceanPopulator` + `scripts/ocean_populator.gd`)** — généré au runtime :
-
-- Seed fixe (modifiable via inspecteur : `rng_seed`)
-- Zone couverte : X [−255, 275], Z [−410, −4], Y = −3.0 (surface du sol)
-- **Rochers** (`rock_count`, défaut 700) : `StaticBody3D` + `SphereMesh` déformé + `SphereShape3D`
-- **Coraux** (`coral_count`, défaut 1000) : 4 formes (ball, tube, dome, branch), 5 couleurs, avec collision
-- **Plantes** (`plant_count`, défaut 9000) : instances de `scenes/algue.tscn`
-- Matériaux pré-alloués (7 teintes rocher + 5 teintes corail) pour éviter les allocations massives
-
-### Plante marine (`scenes/algue.tscn` + `scripts/algue.gd`)
-
-- Pivot `Node3D` (racine) + `CSGCylinder3D` (tige décalée vers le haut) + `CSGSphere3D` (sommet) + `AnimationPlayer`
-- Animation "sway" : rotation:z oscillante, durée 2.5s, loop cubique
-- `algue.gd` au `_ready()` :
-  - Seek aléatoire → désynchronise chaque instance
-  - Scale aléatoire (×0.7–1.6)
-  - Rotation Y aléatoire (360°)
-  - Couleur aléatoire parmi 7 teintes de vert (vif, foncé, sarcelle, olive, vert profond, cyan-vert, vert-jaune) — tige + sommet légèrement éclairci
-
-### Scène 2 — Data Center (`scenes/scene_2_data.tscn` + `scripts/scene_2.gd`)
+### Scène 1 — Data Center (`scenes/scene_1_data.tscn` + `scripts/scene_1.gd`)
 
 Environnement thématique : salle de data center sombre (béton gris, 22×4.5×34 m). Tout le décor est en CSG.
 
 **Structure de la scène :**
 
 ```text
-DataCenter (Node3D) — script scene_2.gd
+DataCenter (Node3D) — script scene_1.gd
 ├── WorldEnvironment — fond noir, ambient bleu-gris, glow, fog (density 0.008)
 ├── DirectionalLight3D — lumière bleutée (energy 0.3)
 ├── Room (Node3D) — Floor/Ceiling/WallBack/WallL/WallR (CSGBox3D béton)
@@ -211,9 +176,13 @@ DataCenter (Node3D) — script scene_2.gd
 │   ├── Radiator, CablePurple (émissif violet), CableWhite
 │   ├── FanRings (9 CSGCylinder3D statiques, grille 3×3 face Z+)
 │   ├── TopFanRings (3 CSGCylinder3D, dessus)
-│   ├── Fans / TopFans (Node3D vides — remplis par scene_2.gd)
+│   ├── Fans / TopFans (Node3D vides — remplis par scene_1.gd)
 │   └── PCLights / RgbYellow / RgbPurple (OmniLight3D)
 ├── AmbientLights — ServerGlowF/B (vert), CeilingL/R (bleu), PCGlow (jaune-vert)
+├── Chest (Node3D, X=3.5, Z=−13.5, script chest.gd) — coffre final
+│   ├── ChestMesh (instance chest_gold.tscn — lid animé)
+│   ├── ChestBody (StaticBody3D)
+│   └── InteractArea (Area3D, mask=1) — détection E + clé
 ├── NextSceneArea (Area3D, Z=−15.5)
 ├── Sophia (sophia_player.tscn, spawn Z=+13)
 └── HUD (ui/hud.tscn)
@@ -226,21 +195,21 @@ DataCenter (Node3D) — script scene_2.gd
 - 4m de couloir entre chaque rangée (Z) pour circuler
 - Sophia entre par Z=+13, traverse les rangées, atteint le PC au fond (Z=−13.5)
 
-**Ventilateurs PC (créés au runtime par `scene_2.gd._setup_fans()`) :**
+**Ventilateurs PC (créés au runtime par `scene_1.gd._setup_fans()`) :**
 
 - 9 ventilateurs face Z+ (grille 3×3) : lames jaune-vert émissives, hub métallique, 8 bras à 45°. Pivots à X∈{−0.62, 0, +0.62}, Y∈{0.35, 0.97, 1.59}, Z=0.76 relatif au PC. Rotation via `rotate_z(480°/s)`.
 - 3 ventilateurs dessus : X∈{−0.62, 0, +0.62}, Y=2.02. Rotation via `rotate_y(360°/s)`.
 
 **Matériaux définis en sub_resource dans le .tscn :** `mat_concrete`, `mat_rack`, `mat_rack_panel`, `mat_led_green`, `mat_led_yellow`, `mat_led_red`, `mat_case`, `mat_glass` (transparent 15%), `mat_gpu`, `mat_gpu_led`, `mat_cable_purple`, `mat_cable_white`, `mat_fan_ring`.
 
-### Scène 3 — GPU géant (`scenes/scene_3_gpu.tscn` + `scripts/scene_3.gd`)
+### Scène 2 — GPU géant (`scenes/scene_2_gpu.tscn` + `scripts/scene_2.gd`)
 
 Environnement thématique : Sophia marche sur un GPU géant dans le vide spatial. Tout le décor est en CSG.
 
 **Structure globale de la scène (niveau racine) :**
 
 ```text
-Scene3GPU (Node3D) — script scene_3.gd
+Scene2GPU (Node3D) — script scene_2.gd
 ├── GPU (Node3D) — tout le décor du GPU
 ├── Lighting (Node3D) — OmniLights
 ├── SparkParticles (GPUParticles3D) — étincelles ambiantes cyan
@@ -255,7 +224,7 @@ Scene3GPU (Node3D) — script scene_3.gd
 GPU (Node3D)
 ├── PCB (CSGBox3D, 160×2×100, vert PCB, use_collision)
 ├── CircuitTraces (Node3D) — Trace1–8 (horizontales) + TraceZ1–8 (verticales) + Stub1–8 (jonctions)
-│   — matériau doré émissif. DANGER : contact = mort de Patrick + étincelles cyan (créés au runtime)
+│   — matériau doré émissif. DANGER : contact = mort de Sophia + étincelles cyan (créés au runtime)
 ├── GPUCore (Node3D)
 │   ├── Die (CSGBox3D, 50×0.3×50, sombre émissif bleu)
 │   ├── HeatSink (Node3D) — 16 fins CSGBox3D aluminium (48×22×1.2 chacune)
@@ -265,7 +234,7 @@ GPU (Node3D)
 │       ├── Fan2Housing (rayon 23, hauteur 6, centre)
 │       ├── Fan2Housing3 (rayon 23, hauteur 6, gauche X=−51)
 │       └── Fan2Housing2 (rayon 23, hauteur 9.5, droite X=+54)
-│   — 3 hélices à 8 pales créées au runtime par scene_3.gd (rotation 300°/s)
+│   — 3 hélices à 8 pales créées au runtime par scene_2.gd (rotation 300°/s)
 ├── PowerConnector (CSGBox3D, 14×10×6, connecteur noir)
 ├── DisplayOutputs (Node3D) — 4 ports CSGBox3D (5×4×2, Port1–4)
 ├── PCIeSlot (CSGBox3D, 80×3×4, doré)
@@ -281,7 +250,7 @@ GPU (Node3D)
 - `Lighting` (Node3D) : AmbientBlue (range 160), CoreHeat orange (range 80), EdgeRGB violet (range 95), PCBLeft/Right vert (range 65×2), PCBFront/Back bleu (range 55×2)
 - `SparkParticles` (GPUParticles3D) : 30 particules cyan ambiantes
 
-**Mécaniques de gameplay (scene_3.gd) :**
+**Mécaniques de gameplay (scene_2.gd) :**
 
 - **Traces électriques dangereuses** : `_setup_trace_hazards()` ajoute au runtime pour chaque des 24 `CSGBox3D` de `CircuitTraces` : une `Area3D` kill zone (mask=1) + `GPUParticles3D` d'étincelles cyan émissives (bloom). Contact → `body.die()`.
 - **Ventilateurs** : `_setup_fans()` crée 3 pivots `Node3D` dans `$GPU/Fans`, chacun avec 8 `MeshInstance3D` bras (BoxMesh 25×0.6×5, rotation_degrees.x=30°) + hub `CylinderMesh`. Rotation via `rotate_y(deg_to_rad(300) * delta)` dans `_process`.
@@ -291,7 +260,7 @@ GPU (Node3D)
 
 **Sophia** spawn à Y=2, Z=40 (au fond du PCB). `Engine.time_scale` remis à 1.0 au `_ready()`.
 
-### MovingCap (`scenes/scene_3_gpu.tscn` > nœud MovingCap + `scripts/moving_cap.gd`)
+### MovingCap (`scenes/scene_2_gpu.tscn` > nœud MovingCap + `scripts/moving_cap.gd`)
 
 7 `RigidBody3D` dans `MovingCap` (layer=1, mask=1, mass=5, linear_damp=2, angular_damp=3) — caps électroniques à pousser sur les traces du circuit imprimé :
 
@@ -313,43 +282,80 @@ Chaque cap a : `CollisionShape3D` (CylinderShape3D, rayon = rayon_visuel × 0.5)
 - `_process()` : pour chaque cap non-freezé → `_apply_push()` + `_check_snap()`.
 - `_apply_push(rb)` : si Sophia est à ≤ `PUSH_RANGE` (1.5 u), applique `apply_central_impulse` de `PUSH_FORCE` (15 N) en direction opposée à Sophia (Y ignoré).
 - `_check_snap(rb)` : si vitesse < 2 m/s ET distance XZ au trace le plus proche < `SNAP_THRESHOLD` (2.5 u) → `rb.freeze = true`, centre le cap sur la trace, incrémente `_placed_count`. Quand tous placés → `all_placed.emit()`.
-- Signal `all_placed` → `scene_3.gd` réactive la NextSceneArea.
+- Signal `all_placed` → `scene_2.gd` réactive la NextSceneArea.
 
-### Scène 4 — Réseau de neurones (`scenes/scene_4_neuralnet.tscn` + `scripts/scene_4.gd`)
+### Scène 3 — LLM puzzle (`scenes/scene_3_llm.tscn` + `scripts/scene_4.gd`)
 
-Environnement thématique : platformer dans le vide spatial violet. Sophia saute de neurone en neurone en suivant les connexions d'un réseau de neurones (Input → Hidden1 → Hidden2 → Output).
+Environnement thématique : puzzle de blocs-mots. Sophia ramasse des blocs et les classe dans les bons panneaux pour compléter 3 phrases. Quand les 3 phrases sont résolues, la `NextSceneArea` s'active.
+
+**`scene_4.gd` — mécanique :**
+
+- 3 phrases × 5 mots, 15 blocs `RigidBody3D` créés au runtime (couleur par phrase)
+- Sophia ramasse un bloc (E), le tient devant la caméra, le place (1–5) dans le rack le plus proche
+- `_try_validate_phrase()` : si les 5 mots sont dans le bon ordre → blocs verts, `_solved_phrases++`
+- `_check_all_complete()` : quand `_correct_count >= 15` → active `$NextSceneArea`
+
+**Transition :** `NextSceneArea` → `scene_4_neuralnet` (scan auto `scene_N+1_*.tscn`).
+
+### Scène 4 — Réseau de neurones (`scenes/scene_4_neuralnet.tscn` + `scripts/scene_3.gd`)
+
+Environnement thématique : platformer dans le vide spatial violet. Sophia saute de neurone en neurone (Input → Hidden1 → Hidden2 → Output). Sur le neurone Output flotte la clé de sortie.
 
 **Structure de la scène :**
 
 ```text
-Scene4NeuralNet (Node3D) — script scene_4.gd
+Scene4NeuralNet (Node3D) — script scene_3.gd
 ├── WorldEnvironment — fond noir-violet, ambient violet, glow, fog (density 0.002)
 ├── DirectionalLight3D — lumière bleue-blanche (energy 1.2)
 ├── LightInput / LightHidden / LightOutput / UnderGlow1-3 (OmniLight3D)
-├── InputLayer (Node3D) — I1/I2/I3 (CSGCylinder3D rayon=4, Z=50, Y décroissant)
-├── HiddenLayer1 (Node3D) — H1–H4 (Z=15, Y et X variables)
-├── HiddenLayer2 (Node3D) — H5–H8 (Z=−20, Y et X variables)
-├── OutputLayer (Node3D) — O (CSGCylinder3D, Z=−55, Y=11)
-├── Paths (Node3D) — 28 CSGBox3D inclinés (I1H1…H8O) — chemins entre neurones
+├── InputLayer (Node3D) — I1/I2/I3 (CSGCylinder3D rayon=4, Z=80)
+├── HiddenLayer1 (Node3D) — H1–H4 (Z=20)
+├── HiddenLayer2 (Node3D) — H5–H8 (Z=−40)
+├── OutputLayer (Node3D) — O (CSGCylinder3D, Z=−95, Y=2)
+├── Paths (Node3D) — CSGBox3D inclinés (connexions full-mesh)
 ├── KillZone (Area3D, Y=−29) — mort si tombée dans le vide
-├── NextSceneArea (Area3D, Z=−55) — sortie après l'output
-├── Sophia — spawn (0, 18, 50), can_double_jump=true, jump_velocity=5.5
+├── Sophia — spawn (0, 4, 80), can_double_jump=true, jump_velocity=5.5
 │   underwater=true, underwater_speed_factor=1.0, underwater_gravity_factor=0.55
-└── HUD (ui/hud.tscn)
+├── HUD (ui/hud.tscn)
+└── KeyPickup (key_pickup.tscn, position (0, 3.5, −95))
+    next_scene_override = "res://scenes/scene_1_data.tscn"
 ```
 
-**Neurones :** CSGCylinder3D rayon=4, hauteur=1, 16 côtés, matériau blanc nacré émissif (emission_energy=0.35). `use_collision = true`.
+**Neurones :** CSGCylinder3D rayon=4, hauteur=1, 16 côtés, matériau blanc nacré émissif. `use_collision = true`.
 
-**Chemins (`$Paths`) :** CSGBox3D inclinés (size.y=0.4, size.z=3), matériau bleu semi-transparent émissif. Pas de collision native (CSG) — collisions ajoutées au runtime par `_setup_path_collision()`. Connexions full-mesh : I×H1 (12 chemins), H1×H2 (16 chemins), H2×O (4 chemins).
+**Chemins (`$Paths`) :** CSGBox3D inclinés (size.y=0.4, size.z=3), matériau bleu semi-transparent émissif. Collisions ajoutées au runtime par `_setup_path_collision()`. Bandes émissives par `_setup_edge_strips()`.
 
-**`scene_4.gd` — runtime :**
+**`scene_3.gd` — runtime (utilisé par scene_4_neuralnet uniquement) :**
 
 - `_setup_path_collision()` : pour chaque CSGBox3D dans `$Paths` → ajoute `StaticBody3D > CollisionShape3D(BoxShape3D)` avec `box.size = path.size`.
-- `_setup_edge_strips()` : pour chaque chemin → crée 2 `CSGBox3D` bleus émissifs (size ×0.06×0.12) décalés de ±1.45 u le long de l'axe Z local du chemin. Matériau bleu vif émissif (energy=4.0).
+- `_setup_edge_strips()` : pour chaque chemin → crée 2 `CSGBox3D` bleus émissifs décalés de ±1.45 u le long de l'axe Z local. Matériau bleu vif émissif (energy=4.0).
+- `_on_kill_zone_body_entered()` : appelle `body.die()`.
+- **Pas de `_on_next_scene_area_body_entered`** — la sortie est gérée par `KeyPickup`.
 
-**Sophia dans cette scène :** `underwater_gravity_factor=0.55` → gravité réduite à 55% (sauts plus longs). `jump_velocity=5.5` (plus élevée que le défaut 4.5). Double jump obligatoire pour certains sauts entre couches.
+**Sophia dans cette scène :** `underwater_gravity_factor=0.55` → gravité réduite (sauts plus longs). `jump_velocity=5.5`. Double jump obligatoire pour certains sauts.
 
-**Transition :** `NextSceneArea` à Z=−55 (au niveau du neurone Output). Kill zone plat à Y=−29 (chute = `die()`).
+**Transition :** Ramasser la clé sur le neurone Output (E) → `Global.has_key = true` → `Global.change_scene("res://scenes/scene_1_data.tscn")`. Kill zone à Y=−29.
+
+### Coffre (`scenes/chest_gold.tscn` + `scripts/chest.gd`)
+
+Coffre final accessible depuis scene_1_data une fois la clé récupérée en scene_4_neuralnet.
+
+**Structure de `chest_gold.tscn` :**
+
+```text
+Chest_gold (Node3D — instance chest_gold.glb)
+├── chest_gold
+│   └── chest_gold_lid (transform fermé par défaut — rotation identité)
+└── AnimationPlayer (animation "open" : rotation_degrees:x de 0→−90° en ~2s)
+```
+
+**`chest.gd` (extends Node3D) :**
+
+- `_ready()` : connecte `$InteractArea.body_entered/exited`
+- `_on_body_entered()` : si Sophia + `!_opened` → subtitle "E : ouvrir le coffre" (ou "Il te faut la clé") + connecte `interact_pressed`
+- `_on_interact()` : si `Global.has_key` → `_opened = true`, HUD "Coffre ouvert ! Félicitations !", joue `$ChestMesh/AnimationPlayer.play("open")`
+
+**Position dans scene_1 :** `Chest (Node3D, X=3.5, Y=0, Z=−13.5)` — à droite du PC.
 
 ### Layers de collision
 
@@ -357,7 +363,7 @@ Scene4NeuralNet (Node3D) — script scene_4.gd
 | --- | --- |
 | 1 | Sophia (layer) + sol/terrain + objets statiques + caps `MovingCap` |
 | 2 | Mesh de rendu de Sophia (`VisualInstance3D.layers=2`) — invisible pour la caméra FPS (`cull_mask=1`), visible pour la caméra top-down (`cull_mask=3`) |
-| 4 | Crabes + `InteractRay` mask |
+| 4 | `InteractRay` mask |
 
 Sophia a `collision_mask = 3` (layers 1 et 2) — elle voit les objets des deux layers.
 Les `Area3D` kill zones des traces ont `collision_layer=0, collision_mask=1` — détectent Sophia (layer 1) mais pas les caps (aussi layer 1, mais sans `die()` → inoffensif).

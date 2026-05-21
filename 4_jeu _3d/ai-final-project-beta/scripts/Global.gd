@@ -18,7 +18,6 @@ func change_scene(scene_path: String) -> void:
 		get_tree().change_scene_to_file(scene_path)
 
 
-## Recharge la scène actuelle (quand un crabe touche Sophia).
 func reload_current_scene() -> void:
 	if current_scene_path != "":
 		change_scene(current_scene_path)

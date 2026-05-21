@@ -56,9 +56,10 @@ script = ExtResource("1_key")
 shape = SubResource("BoxShape_key_pickup")
 
 [node name="KeyVisual" type="Node3D" parent="." unique_id=1729832012]
+transform = Transform3D(-0.4186204, 0, 0.9081613, 0, 1, 0, -0.9081613, 0, -0.4186204, 0, 0.10515468, 0)
 
 [node name="KeyRing" type="CSGTorus3D" parent="KeyVisual" unique_id=50050544]
-transform = Transform3D(1, 0, 0, 0, -0.99929404, 0.037568104, 0, -0.037568104, -0.99929404, 0, 0, -0.15)
+transform = Transform3D(0.007033604, -0.9992693, 0.037567176, -0.99997526, -0.007028639, 0.00026423918, 0, -0.037568104, -0.99929404, 0, 0, -0.15)
 inner_radius = 0.08
 outer_radius = 0.15
 sides = 16
@@ -66,17 +67,17 @@ ring_sides = 8
 material = SubResource("Mat_key_gold")
 
 [node name="KeyShaft" type="CSGBox3D" parent="KeyVisual" unique_id=1449187319]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+transform = Transform3D(-0.008185458, 0.9999665, 0, -0.9999665, -0.008185458, 0, 0, 0, 1, 0, 0, 0.1)
 size = Vector3(0.04, 0.04, 0.4)
 material = SubResource("Mat_key_gold")
 
-[node name="KeyTooth1" type="CSGBox3D" parent="KeyVisual" unique_id=1719128603]
-transform = Transform3D(0.019755822, -0.99980485, 0, 0.99980485, 0.019755822, 0, 0, 0, 1, 0.056222394, 0.00037324056, 0.2091721)
+[node name="KeyTooth1" type="CSGBox3D" parent="KeyVisual/KeyShaft" unique_id=1719128603]
+transform = Transform3D(0.019755822, -0.99980485, 0, 0.99980485, 0.019755822, 0, 0, 0, 1, 0.056222394, 0.00037324056, 0.1091721)
 size = Vector3(0.04, 0.08, 0.05)
 material = SubResource("Mat_key_gold")
 
-[node name="KeyTooth2" type="CSGBox3D" parent="KeyVisual" unique_id=1818905175]
-transform = Transform3D(0.99998134, 0.006108614, 0, -0.006108614, 0.99998134, 0, 0, 0, 1, 0.04170169, -0.00066200865, 0.27337652)
+[node name="KeyTooth2" type="CSGBox3D" parent="KeyVisual/KeyShaft" unique_id=1818905175]
+transform = Transform3D(0.99998134, 0.006108614, 0, -0.006108614, 0.99998134, 0, 0, 0, 1, 0.04170169, -0.00066200865, 0.17337653)
 size = Vector3(0.048442382, 0.03782959, 0.05)
 material = SubResource("Mat_key_gold")
 

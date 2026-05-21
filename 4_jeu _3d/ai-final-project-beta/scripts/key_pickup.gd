@@ -3,6 +3,7 @@ extends Area3D
 ## Pickup pour la clé. Quand Sophia s'en approche → message + appui E pour ramasser.
 
 @export var pickup_message: String = "Appuie sur E pour ramasser la clé"
+@export var next_scene_override: String = ""
 
 var player_in_range: bool = false
 var player_ref: Node = null
@@ -48,4 +49,6 @@ func _on_interact() -> void:
 		tween.tween_property(self, "position:y", position.y + 1.0, 0.4)
 		tween.parallel().tween_property(self, "scale", Vector3.ZERO, 0.4)
 		await tween.finished
+		if next_scene_override != "":
+			Global.change_scene(next_scene_override)
 		queue_free()
