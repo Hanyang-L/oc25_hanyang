@@ -12,6 +12,10 @@ func _ready() -> void:
 	_setup_fans()
 	$NextSceneArea.body_entered.connect(_on_next_scene_area_body_entered)
 	$HUD.set_subtitle("Trouve la sortie du data center")
+	if Global.has_key:
+		$Sophia.global_position = Vector3(3.5, 1.0, -11.0)
+		$Sophia.rotation.y = 0.0
+		$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
 func _process(delta: float) -> void:
 	for fan in _side_fans:
