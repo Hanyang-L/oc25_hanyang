@@ -129,7 +129,6 @@ Paramètres exportés clés : `can_move`, `has_gravity`, `can_jump`, `can_double
 - Deuxième saut (en l'air) : `velocity.y = jump_velocity`, consomme `_double_jump_available`.
 - `_double_jump_available` est reset à `true` chaque frame où Sophia est au sol.
 
-> `addons/proto_controller/` existe encore dans le dépôt mais n'est **plus utilisé**.
 > `scenes/patrick_player.tscn` + `scripts/patrick.gd` existent encore mais ne sont plus utilisés en jeu.
 
 ### Clé (`scenes/key_pickup.tscn` + `scripts/key_pickup.gd`)
@@ -411,7 +410,6 @@ Chaque GLB a une scène glTF avec `"Scene"` comme root Node3D et un enfant MeshI
 - `assets/zombie/zombie.glb` + `zombie_idle.glb`, `zombie_run.glb`, `zombie_jump.glb` — zombie avec animations séparées. Scène wrappée : `scenes/zombie.tscn` (animations "move" retravaillées, non utilisé en jeu).
 - `assets/import_examples/` — exemples barrel et chest_gold avec matériaux
 - `assets/sky_background/autumn_field_puresky_4k.hdr` — skybox HDR scène 1
-- `addons/proto_controller/` — contrôleur FPS de référence CC0 (ne plus modifier, plus utilisé en jeu)
 
 ## Workflow Godot
 

@@ -149,16 +149,20 @@ bottom_radius = 1.8
 height = 3.5
 radial_segments = 12
 
-[node name="Scene3GPU" type="Node3D" unique_id=-1294967295]
+[node name="Scene2GPU" type="Node3D" unique_id=-1294967295]
 script = ExtResource("3_script")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=-1294967294]
 environment = SubResource("Env_GPU")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=-1294967293]
-transform = Transform3D(1, 0, 0, 0, 0.7071, -0.7071, 0, 0.7071, 0.7071, 0, 40, 0)
-light_color = Color(0.6, 0.75, 1, 1)
-light_energy = 1.4
+transform = Transform3D(0.55547565, -0.36801475, 0.7456621, -0.24167138, 0.78657496, 0.5682384, -0.7956392, -0.49584776, 0.3479846, 255.36145, 56.74156, 119.8112)
+light_color = Color(0.30559015, 0.34517816, 0.3908765, 1)
+light_energy = 4.806
+directional_shadow_split_1 = 0.496
+directional_shadow_split_2 = 0.487
+directional_shadow_max_distance = 223.2
+sky_mode = 1
 
 [node name="Sophia" parent="." unique_id=-1294967292 instance=ExtResource("1_sophia")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -56.543957, 1.4305196, 8.962746)
@@ -938,11 +942,6 @@ omni_range = 160.0
 
 [node name="Ambient" type="OmniLight3D" parent="Lighting" unique_id=238777595]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.60131, 99.92709, 0)
-light_color = Color(0.7440026, 0.86877835, 0.86542404, 1)
-light_energy = 3.183
-light_indirect_energy = 3.455
-light_volumetric_fog_energy = 7.97
-light_specular = 7.787
 omni_range = 160.0
 
 [node name="CoreHeat" type="OmniLight3D" parent="Lighting" unique_id=-1294967237]

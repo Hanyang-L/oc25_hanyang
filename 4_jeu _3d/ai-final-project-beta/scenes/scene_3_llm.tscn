@@ -106,7 +106,7 @@ emission_energy_multiplier = 1.1
 [sub_resource type="BoxShape3D" id="BoxShape_Next"]
 size = Vector3(40, 8, 4)
 
-[node name="Scene5LLM" type="Node3D" unique_id=167060103]
+[node name="Scene3LLM" type="Node3D" unique_id=167060103]
 script = ExtResource("3_script")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=115469910]

@@ -133,7 +133,7 @@ size = Vector3(22, 5, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ontf5"]
 albedo_color = Color(0.9, 0.85, 0.6, 1)
 
-[node name="DataCenter" type="Node3D" unique_id=264586001]
+[node name="Scene1Data" type="Node3D" unique_id=264586001]
 script = ExtResource("3_script")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=214442619]
