@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dqxuo7idfxwvg" path="res://scenes/sophia_player.tscn" id="1_sophia"]
 [ext_resource type="PackedScene" uid="uid://bhudpatrick01" path="res://ui/hud.tscn" id="2_hud"]
-[ext_resource type="Script" uid="uid://dhxh4uhnyncc7" path="res://scripts/scene_3.gd" id="3_script"]
+[ext_resource type="Script" uid="uid://dhxh4uhnyncc7" path="res://scripts/scene_4_neuralnet.gd" id="3_script"]
 [ext_resource type="PackedScene" uid="uid://bkeypatrick01" path="res://scenes/key_pickup.tscn" id="4_bhyty"]
 
 [sub_resource type="Environment" id="Env_NN"]
@@ -36,6 +36,19 @@ emission_energy_multiplier = 0.8
 
 [sub_resource type="BoxShape3D" id="Shape_Kill"]
 size = Vector3(559, 2, 539)
+
+[sub_resource type="StandardMaterial3D" id="mat_panel"]
+albedo_color = Color(0.04, 0.04, 0.07, 1)
+emission_enabled = true
+emission = Color(0.03, 0.05, 0.2, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="StandardMaterial3D" id="mat_btn_off"]
+albedo_color = Color(0.3, 0.3, 0.32, 1)
+roughness = 0.9
+
+[sub_resource type="SphereShape3D" id="SphereBtn"]
+radius = 0.9
 
 [node name="Scene4NeuralNet" type="Node3D" unique_id=1]
 script = ExtResource("3_script")
@@ -381,5 +394,694 @@ transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 3.5, -95)
 collision_layer = 1
 collision_mask = 1
 next_scene_override = "res://scenes/scene_1_data.tscn"
+
+[node name="ButtonPanel" type="CSGBox3D" parent="." unique_id=1001]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -16, 5.8737307, 84.11447)
+size = Vector3(7.5, 7, 0.2)
+material = SubResource("mat_panel")
+
+[node name="Btn_I1H1" type="Node3D" parent="ButtonPanel" unique_id=1010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5500002, 2.5, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I1H1" unique_id=1011]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I1H1" unique_id=1012]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I1H1/Zone" unique_id=1013]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I1H1" unique_id=1014]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I1→H1
+W=1/9"
+font_size = 10
+
+[node name="Btn_I1H2" type="Node3D" parent="ButtonPanel" unique_id=1015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8500004, 2.5, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I1H2" unique_id=1016]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I1H2" unique_id=1017]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I1H2/Zone" unique_id=1018]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I1H2" unique_id=1019]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I1→H2
+W=1/6"
+font_size = 10
+
+[node name="Btn_I1H3" type="Node3D" parent="ButtonPanel" unique_id=1020]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8500004, 2.5, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I1H3" unique_id=1021]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I1H3" unique_id=1022]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I1H3/Zone" unique_id=1023]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I1H3" unique_id=1024]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I1→H3
+W=1/5"
+font_size = 10
+
+[node name="Btn_I1H4" type="Node3D" parent="ButtonPanel" unique_id=1025]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5499992, 2.5, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I1H4" unique_id=1026]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I1H4" unique_id=1027]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I1H4/Zone" unique_id=1028]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I1H4" unique_id=1029]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I1→H4
+W=1/8"
+font_size = 10
+
+[node name="Btn_I2H1" type="Node3D" parent="ButtonPanel" unique_id=1030]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5500002, 1.75, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I2H1" unique_id=1031]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I2H1" unique_id=1032]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I2H1/Zone" unique_id=1033]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I2H1" unique_id=1034]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I2→H1
+W=1/7"
+font_size = 10
+
+[node name="Btn_I2H2" type="Node3D" parent="ButtonPanel" unique_id=1035]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8500004, 1.75, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I2H2" unique_id=1036]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I2H2" unique_id=1037]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I2H2/Zone" unique_id=1038]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I2H2" unique_id=1039]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I2→H2
+W=1/2"
+font_size = 10
+
+[node name="Btn_I2H3" type="Node3D" parent="ButtonPanel" unique_id=1040]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8500004, 1.75, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I2H3" unique_id=1041]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I2H3" unique_id=1042]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I2H3/Zone" unique_id=1043]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I2H3" unique_id=1044]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I2→H3
+W=1/4"
+font_size = 10
+
+[node name="Btn_I2H4" type="Node3D" parent="ButtonPanel" unique_id=1045]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5499992, 1.75, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I2H4" unique_id=1046]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I2H4" unique_id=1047]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I2H4/Zone" unique_id=1048]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I2H4" unique_id=1049]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I2→H4
+W=1/6"
+font_size = 10
+
+[node name="Btn_I3H1" type="Node3D" parent="ButtonPanel" unique_id=1050]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5500002, 1, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I3H1" unique_id=1051]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I3H1" unique_id=1052]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I3H1/Zone" unique_id=1053]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I3H1" unique_id=1054]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I3→H1
+W=1/10"
+font_size = 10
+
+[node name="Btn_I3H2" type="Node3D" parent="ButtonPanel" unique_id=1055]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8500004, 1, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I3H2" unique_id=1056]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I3H2" unique_id=1057]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I3H2/Zone" unique_id=1058]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I3H2" unique_id=1059]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I3→H2
+W=1/5"
+font_size = 10
+
+[node name="Btn_I3H3" type="Node3D" parent="ButtonPanel" unique_id=1060]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8500004, 1, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I3H3" unique_id=1061]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I3H3" unique_id=1062]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I3H3/Zone" unique_id=1063]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I3H3" unique_id=1064]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I3→H3
+W=1/4"
+font_size = 10
+
+[node name="Btn_I3H4" type="Node3D" parent="ButtonPanel" unique_id=1065]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5499992, 1, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_I3H4" unique_id=1066]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_I3H4" unique_id=1067]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_I3H4/Zone" unique_id=1068]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_I3H4" unique_id=1069]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "I3→H4
+W=1/7"
+font_size = 10
+
+[node name="Btn_H1H5" type="Node3D" parent="ButtonPanel" unique_id=1070]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5500002, 0, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H1H5" unique_id=1071]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H1H5" unique_id=1072]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H1H5/Zone" unique_id=1073]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H1H5" unique_id=1074]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H1→H5
+W=1/8"
+font_size = 10
+
+[node name="Btn_H1H6" type="Node3D" parent="ButtonPanel" unique_id=1075]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8500004, 0, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H1H6" unique_id=1076]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H1H6" unique_id=1077]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H1H6/Zone" unique_id=1078]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H1H6" unique_id=1079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H1→H6
+W=1/5"
+font_size = 10
+
+[node name="Btn_H1H7" type="Node3D" parent="ButtonPanel" unique_id=1080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8500004, 0, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H1H7" unique_id=1081]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H1H7" unique_id=1082]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H1H7/Zone" unique_id=1083]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H1H7" unique_id=1084]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H1→H7
+W=1/6"
+font_size = 10
+
+[node name="Btn_H1H8" type="Node3D" parent="ButtonPanel" unique_id=1085]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5499992, 0, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H1H8" unique_id=1086]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H1H8" unique_id=1087]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H1H8/Zone" unique_id=1088]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H1H8" unique_id=1089]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H1→H8
+W=1/9"
+font_size = 10
+
+[node name="Btn_H2H5" type="Node3D" parent="ButtonPanel" unique_id=1090]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5500002, -0.75, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H2H5" unique_id=1091]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H2H5" unique_id=1092]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H2H5/Zone" unique_id=1093]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H2H5" unique_id=1094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H2→H5
+W=1/6"
+font_size = 10
+
+[node name="Btn_H2H6" type="Node3D" parent="ButtonPanel" unique_id=1095]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8500004, -0.75, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H2H6" unique_id=1096]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H2H6" unique_id=1097]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H2H6/Zone" unique_id=1098]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H2H6" unique_id=1099]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H2→H6
+W=1/2"
+font_size = 10
+
+[node name="Btn_H2H7" type="Node3D" parent="ButtonPanel" unique_id=1100]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8500004, -0.75, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H2H7" unique_id=1101]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H2H7" unique_id=1102]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H2H7/Zone" unique_id=1103]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H2H7" unique_id=1104]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H2→H7
+W=1/7"
+font_size = 10
+
+[node name="Btn_H2H8" type="Node3D" parent="ButtonPanel" unique_id=1105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5499992, -0.75, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H2H8" unique_id=1106]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H2H8" unique_id=1107]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H2H8/Zone" unique_id=1108]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H2H8" unique_id=1109]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H2→H8
+W=1/5"
+font_size = 10
+
+[node name="Btn_H3H5" type="Node3D" parent="ButtonPanel" unique_id=1110]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5500002, -1.5, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H3H5" unique_id=1111]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H3H5" unique_id=1112]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H3H5/Zone" unique_id=1113]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H3H5" unique_id=1114]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H3→H5
+W=1/4"
+font_size = 10
+
+[node name="Btn_H3H6" type="Node3D" parent="ButtonPanel" unique_id=1115]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8500004, -1.5, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H3H6" unique_id=1116]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H3H6" unique_id=1117]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H3H6/Zone" unique_id=1118]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H3H6" unique_id=1119]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H3→H6
+W=1/4"
+font_size = 10
+
+[node name="Btn_H3H7" type="Node3D" parent="ButtonPanel" unique_id=1120]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8500004, -1.5, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H3H7" unique_id=1121]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H3H7" unique_id=1122]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H3H7/Zone" unique_id=1123]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H3H7" unique_id=1124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H3→H7
+W=1/3"
+font_size = 10
+
+[node name="Btn_H3H8" type="Node3D" parent="ButtonPanel" unique_id=1125]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5499992, -1.5, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H3H8" unique_id=1126]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H3H8" unique_id=1127]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H3H8/Zone" unique_id=1128]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H3H8" unique_id=1129]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H3→H8
+W=1/6"
+font_size = 10
+
+[node name="Btn_H4H5" type="Node3D" parent="ButtonPanel" unique_id=1130]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5500002, -2.25, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H4H5" unique_id=1131]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H4H5" unique_id=1132]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H4H5/Zone" unique_id=1133]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H4H5" unique_id=1134]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H4→H5
+W=1/8"
+font_size = 10
+
+[node name="Btn_H4H6" type="Node3D" parent="ButtonPanel" unique_id=1135]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8500004, -2.25, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H4H6" unique_id=1136]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H4H6" unique_id=1137]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H4H6/Zone" unique_id=1138]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H4H6" unique_id=1139]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H4→H6
+W=1/3"
+font_size = 10
+
+[node name="Btn_H4H7" type="Node3D" parent="ButtonPanel" unique_id=1140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8500004, -2.25, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H4H7" unique_id=1141]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H4H7" unique_id=1142]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H4H7/Zone" unique_id=1143]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H4H7" unique_id=1144]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H4→H7
+W=1/5"
+font_size = 10
+
+[node name="Btn_H4H8" type="Node3D" parent="ButtonPanel" unique_id=1145]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5499992, -2.25, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H4H8" unique_id=1146]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H4H8" unique_id=1147]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H4H8/Zone" unique_id=1148]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H4H8" unique_id=1149]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H4→H8
+W=1/6"
+font_size = 10
+
+[node name="Btn_H5O" type="Node3D" parent="ButtonPanel" unique_id=1150]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5500002, -3, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H5O" unique_id=1151]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H5O" unique_id=1152]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H5O/Zone" unique_id=1153]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H5O" unique_id=1154]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H5→O
+W=1/5"
+font_size = 10
+
+[node name="Btn_H6O" type="Node3D" parent="ButtonPanel" unique_id=1155]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8500004, -3, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H6O" unique_id=1156]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H6O" unique_id=1157]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H6O/Zone" unique_id=1158]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H6O" unique_id=1159]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H6→O
+W=1/2"
+font_size = 10
+
+[node name="Btn_H7O" type="Node3D" parent="ButtonPanel" unique_id=1160]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8500004, -3, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H7O" unique_id=1161]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H7O" unique_id=1162]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H7O/Zone" unique_id=1163]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H7O" unique_id=1164]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H7→O
+W=1/3"
+font_size = 10
+
+[node name="Btn_H8O" type="Node3D" parent="ButtonPanel" unique_id=1165]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5499992, -3, 0.29083252)
+
+[node name="Mesh" type="CSGBox3D" parent="ButtonPanel/Btn_H8O" unique_id=1166]
+size = Vector3(1.1, 1.1, 0.18)
+material = SubResource("mat_btn_off")
+
+[node name="Zone" type="Area3D" parent="ButtonPanel/Btn_H8O" unique_id=1167]
+collision_layer = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ButtonPanel/Btn_H8O/Zone" unique_id=1168]
+shape = SubResource("SphereBtn")
+
+[node name="Info" type="Label3D" parent="ButtonPanel/Btn_H8O" unique_id=1169]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
+pixel_size = 0.02
+billboard = 1
+text = "H8→O
+W=1/6"
+font_size = 10
+
+[node name="MapScreen" type="CSGBox3D" parent="." unique_id=1002]
+transform = Transform3D(-4.371139e-08, -1, 0, -4.371139e-08, 1.9106855e-15, 1, -1, 4.371139e-08, -4.371139e-08, 16, 5.060848, 80)
+size = Vector3(7, 0.1, 7)
+
+[node name="MinimapViewport" type="SubViewport" parent="." unique_id=1003]
+render_target_update_mode = 4
+
+[node name="MinimapCamera" type="Camera3D" parent="MinimapViewport" unique_id=1004]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 120, -10)
+projection = 1
+size = 210.0
 
 [connection signal="body_entered" from="KillZone" to="." method="_on_kill_zone_body_entered"]

@@ -5,6 +5,7 @@ const SCENE_PREFIX = "scene_"
 
 @onready var next_scene_area: Area3D = $NextSceneArea
 @onready var _moving_cap: Node3D = $MovingCap
+@onready var _hud = $HUD
 
 var _spark_mesh: SphereMesh
 var _fans: Array[Node3D] = []
@@ -21,6 +22,8 @@ func _ready() -> void:
 func _on_all_caps_placed() -> void:
 	next_scene_area.monitoring = true
 	$NextSceneArea/CollisionShape3D.disabled = false
+	_hud.show_message("Tous les composants placés ! Rejoins la sortie !", 6.0)
+	_hud.set_subtitle("Rejoins la sortie au bord avant du GPU !")
 
 func _process(delta: float) -> void:
 	for fan in _fans:

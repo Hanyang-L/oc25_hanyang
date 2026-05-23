@@ -95,7 +95,7 @@ radius = 0.04
 height = 0.08
 
 [sub_resource type="BoxShape3D" id="BoxShape_Next"]
-size = Vector3(40, 8, 4)
+size = Vector3(40, 8, 4.4868164)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xxsey"]
 albedo_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
@@ -991,6 +991,7 @@ draw_pass_1 = SubResource("SphereMesh_Sparks")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -47)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=-1294967233]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.2434082)
 shape = SubResource("BoxShape_Next")
 
 [node name="Walls" type="CSGCombiner3D" parent="." unique_id=2101878638]

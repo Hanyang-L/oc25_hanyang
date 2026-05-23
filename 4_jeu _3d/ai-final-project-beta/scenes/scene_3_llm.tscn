@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dqxuo7idfxwvg" path="res://scenes/sophia_player.tscn" id="1_sophia"]
 [ext_resource type="PackedScene" uid="uid://bhudpatrick01" path="res://ui/hud.tscn" id="2_hud"]
-[ext_resource type="Script" uid="uid://cxriq88cbk7n6" path="res://scripts/scene_4.gd" id="3_script"]
+[ext_resource type="Script" uid="uid://cxriq88cbk7n6" path="res://scripts/scene_3_llm.gd" id="3_script"]
 
 [sub_resource type="Environment" id="Env_LLM"]
 background_mode = 1

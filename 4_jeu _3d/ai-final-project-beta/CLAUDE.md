@@ -53,8 +53,8 @@ main_menu → scene_1_data → scene_2_gpu → scene_3_llm → scene_4_neuralnet
 - `scenes/main_menu.tscn` — menu principal (bouton START). Scène de démarrage du jeu. Pilotée par `scripts/main_menu.gd`.
 - `scenes/scene_1_data.tscn` — salle de data center (22×4.5×34 m, béton sombre). Grille 8×4 de racks serveurs CSG. Grand PC RGB au fond (Z=−13.5). **Coffre chest_gold (X=3.5, Z=−13.5)** ouvrable avec la clé. Pilotée par `scripts/scene_1.gd`.
 - `scenes/scene_2_gpu.tscn` — scène thématique GPU géant (PCB 160×2×100) dans un environnement sombre façon espace. Pilotée par `scripts/scene_2.gd`. Voir section dédiée ci-dessous. **Double jump activé** (`can_double_jump = true`).
-- `scenes/scene_3_llm.tscn` — puzzle LLM : ranger des blocs-mots sur des panneaux pour compléter 3 phrases. Pilotée par `scripts/scene_4.gd`. Voir section dédiée ci-dessous.
-- `scenes/scene_4_neuralnet.tscn` — platformer réseau de neurones : sauter de neurone en neurone (I→H1→H2→O). Sur le neurone Output, une clé flotte — la ramasser (E) déclenche la transition vers scene_1_data. **Pas de NextSceneArea.** Pilotée par `scripts/scene_3.gd`. Voir section dédiée ci-dessous.
+- `scenes/scene_3_llm.tscn` — puzzle LLM : ranger des blocs-mots sur des panneaux pour compléter 3 phrases. Pilotée par `scripts/scene_3_llm.gd`. Voir section dédiée ci-dessous.
+- `scenes/scene_4_neuralnet.tscn` — puzzle réseau de neurones : panneau de boutons sur I1 (poids W=1/x par chemin), activer les chemins (vert=valide, rouge=croisé+deadly), traverser les neurones jusqu'à Output pour ramasser la clé. Minimap temps réel sur I3. **Pas de NextSceneArea.** Pilotée par `scripts/scene_4_neuralnet.gd`. Voir section dédiée ci-dessous.
 - `scenes/chest_gold.tscn` — coffre interactif (instance de `chest_gold.glb` + AnimationPlayer "open"). Utilisé dans scene_1_data. Piloté par `scripts/chest.gd`.
 - `scenes/beach_bar.tscn` — scène de bar intérieur complète avec assets dungeon_assets texturés et collision complète (voir section dédiée ci-dessous).
 - `scenes/transition.tscn` — overlay de fondu noir (autoload `SceneTransition`).
@@ -81,8 +81,8 @@ Différences script par script :
 
 - `scene_1.gd` : crée au runtime les ventilateurs du PC RGB (`_setup_fans()` — 9 ventilateurs face Z+ + 3 ventilateurs dessus), les anime via `_process` (`rotate_z` pour côté, `rotate_y` pour dessus). Affiche le sous-titre "Trouve la sortie du data center".
 - `scene_2.gd` : gère les zones de danger sur les traces, les étincelles électriques, les ventilateurs rotatifs et le mécanisme des caps à placer. La `NextSceneArea` est **désactivée au démarrage** et ne s'active que quand tous les caps sont placés.
-- `scene_3.gd` (utilisé par **scene_4_neuralnet**) : crée au runtime les collisions sur les chemins (`_setup_path_collision()`) et les bandes lumineuses (`_setup_edge_strips()`). Gère uniquement la kill zone — **pas de `_on_next_scene_area_body_entered`**.
-- `scene_4.gd` (utilisé par **scene_3_llm**) : puzzle de blocs-mots (3 phrases × 5 slots). Gère `NextSceneArea` activée quand `_correct_count >= 15`.
+- `scene_4_neuralnet.gd` (utilisé par **scene_4_neuralnet**) : système de puzzle complet — boutons (32, un par chemin), poids W (1/x), détection de croisements algorithmique, visibilité dynamique des chemins (off/vert/rouge), minimap via SubViewport. Gère uniquement la kill zone — **pas de `_on_next_scene_area_body_entered`**.
+- `scene_3_llm.gd` (utilisé par **scene_3_llm**) : puzzle de blocs-mots (3 phrases × 5 slots). Gère `NextSceneArea` activée quand `_correct_count >= 15`.
 
 ### Singleton Global (`scripts/Global.gd`)
 
@@ -253,7 +253,7 @@ GPU (Node3D)
 
 - **Traces électriques dangereuses** : `_setup_trace_hazards()` ajoute au runtime pour chaque des 24 `CSGBox3D` de `CircuitTraces` : une `Area3D` kill zone (mask=1) + `GPUParticles3D` d'étincelles cyan émissives (bloom). Contact → `body.die()`.
 - **Ventilateurs** : `_setup_fans()` crée 3 pivots `Node3D` dans `$GPU/Fans`, chacun avec 8 `MeshInstance3D` bras (BoxMesh 25×0.6×5, rotation_degrees.x=30°) + hub `CylinderMesh`. Rotation via `rotate_y(deg_to_rad(300) * delta)` dans `_process`.
-- **NextSceneArea conditionnelle** : désactivée (`monitoring=false`, CollisionShape disabled) au `_ready()`. S'active via `_on_all_caps_placed()` quand `$MovingCap` émet `all_placed`.
+- **NextSceneArea conditionnelle** : désactivée (`monitoring=false`, CollisionShape disabled) au `_ready()`. S'active via `_on_all_caps_placed()` quand `$MovingCap` émet `all_placed`. `_on_all_caps_placed()` affiche aussi un message HUD : "Tous les composants placés ! Rejoins la sortie !" (6 s) + subtitle "Rejoins la sortie au bord avant du GPU !"
 
 **Transition :** `NextSceneArea` à Z=−47 (bord avant du PCB), box 40×8×4. **Verrouillée jusqu'au placement de tous les caps.**
 
@@ -283,11 +283,11 @@ Chaque cap a : `CollisionShape3D` (CylinderShape3D, rayon = rayon_visuel × 0.5)
 - `_check_snap(rb)` : si vitesse < 2 m/s ET distance XZ au trace le plus proche < `SNAP_THRESHOLD` (2.5 u) → `rb.freeze = true`, centre le cap sur la trace, incrémente `_placed_count`. Quand tous placés → `all_placed.emit()`.
 - Signal `all_placed` → `scene_2.gd` réactive la NextSceneArea.
 
-### Scène 3 — LLM puzzle (`scenes/scene_3_llm.tscn` + `scripts/scene_4.gd`)
+### Scène 3 — LLM puzzle (`scenes/scene_3_llm.tscn` + `scripts/scene_3_llm.gd`)
 
 Environnement thématique : puzzle de blocs-mots. Sophia ramasse des blocs et les classe dans les bons panneaux pour compléter 3 phrases. Quand les 3 phrases sont résolues, la `NextSceneArea` s'active.
 
-**`scene_4.gd` — mécanique :**
+**`scene_3_llm.gd` — mécanique :**
 
 - 3 phrases × 5 mots, 15 blocs `RigidBody3D` créés au runtime (couleur par phrase)
 - Sophia ramasse un bloc (E), le tient devant la caméra, le place (1–5) dans le rack le plus proche
@@ -296,44 +296,75 @@ Environnement thématique : puzzle de blocs-mots. Sophia ramasse des blocs et le
 
 **Transition :** `NextSceneArea` → `scene_4_neuralnet` (scan auto `scene_N+1_*.tscn`).
 
-### Scène 4 — Réseau de neurones (`scenes/scene_4_neuralnet.tscn` + `scripts/scene_3.gd`)
+### Scène 4 — Réseau de neurones (`scenes/scene_4_neuralnet.tscn` + `scripts/scene_4_neuralnet.gd`)
 
-Environnement thématique : platformer dans le vide spatial violet. Sophia saute de neurone en neurone (Input → Hidden1 → Hidden2 → Output). Sur le neurone Output flotte la clé de sortie.
+Puzzle platformer dans le vide spatial violet. Sophia active les chemins depuis un panneau de boutons sur I1, choisit la combinaison correcte (W=1/x le plus élevé, sans croisements) et traverse les neurones jusqu'à la clé sur Output.
 
 **Structure de la scène :**
 
 ```text
-Scene4NeuralNet (Node3D) — script scene_3.gd
+Scene4NeuralNet (Node3D) — script scene_4_neuralnet.gd
 ├── WorldEnvironment — fond noir-violet, ambient violet, glow, fog (density 0.002)
-├── DirectionalLight3D — lumière bleue-blanche (energy 1.2)
-├── LightInput / LightHidden / LightOutput / UnderGlow1-3 (OmniLight3D)
-├── InputLayer (Node3D) — I1/I2/I3 (CSGCylinder3D rayon=4, Z=80)
-├── HiddenLayer1 (Node3D) — H1–H4 (Z=20)
-├── HiddenLayer2 (Node3D) — H5–H8 (Z=−40)
-├── OutputLayer (Node3D) — O (CSGCylinder3D, Z=−95, Y=2)
-├── Paths (Node3D) — CSGBox3D inclinés (connexions full-mesh)
+├── DirectionalLight3D / LightInput / LightHidden / LightOutput / UnderGlow1-3
+├── InputLayer  — I1 (X=−16), I2 (X=0), I3 (X=+16) — CSGCylinder3D r=4, Z=80
+├── HiddenLayer1 — H1–H4 (X=−24/−8/8/24, Z=20)
+├── HiddenLayer2 — H5–H8 (X=−24/−8/8/24, Z=−40)
+├── OutputLayer — O (X=0, Z=−95)
+├── Paths (Node3D)
+│   ├── L1 (CSGCombiner3D) — 12 CSGBox3D I→H1
+│   ├── L2 (CSGCombiner3D) — 16 CSGBox3D H1→H2
+│   └── L3 (CSGCombiner3D) — 4 CSGBox3D H2→O
+│   (démarrent INVISIBLES ; collision/kill gérées dynamiquement par script)
+├── ButtonPanel (CSGBox3D 7.5×7×0.2, centré sur I1 à Z=84) — panneau de boutons
+│   └── Btn_XXXX (Node3D × 32) — un par chemin :
+│       ├── Mesh  (CSGBox3D 1.1×1.1×0.18, mat gris→vert→rouge selon état)
+│       ├── Zone  (Area3D mask=1) — interact_pressed → toggle chemin
+│       └── Info  (Label3D billboard, pixel_size=0.02, "I2→H2\nW=1/2")
+├── MapScreen (CSGBox3D 7×0.1×7 plat sur I3) — ViewportTexture minimap
+├── MinimapViewport (SubViewport 512×512, own_world_3d=false)
+│   └── MinimapCamera (Camera3D Y=120, orthogonal, regarde vers −Y)
 ├── KillZone (Area3D, Y=−29) — mort si tombée dans le vide
 ├── Sophia — spawn (0, 4, 80), can_double_jump=true, jump_velocity=5.5
 │   underwater=true, underwater_speed_factor=1.0, underwater_gravity_factor=0.55
 ├── HUD (ui/hud.tscn)
-└── KeyPickup (key_pickup.tscn, position (0, 3.5, −95))
+└── KeyPickup (key_pickup.tscn, pos (0, 3.5, −95))
     next_scene_override = "res://scenes/scene_1_data.tscn"
 ```
 
-**Neurones :** CSGCylinder3D rayon=4, hauteur=1, 16 côtés, matériau blanc nacré émissif. `use_collision = true`.
+**Neurones :** CSGCylinder3D r=4, h=1, 16 côtés. `use_collision = true`.
 
-**Chemins (`$Paths`) :** CSGBox3D inclinés (size.y=0.4, size.z=3), matériau bleu semi-transparent émissif. Collisions ajoutées au runtime par `_setup_path_collision()`. Bandes émissives par `_setup_edge_strips()`.
+**32 chemins (`$Paths`) :** Organisés dans L1/L2/L3 (CSGCombiner3D avec transforms inversés pour orientation correcte). Nommés `I1H2`, `H3H7`, `H6O`, etc. (convention `from+to`).
 
-**`scene_3.gd` — runtime (utilisé par scene_4_neuralnet uniquement) :**
+**Système de poids W (fractions 1/x) :**
 
-- `_setup_path_collision()` : pour chaque CSGBox3D dans `$Paths` → ajoute `StaticBody3D > CollisionShape3D(BoxShape3D)` avec `box.size = path.size`.
-- `_setup_edge_strips()` : pour chaque chemin → crée 2 `CSGBox3D` bleus émissifs décalés de ±1.45 u le long de l'axe Z local. Matériau bleu vif émissif (energy=4.0).
-- `_on_kill_zone_body_entered()` : appelle `body.die()`.
-- **Pas de `_on_next_scene_area_body_entered`** — la sortie est gérée par `KeyPickup`.
+Stockés dans `PATH_DENOM` (dict `name → dénominateur x`). Plus petit dénominateur = W plus élevé. La solution correcte : `I2H2` (W=1/2) → `H2H6` (W=1/2) → `H6O` (W=1/2) — les 3 ont le W le plus élevé de leur couche et ne se croisent pas.
 
-**Sophia dans cette scène :** `underwater_gravity_factor=0.55` → gravité réduite (sauts plus longs). `jump_velocity=5.5`. Double jump obligatoire pour certains sauts.
+**Détection de croisements :**
 
-**Transition :** Ramasser la clé sur le neurone Output (E) → `Global.has_key = true` → `Global.change_scene("res://scenes/scene_1_data.tscn")`. Kill zone à Y=−29.
+`_paths_cross(a, b)` : deux chemins de la même couche se croisent si l'ordre X de leurs neurones s'inverse : `(xa−xb)*(ya−yb) < 0`. Positions X dans `NEURON_X` : I1=−16, I2=0, I3=16 ; H1=H5=−24, H2=H6=−8, H3=H7=8, H4=H8=24. L3 : aucun croisement (convergence vers O).
+
+**États des chemins :**
+
+- INACTIF → matériau transparent (alpha=0), aucune collision
+- ACTIF VALIDE (vert) → matériau vert émissif + `StaticBody3D` ajouté dynamiquement (praticable)
+- ACTIF CROISÉ (rouge) → matériau rouge + `StaticBody3D` + `Area3D` kill zone (contact = `die()`)
+
+**`scene_4_neuralnet.gd` — fonctions clés :**
+
+- `_init_paths()` : `$Paths.find_children("*","CSGBox3D")` + filtre `PATH_DENOM.has()` → rend invisibles.
+- `_init_buttons()` : lit les `Btn_XXXX/Zone` sous `$ButtonPanel`, connecte `body_entered/exited.bind(path_name)`.
+- `_init_minimap()` : applique `ViewportTexture` du `$MinimapViewport` sur `$MapScreen.material`.
+- `_on_btn_interact(path_name)` : toggle `_path_active[path_name]` → `_update_all_paths()`.
+- `_update_all_paths()` : recalcule tous les croisements (`_paths_cross` pairwise), appelle `_set_path_state()` + met à jour couleurs boutons.
+- `_set_path_state(name, "off"|"green"|"red")` : matériau chemin + création/suppression `StaticBody3D` et `Area3D` kill via `_path_bodies[name]` et `_path_kills[name]` (`queue_free` pour retirer).
+
+**Interaction boutons :** Pattern `key_pickup.gd` — `body_entered` → connect `_sophia.interact_pressed` ; `body_exited` → disconnect. Un seul callable actif à la fois via `_current_btn_callable`.
+
+**Minimap :** `MinimapViewport` (`own_world_3d=false`) + `MinimapCamera` (orthogonale Y=120, regarde vers −Y). Texture sur `MapScreen` (dalle plate sur I3).
+
+**Sophia dans cette scène :** `underwater_gravity_factor=0.55` → gravité réduite (sauts plus longs). `jump_velocity=5.5`. Double jump activé.
+
+**Transition :** Ramasser la clé sur O (E) → `Global.has_key = true` → `Global.change_scene("res://scenes/scene_1_data.tscn")`. Kill zone à Y=−29.
 
 ### Coffre (`scenes/chest_gold.tscn` + `scripts/chest.gd`)
 
