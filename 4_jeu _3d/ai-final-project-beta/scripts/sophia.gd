@@ -44,7 +44,8 @@ var _double_jump_available: bool = false
 var topdown_mode: bool = false
 
 # === Signaux ===
-signal interact_pressed  ## Émis quand le joueur appuie sur E
+signal interact_pressed   ## Émis quand le joueur appuie sur E
+signal left_click_pressed   ## Émis sur clic gauche souris (quand capturée)
 
 # === Références ===
 @onready var head: Node3D = $Head
@@ -81,9 +82,13 @@ func _input(event: InputEvent) -> void:
 		rotate_look(event.relative)
 
 
-func _unhandled_input(_event: InputEvent) -> void:
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		capture_mouse()
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if not mouse_captured:
+				capture_mouse()
+			else:
+				left_click_pressed.emit()
 	if Input.is_key_pressed(KEY_ESCAPE):
 		release_mouse()
 
@@ -183,7 +188,7 @@ func _update_animation() -> void:
 
 func rotate_look(rot_input: Vector2):
 	look_rotation.x -= rot_input.y * look_speed
-	look_rotation.x = clamp(look_rotation.x, deg_to_rad(-80), deg_to_rad(45))
+	look_rotation.x = clamp(look_rotation.x, deg_to_rad(-80), deg_to_rad(80))
 	look_rotation.y -= rot_input.x * look_speed
 	transform.basis = Basis()
 	rotate_y(look_rotation.y)

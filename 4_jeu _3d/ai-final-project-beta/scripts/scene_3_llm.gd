@@ -65,6 +65,7 @@ func _ready() -> void:
 			)
 
 	_sophia.interact_pressed.connect(_on_interact)
+	_sophia.left_click_pressed.connect(_on_interact)
 	$NextSceneArea.body_entered.connect(_on_next_scene_body_entered)
 	_hud.set_subtitle("E : prendre un bloc  |  approche le panneau  |  1-5 : placer dans le rang")
 

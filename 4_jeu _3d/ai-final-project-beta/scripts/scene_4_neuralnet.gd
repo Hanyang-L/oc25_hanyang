@@ -45,6 +45,7 @@ func _ready() -> void:
 	_init_paths()
 	_init_buttons()
 	_init_minimap()
+	_sophia.left_click_pressed.connect(_on_raycast_interact)
 	$KillZone.body_entered.connect(_on_kill_zone_body_entered)
 	_hud.set_subtitle("Saute sur I1 pour activer les chemins — trouve W=1/2")
 
@@ -70,17 +71,23 @@ func _build_materials() -> void:
 	_path_mat_red.emission_energy_multiplier = 2.0
 	_path_mat_red.metallic = 0.5
 
+	_mat_off = StandardMaterial3D.new()
+	_mat_off.albedo_color = Color(0.18, 0.18, 0.22)
+	_mat_off.emission_enabled = true
+	_mat_off.emission = Color(0.15, 0.15, 0.25)
+	_mat_off.emission_energy_multiplier = 0.4
+
 	_mat_btn_green = StandardMaterial3D.new()
 	_mat_btn_green.albedo_color = Color(0.05, 0.8, 0.1)
 	_mat_btn_green.emission_enabled = true
 	_mat_btn_green.emission = Color(0.0, 1.0, 0.2)
-	_mat_btn_green.emission_energy_multiplier = 1.5
+	_mat_btn_green.emission_energy_multiplier = 0.5
 
 	_mat_btn_red = StandardMaterial3D.new()
 	_mat_btn_red.albedo_color = Color(0.9, 0.05, 0.05)
 	_mat_btn_red.emission_enabled = true
 	_mat_btn_red.emission = Color(1.0, 0.1, 0.05)
-	_mat_btn_red.emission_energy_multiplier = 1.5
+	_mat_btn_red.emission_energy_multiplier = 0.5
 
 
 func _init_paths() -> void:
@@ -94,14 +101,21 @@ func _init_paths() -> void:
 
 
 func _init_buttons() -> void:
-	var first_mesh := $ButtonPanel.get_node("Btn_I1H1/Mesh") as CSGBox3D
-	_mat_off = first_mesh.material as StandardMaterial3D
 	for path_name in PATH_DENOM:
 		var btn := $ButtonPanel.get_node_or_null("Btn_" + path_name) as Node3D
 		if not btn:
 			continue
 		_btn_meshes[path_name] = btn.get_node("Mesh") as CSGBox3D
 		var zone := btn.get_node("Zone") as Area3D
+		(_btn_meshes[path_name] as CSGBox3D).size.y = 0.6
+		(_btn_meshes[path_name] as CSGBox3D).position.y = 0.7
+		zone.position.y = 0.7
+		zone.collision_layer = 4
+		var cs := zone.get_node("Shape") as CollisionShape3D
+		var box := BoxShape3D.new()
+		box.size = Vector3(1.1, 1.1, 0.4)
+		cs.shape = box
+		(_btn_meshes[path_name] as CSGBox3D).material = _mat_off
 		zone.body_entered.connect(_on_btn_body_entered.bind(path_name))
 		zone.body_exited.connect(_on_btn_body_exited.bind(path_name))
 
@@ -236,6 +250,28 @@ func _get_layer(path_name: String) -> int:
 	if path_name.ends_with("O"):
 		return 3
 	return 2
+
+
+func _on_raycast_interact() -> void:
+	var camera := _sophia.get_node("Head/Camera3D") as Camera3D
+	var from := camera.global_position
+	var to := from + camera.global_basis * Vector3(0, 0, -1) * 15.0
+	var params := PhysicsRayQueryParameters3D.create(from, to)
+	params.collide_with_areas = true
+	params.collision_mask = 4
+	var result := get_world_3d().direct_space_state.intersect_ray(params)
+	if result.is_empty():
+		return
+	var hit := result["collider"] as Area3D
+	if not hit:
+		return
+	var btn := hit.get_parent() as Node3D
+	if not btn:
+		return
+	var path_name := btn.name.trim_prefix("Btn_")
+	if not PATH_DENOM.has(path_name):
+		return
+	_on_btn_interact(path_name)
 
 
 func _on_kill_zone_body_entered(body: Node3D) -> void:
