@@ -23,7 +23,7 @@ const ZONE_COLORS  = [
 	Color(0.45, 0.15, 0.78),
 	Color(0.1,  0.45, 0.62)
 ]
-const INTERACT_RANGE = 2.8
+const INTERACT_RANGE = 5.0
 
 var _blocks: Array = []
 var _slots:  Array = []

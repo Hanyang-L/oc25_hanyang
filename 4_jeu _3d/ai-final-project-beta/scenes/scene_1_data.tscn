@@ -86,9 +86,44 @@ emission_enabled = true
 emission = Color(1, 0.1, 0, 1)
 emission_energy_multiplier = 2.0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nc2yg"]
+albedo_color = Color(0.4484946, 0.31312248, 0.15606233, 1)
+metallic = 0.28
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eb7ev"]
+albedo_color = Color(0.45732588, 0.27197194, 0.07884026, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_he52y"]
+albedo_color = Color(0.42, 0.32242, 0.0756, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6kcvo"]
+albedo_color = Color(0.32172796, 0.32172796, 0.32172796, 1)
+metallic = 0.69
+roughness = 0.49
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ts44"]
+emission_enabled = true
+emission = Color(0.6637255, 0.8493919, 0.86032885, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6kcvo"]
+material = SubResource("StandardMaterial3D_4ts44")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wvf4k"]
+albedo_color = Color(0.50980395, 0.50980395, 0.50980395, 1)
+metallic = 0.4
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wxwkn"]
+albedo_color = Color(0.36862746, 0.36862746, 0.36862746, 1)
+metallic = 0.41
+roughness = 0.24
+
 [sub_resource type="StandardMaterial3D" id="mat_glass"]
 transparency = 1
-albedo_color = Color(0.87094563, 0.93448186, 0.9999997, 0.14901961)
+albedo_color = Color(0.85, 0.93, 1, 0.07)
+metallic = 0.05
+roughness = 0.04
 
 [sub_resource type="StandardMaterial3D" id="mat_gpu"]
 albedo_color = Color(0.08, 0.08, 0.1, 1)
@@ -126,9 +161,6 @@ size = Vector3(1.8040283, 1.3458008, 1.4219726)
 
 [sub_resource type="BoxShape3D" id="shape_chest_area"]
 size = Vector3(3, 2, 3)
-
-[sub_resource type="BoxShape3D" id="shape_exit"]
-size = Vector3(22, 5, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ontf5"]
 albedo_color = Color(0.9, 0.85, 0.6, 1)
@@ -1394,8 +1426,70 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 3.35, -5.2)
 size = Vector3(0.05, 0.15, 0.15)
 material = SubResource("mat_led_red")
 
+[node name="Table" type="Node3D" parent="." unique_id=569052510]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.516067, 0, -12.0688095)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Table" unique_id=1972220632]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23391724, 0.34381104, -0.9248047)
+size = Vector3(1.4678345, 0.9815674, 4.8496094)
+material = SubResource("StandardMaterial3D_nc2yg")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Table/CSGBox3D" unique_id=1446401372]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.10394287, 0.02798462)
+operation = 2
+size = Vector3(1, 0.79211426, 6.3637085)
+material = SubResource("StandardMaterial3D_eb7ev")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Table/CSGBox3D" unique_id=672068190]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.16399384, -0.10394287, 0.0034179688)
+operation = 2
+size = Vector3(4.5510864, 0.79211426, 2.670761)
+material = SubResource("StandardMaterial3D_he52y")
+
+[node name="Display" type="Node3D" parent="." unique_id=2004382981]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Display" unique_id=1543645268]
+transform = Transform3D(0.9989595, 0.045607083, 0, -0.045607083, 0.9989595, 0, 0, 0, 1, -10.547461, 1.6114464, -13.330508)
+size = Vector3(0.1027832, 1.2612915, 3.2419434)
+material = SubResource("StandardMaterial3D_6kcvo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Display/CSGBox3D" unique_id=1209910498]
+transform = Transform3D(0.09689771, 0, 0, 0, 1, 0, 0, 0, 2.9563272, 0.018262863, 0, 0)
+mesh = SubResource("BoxMesh_6kcvo")
+
+[node name="ScreenText" type="Label3D" parent="Display/CSGBox3D/MeshInstance3D" unique_id=323690446]
+transform = Transform3D(-4.511086e-07, 0, 10.320162, 0, 1, 0, -0.33825755, 0, -1.4785707e-08, 0.843544, 0, 0)
+text = "Le GPU est en panne.
+Aide nous à le réparer."
+font_size = 24
+outline_size = 5
+autowrap_mode = 3
+width = 420.0
+
+[node name="Support" type="CSGBox3D" parent="Display" unique_id=472241416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.783639, 1.3784457, -13.261799)
+size = Vector3(0.16586304, 1.1690063, 0.3173828)
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="Display/Support" unique_id=1286601810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5050182, -0.65888596, 0)
+inner_radius = 1.235
+outer_radius = 1.676
+sides = 18
+ring_sides = 21
+material = SubResource("StandardMaterial3D_wvf4k")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Display/Support/CSGTorus3D" unique_id=1551000646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39736938, 0, -0.010406494)
+operation = 2
+size = Vector3(2.7782593, 1, 3.7319946)
+material = SubResource("StandardMaterial3D_wxwkn")
+
 [node name="PC" type="Node3D" parent="." unique_id=1305882955]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13.5)
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -9.458281, -0.2598328, -15.856476)
+
+[node name="Fans" type="Node3D" parent="PC" unique_id=1111222233]
+
+[node name="TopFans" type="Node3D" parent="PC" unique_id=149588270]
 
 [node name="GlassPanel" type="CSGBox3D" parent="PC" unique_id=663087171]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.011074543, 1.3766242, 0.23421288)
@@ -1416,8 +1510,8 @@ size = Vector3(1.8, 0.55, 0.4740918)
 material = SubResource("mat_gpu")
 
 [node name="GpuLed" type="CSGBox3D" parent="PC/GPU/GpuBody" unique_id=481528103]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27000046, 0.17704588)
-size = Vector3(1.7, 0.03, 0.04)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.027295113, -0.019592285, 0.17704591)
+size = Vector3(1.7545898, 0.5308154, 0.04)
 material = SubResource("mat_gpu_led")
 
 [node name="GpuFan1" type="CSGCylinder3D" parent="PC/GPU/GpuBody" unique_id=1132538971]
@@ -1525,15 +1619,15 @@ material = SubResource("mat_fan_ring")
 [node name="PCLights" type="Node3D" parent="PC" unique_id=195384425]
 
 [node name="RgbYellow" type="OmniLight3D" parent="PC/PCLights" unique_id=1620512029]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3197031, 1, -0.3741169)
 light_color = Color(0.8, 1, 0.05, 1)
-light_energy = 2.5
+light_energy = 0.634
 omni_range = 3.0
 
 [node name="RgbPurple" type="OmniLight3D" parent="PC/PCLights" unique_id=921177732]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0.4)
 light_color = Color(0.55, 0, 1, 1)
-light_energy = 2.0
+light_energy = 1.366
 omni_range = 2.5
 
 [node name="AmbientLights" type="Node3D" parent="." unique_id=847441964]
@@ -1560,12 +1654,6 @@ light_color = Color(0.2, 0.3, 1, 1)
 light_energy = 0.7
 omni_range = 15.0
 
-[node name="PCGlow" type="OmniLight3D" parent="AmbientLights" unique_id=2013969827]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -13.5)
-light_color = Color(0.7, 1, 0.1, 1)
-light_energy = 1.5
-omni_range = 6.0
-
 [node name="BeachBar" parent="." unique_id=1556869550 instance=ExtResource("3_rg0s2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.781618, 9.372063, 16.834517)
 
@@ -1576,7 +1664,7 @@ transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -1.6995306, 0.068068504
 transform = Transform3D(0.14898992, 0, -0.68396056, 0, 0.7, 0, 0.68396056, 0, 0.14898992, -9.269556, 0.064816475, 5.946745)
 
 [node name="Chest" type="Node3D" parent="." unique_id=2100000001]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -13.5)
+transform = Transform3D(0.030486226, 0, -0.9995352, 0, 1, 0, 0.9995352, 0, 0.030486226, 9.838955, 0, -14.672122)
 script = ExtResource("5_chest_script")
 
 [node name="ChestMesh" parent="Chest" unique_id=2100000002 instance=ExtResource("4_chest")]
@@ -1594,12 +1682,6 @@ collision_layer = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Chest/InteractArea" unique_id=2100000006]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("shape_chest_area")
-
-[node name="NextSceneArea" type="Area3D" parent="." unique_id=1800427570]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -15.5)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=315651905]
-shape = SubResource("shape_exit")
 
 [node name="HUD" parent="." unique_id=81398406 instance=ExtResource("2_hud")]
 

@@ -252,8 +252,8 @@ size = Vector3(72.111, 0.4, 3)
 material = SubResource("Mat_Path")
 
 [node name="I3H2" type="CSGBox3D" parent="Paths/L1" unique_id=33]
-transform = Transform3D(-0.37139, 0, -0.92848, 0, 1, 0, 0.92848, 0, -0.37139, 4, 2, 50)
-size = Vector3(64.622, 0.4, 3)
+transform = Transform3D(-0.37139, 0, -0.92848, 0, 1, 0, 0.92848, 0, -0.37139, 3.6966197, 2, 50.758453)
+size = Vector3(62.988247, 0.4, 3)
 material = SubResource("Mat_Path")
 
 [node name="I3H3" type="CSGBox3D" parent="Paths/L1" unique_id=34]
@@ -1041,7 +1041,7 @@ W=1/6"
 font_size = 10
 
 [node name="MapScreen" type="CSGBox3D" parent="." unique_id=1002]
-transform = Transform3D(-4.371139e-08, -1, 0, -4.371139e-08, 1.9106855e-15, 1, -1, 4.371139e-08, -4.371139e-08, 16, 5.060848, 80)
+transform = Transform3D(1.3113416e-07, 1, -4.371139e-08, 3.821371e-15, 4.371139e-08, 1, 1, -1.3113416e-07, 1.9106855e-15, 16, 5.060848, 80)
 use_collision = true
 size = Vector3(7, 0.1, 7)
 

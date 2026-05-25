@@ -229,7 +229,7 @@ func _set_path_state(path_name: String, state: String) -> void:
 			kill.collision_mask = 1
 			var kc := CollisionShape3D.new()
 			var kb := BoxShape3D.new()
-			kb.size = path_node.size
+			kb.size = Vector3(path_node.size.x, 0.5, path_node.size.z)
 			kc.shape = kb
 			kill.add_child(kc)
 			kill.body_entered.connect(_on_kill_zone_body_entered)
