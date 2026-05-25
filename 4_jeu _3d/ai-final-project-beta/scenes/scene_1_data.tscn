@@ -1438,29 +1438,24 @@ radius = 0.2
 height = 0.08
 material = SubResource("mat_fan_ring")
 
-[node name="GpuBody2" type="CSGBox3D" parent="PC/GPU" unique_id=1750492741]
+[node name="GpuFace" type="CSGBox3D" parent="PC/GPU" unique_id=1750492741]
 transform = Transform3D(-3.4969112e-08, 0.8, 0, -0.8, -3.4969112e-08, 0, 0, 0, 0.8, 0.6831455, 0.9989301, -0.33189392)
 size = Vector3(1.6114258, 0.55, 0.12)
 material = SubResource("mat_gpu")
 
-[node name="GpuLed" type="CSGBox3D" parent="PC/GPU/GpuBody2" unique_id=527725021]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
-size = Vector3(1.7, 0.03, 0.04)
-material = SubResource("mat_gpu_led")
-
-[node name="GpuFan1" type="CSGCylinder3D" parent="PC/GPU/GpuBody2" unique_id=1342694315]
+[node name="GpuFan1" type="CSGCylinder3D" parent="PC/GPU/GpuFace" unique_id=1342694315]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.55, 0, 0.069999695)
 radius = 0.2
 height = 0.08
 material = SubResource("mat_fan_ring")
 
-[node name="GpuFan2" type="CSGCylinder3D" parent="PC/GPU/GpuBody2" unique_id=1857210476]
+[node name="GpuFan2" type="CSGCylinder3D" parent="PC/GPU/GpuFace" unique_id=1857210476]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.069999695)
 radius = 0.2
 height = 0.08
 material = SubResource("mat_fan_ring")
 
-[node name="GpuFan3" type="CSGCylinder3D" parent="PC/GPU/GpuBody2" unique_id=1516714149]
+[node name="GpuFan3" type="CSGCylinder3D" parent="PC/GPU/GpuFace" unique_id=1516714149]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.55, 0, 0.069999695)
 radius = 0.2
 height = 0.08
@@ -1491,45 +1486,41 @@ transform = Transform3D(0.819, -0.574, 0, 0.574, 0.819, 0, 0, 0, 1, -0.11666003,
 size = Vector3(0.12, 1.4683106, 0.08)
 material = SubResource("mat_cable_white")
 
-[node name="FanRings" type="Node3D" parent="PC" unique_id=108868957]
+[node name="TopFanRings" type="Node3D" parent="PC" unique_id=108868957]
 transform = Transform3D(0.8, 0, 0, 0, -3.4969112e-08, -0.8, 0, 0.8, -3.4969112e-08, -0.04533565, 2.5885813, -0.28445816)
 
-[node name="FanRing1" type="CSGCylinder3D" parent="PC/FanRings" unique_id=793596207]
+[node name="FanRing1" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=793596207]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.62, 0.35, 0.76)
 radius = 0.28
 height = 0.06
 material = SubResource("mat_fan_ring")
 
-[node name="FanRing2" type="CSGCylinder3D" parent="PC/FanRings" unique_id=2095430584]
+[node name="FanRing2" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=2095430584]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.35, 0.76)
 radius = 0.28
 height = 0.06
 material = SubResource("mat_fan_ring")
 
-[node name="FanRing3" type="CSGCylinder3D" parent="PC/FanRings" unique_id=174240587]
+[node name="FanRing3" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=174240587]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.62, 0.35, 0.76)
 radius = 0.28
 height = 0.06
 material = SubResource("mat_fan_ring")
 
-[node name="TopFanRings" type="Node3D" parent="PC" unique_id=1018321782]
+[node name="SideFanRings" type="Node3D" parent="PC" unique_id=1018321782]
 transform = Transform3D(-3.4969112e-08, -0.8, 0, 0.8, -3.4969112e-08, 0, 0, 0, 0.8, 0.7708118, 1.7112345, 0.0085372925)
 
-[node name="TopRing1" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=2110208333]
+[node name="TopRing1" type="CSGCylinder3D" parent="PC/SideFanRings" unique_id=2110208333]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.62, 2.01, 0)
 radius = 0.28
 height = 0.06
 material = SubResource("mat_fan_ring")
 
-[node name="TopRing2" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=1308110802]
+[node name="TopRing2" type="CSGCylinder3D" parent="PC/SideFanRings" unique_id=1308110802]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01, 0)
 radius = 0.28
 height = 0.06
 material = SubResource("mat_fan_ring")
-
-[node name="Fans" type="Node3D" parent="PC" unique_id=694807364]
-
-[node name="TopFans" type="Node3D" parent="PC" unique_id=738246963]
 
 [node name="PCLights" type="Node3D" parent="PC" unique_id=195384425]
 
