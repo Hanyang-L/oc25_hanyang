@@ -3,8 +3,7 @@ extends Node3D
 const SCENES_DIR = "res://scenes/"
 const SCENE_PREFIX = "scene_"
 
-var _side_fans: Array[Node3D] = []
-var _top_fans: Array[Node3D] = []
+var _fans: Array[Node3D] = []
 var _sophia: CharacterBody3D
 var _display_connected: bool = false
 
@@ -22,9 +21,7 @@ func _ready() -> void:
 		$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
 func _process(delta: float) -> void:
-	for fan in _side_fans:
-		fan.rotate_x(deg_to_rad(480.0) * delta)
-	for fan in _top_fans:
+	for fan in _fans:
 		fan.rotate_y(deg_to_rad(360.0) * delta)
 
 func _setup_fans() -> void:
@@ -40,8 +37,12 @@ func _setup_fans() -> void:
 	hub_mat.roughness = 0.2
 
 	var blade_mesh := BoxMesh.new()
-	blade_mesh.size = Vector3(0.22, 0.015, 0.05)
+	blade_mesh.size = Vector3(0.238, 0.014, 0.042)
 	blade_mesh.surface_set_material(0, blade_mat)
+
+	var gpu_blade_mesh := BoxMesh.new()
+	gpu_blade_mesh.size = Vector3(0.170, 0.010, 0.030)
+	gpu_blade_mesh.surface_set_material(0, blade_mat)
 
 	var hub_mesh := CylinderMesh.new()
 	hub_mesh.top_radius = 0.04
@@ -50,21 +51,14 @@ func _setup_fans() -> void:
 	hub_mesh.radial_segments = 10
 	hub_mesh.surface_set_material(0, hub_mat)
 
-	for cyl in $PC/TopFanRings.get_children():
-		if not cyl is CSGCylinder3D:
-			continue
-		var local_pos: Vector3 = $PC.to_local(cyl.global_position)
-		var pivot := _make_fan_y(local_pos, blade_mesh, hub_mesh, 8, (cyl as CSGCylinder3D).radius * 0.78)
-		$PC/TopFans.add_child(pivot)
-		_top_fans.append(pivot)
-
-	for cyl in $PC/SideFanRings.get_children():
-		if not cyl is CSGCylinder3D:
-			continue
-		var local_pos: Vector3 = $PC.to_local(cyl.global_position)
-		var pivot := _make_fan_x(local_pos, blade_mesh, hub_mesh, 8, (cyl as CSGCylinder3D).radius * 0.78)
-		$PC/Fans.add_child(pivot)
-		_side_fans.append(pivot)
+	for cyl in $PC/Radiator3.get_children():
+		_add_fan(cyl, blade_mesh, hub_mesh, $PC/TopFans)
+	for cyl in $PC/Radiator2.get_children():
+		_add_fan(cyl, blade_mesh, hub_mesh, $PC/Fans)
+	for cyl in $PC/GPU/GpuBody.get_children():
+		_add_fan(cyl, gpu_blade_mesh, hub_mesh, $PC/TopFans)
+	for cyl in $PC/GPU/GpuFace.get_children():
+		_add_fan(cyl, gpu_blade_mesh, hub_mesh, $PC/Fans)
 
 func _setup_display() -> void:
 	var screen: Node3D = $Display/CSGBox3D
@@ -124,10 +118,21 @@ func _on_display_interact() -> void:
 		Global.change_scene("res://scenes/scene_2_gpu.tscn")
 	)
 
-func _make_fan_y(center: Vector3, blade_mesh: Mesh,
+func _add_fan(node: Node, blade_mesh: Mesh, hub_mesh: Mesh, container: Node3D) -> void:
+	if not node is CSGCylinder3D:
+		return
+	var cyl := node as CSGCylinder3D
+	var local_pos: Vector3 = $PC.to_local(cyl.global_position)
+	var spin_axis: Vector3 = cyl.global_basis.y.normalized()
+	var pivot := _make_fan_aligned(local_pos, spin_axis, blade_mesh, hub_mesh, 8, cyl.radius * 0.50)
+	container.add_child(pivot)
+	_fans.append(pivot)
+
+func _make_fan_aligned(center: Vector3, spin_axis: Vector3, blade_mesh: Mesh,
 		hub_mesh: Mesh, n_blades: int, radius: float) -> Node3D:
 	var pivot := Node3D.new()
 	pivot.position = center
+	pivot.transform.basis = Basis(Quaternion(Vector3.UP, spin_axis))
 	var hub := MeshInstance3D.new()
 	hub.mesh = hub_mesh
 	pivot.add_child(hub)
@@ -139,23 +144,5 @@ func _make_fan_y(center: Vector3, blade_mesh: Mesh,
 		blade.mesh = blade_mesh
 		blade.position = Vector3(radius, 0.0, 0.0)
 		blade.rotation_degrees.x = 30.0
-		arm.add_child(blade)
-	return pivot
-
-func _make_fan_x(center: Vector3, blade_mesh: Mesh,
-		hub_mesh: Mesh, n_blades: int, radius: float) -> Node3D:
-	var pivot := Node3D.new()
-	pivot.position = center
-	var hub := MeshInstance3D.new()
-	hub.mesh = hub_mesh
-	pivot.add_child(hub)
-	for i in n_blades:
-		var arm := Node3D.new()
-		arm.rotation_degrees.x = i * (360.0 / n_blades)
-		pivot.add_child(arm)
-		var blade := MeshInstance3D.new()
-		blade.mesh = blade_mesh
-		blade.position = Vector3(0.0, radius, 0.0)
-		blade.rotation_degrees.y = 30.0
 		arm.add_child(blade)
 	return pivot

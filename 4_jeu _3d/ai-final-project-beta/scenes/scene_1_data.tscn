@@ -109,6 +109,10 @@ emission = Color(0.6637255, 0.8493919, 0.86032885, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_6kcvo"]
 material = SubResource("StandardMaterial3D_4ts44")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3rdck"]
+albedo_color = Color(0.26657522, 0.2665752, 0.2665752, 1)
+roughness = 0.46
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wvf4k"]
 albedo_color = Color(0.50980395, 0.50980395, 0.50980395, 1)
 metallic = 0.4
@@ -1466,20 +1470,34 @@ outline_size = 5
 autowrap_mode = 3
 width = 420.0
 
-[node name="Support" type="CSGBox3D" parent="Display" unique_id=472241416]
+[node name="Support" type="CSGCombiner3D" parent="Display" unique_id=242614420]
+
+[node name="Support" type="CSGBox3D" parent="Display/Support" unique_id=472241416]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.783639, 1.3784457, -13.261799)
 size = Vector3(0.16586304, 1.1690063, 0.3173828)
+material = SubResource("StandardMaterial3D_3rdck")
 
 [node name="CSGTorus3D" type="CSGTorus3D" parent="Display/Support" unique_id=1286601810]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5050182, -0.65888596, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.278621, 0.7195598, -13.261799)
 inner_radius = 1.235
 outer_radius = 1.676
 sides = 18
 ring_sides = 21
 material = SubResource("StandardMaterial3D_wvf4k")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Display/Support/CSGTorus3D" unique_id=1551000646]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39736938, 0, -0.010406494)
+[node name="Support2" type="CSGBox3D" parent="Display/Support" unique_id=650518677]
+transform = Transform3D(0.06063038, -0.9981603, 0, 0.9981603, 0.06063038, 0, 0, 0, 1, -10.686825, 1.8324677, -13.261799)
+size = Vector3(0.16586304, 0.2995758, 0.3173828)
+material = SubResource("StandardMaterial3D_3rdck")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Display/Support" unique_id=1551000646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.881251, 0.7195598, -13.272205)
+operation = 2
+size = Vector3(2.7782593, 1, 3.7319946)
+material = SubResource("StandardMaterial3D_wxwkn")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Display/Support" unique_id=1296255384]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.011962, 0.16718966, -13.272205)
 operation = 2
 size = Vector3(2.7782593, 1, 3.7319946)
 material = SubResource("StandardMaterial3D_wxwkn")
@@ -1493,11 +1511,13 @@ transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -9.458281, -0.2598328, 
 
 [node name="GlassPanel" type="CSGBox3D" parent="PC" unique_id=663087171]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.011074543, 1.3766242, 0.23421288)
+visible = false
 size = Vector3(1.7345746, 1.2494824, 0.04)
 material = SubResource("mat_glass")
 
 [node name="GlassPanel2" type="CSGBox3D" parent="PC" unique_id=1046790486]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.88002455, 1.3766242, -0.03259468)
+visible = false
 size = Vector3(0.6040814, 1.2494824, 0.04)
 material = SubResource("mat_glass")
 
@@ -1515,60 +1535,101 @@ size = Vector3(1.7545898, 0.5308154, 0.04)
 material = SubResource("mat_gpu_led")
 
 [node name="GpuFan1" type="CSGCylinder3D" parent="PC/GPU/GpuBody" unique_id=1132538971]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.55, 0, 0.24704558)
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.5500002, 0, 0.20120174)
+operation = 2
 radius = 0.2
 height = 0.08
 material = SubResource("mat_fan_ring")
 
 [node name="GpuFan2" type="CSGCylinder3D" parent="PC/GPU/GpuBody" unique_id=254105221]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.24704558)
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.20494416)
+operation = 2
 radius = 0.2
 height = 0.08
 material = SubResource("mat_fan_ring")
 
 [node name="GpuFan3" type="CSGCylinder3D" parent="PC/GPU/GpuBody" unique_id=582564206]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.55, 0, 0.24704558)
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.5500002, 0, 0.21011573)
+operation = 2
 radius = 0.2
 height = 0.08
 material = SubResource("mat_fan_ring")
 
 [node name="GpuFace" type="CSGBox3D" parent="PC/GPU" unique_id=1750492741]
-transform = Transform3D(-3.4969112e-08, 0.8, 0, -0.8, -3.4969112e-08, 0, 0, 0, 0.8, 0.6831455, 0.9989301, -0.33189392)
-size = Vector3(1.6114258, 0.55, 0.12)
+transform = Transform3D(-3.4969112e-08, 0.8, 0, -0.8, -3.4969112e-08, 0, 0, 0, 0.8, 0.6831455, 0.99893016, -0.32366943)
+size = Vector3(1.6114258, 0.55, 0.14056641)
 material = SubResource("mat_gpu")
 
 [node name="GpuFan1" type="CSGCylinder3D" parent="PC/GPU/GpuFace" unique_id=1342694315]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.55, 0, 0.069999695)
+operation = 2
 radius = 0.2
 height = 0.08
 material = SubResource("mat_fan_ring")
 
 [node name="GpuFan2" type="CSGCylinder3D" parent="PC/GPU/GpuFace" unique_id=1857210476]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.069999695)
+operation = 2
 radius = 0.2
 height = 0.08
 material = SubResource("mat_fan_ring")
 
 [node name="GpuFan3" type="CSGCylinder3D" parent="PC/GPU/GpuFace" unique_id=1516714149]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.55, 0, 0.069999695)
+operation = 2
 radius = 0.2
 height = 0.08
 material = SubResource("mat_fan_ring")
 
 [node name="Radiator" type="CSGBox3D" parent="PC" unique_id=738088210]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1044727, 1.1565723, -0.3252306)
-size = Vector3(1.6289454, 1.6768554, 0.10599365)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0029525757, 1.1565725, -0.32523346)
+size = Vector3(1.8319879, 1.6768554, 0.10599365)
 material = SubResource("mat_case")
 
 [node name="Radiator2" type="CSGBox3D" parent="PC" unique_id=941833629]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.901955, 1.1565723, -0.060943604)
-size = Vector3(0.6486914, 1.6768554, 0.049081422)
+transform = Transform3D(-4.3711392e-08, 0, 1, 0, 1, 0, -1, 0, -4.3711392e-08, -0.8707695, 1.1565725, -0.060943604)
+size = Vector3(0.6486914, 1.6768554, 0.11145477)
 material = SubResource("mat_case")
 
+[node name="Ring1" type="CSGCylinder3D" parent="PC/Radiator2" unique_id=2110208333]
+transform = Transform3D(1.5285486e-15, 3.4969112e-08, -0.8, 0.8, -3.4969112e-08, 0, -3.4969112e-08, -0.8, -3.4969112e-08, -0.069480896, 0.058661997, 0.03358078)
+operation = 2
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="Ring2" type="CSGCylinder3D" parent="PC/Radiator2" unique_id=1308110802]
+transform = Transform3D(1.5285486e-15, 3.4969112e-08, -0.8, 0.8, -3.4969112e-08, 0, -3.4969112e-08, -0.8, -3.4969112e-08, -0.069480896, 0.5546619, 0.03358078)
+operation = 2
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
 [node name="Radiator3" type="CSGBox3D" parent="PC" unique_id=2081068448]
-transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, -0.016293705, 2.0212033, -0.060943604)
-size = Vector3(0.6486914, 1.818689, 0.049081422)
+transform = Transform3D(-4.3711392e-08, 1, -4.3711392e-08, 0, -4.3711392e-08, -1, -1, -4.3711392e-08, 1.9106855e-15, -0.01629448, 2.0034447, -0.060943604)
+size = Vector3(0.6486914, 1.818689, 0.0845993)
 material = SubResource("mat_case")
+
+[node name="Ring1" type="CSGCylinder3D" parent="PC/Radiator3" unique_id=793596207]
+transform = Transform3D(-3.4969112e-08, -3.4969112e-08, -0.8, 0.8, -3.4969112e-08, -3.4969112e-08, -3.4969112e-08, -0.8, 3.4969112e-08, -0.05648613, -0.5250406, 0.022863269)
+operation = 2
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="Ring2" type="CSGCylinder3D" parent="PC/Radiator3" unique_id=2095430584]
+transform = Transform3D(-3.4969112e-08, -3.4969112e-08, -0.8, 0.8, -3.4969112e-08, -3.4969112e-08, -3.4969112e-08, -0.8, 3.4969112e-08, -0.05648613, -0.02904129, 0.022863269)
+operation = 2
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
+
+[node name="Ring3" type="CSGCylinder3D" parent="PC/Radiator3" unique_id=174240587]
+transform = Transform3D(-3.4969112e-08, -3.4969112e-08, -0.8, 0.8, -3.4969112e-08, -3.4969112e-08, -3.4969112e-08, -0.8, 3.4969112e-08, -0.05648613, 0.46695805, 0.022863269)
+operation = 2
+radius = 0.28
+height = 0.06
+material = SubResource("mat_fan_ring")
 
 [node name="CablePurple" type="CSGBox3D" parent="PC" unique_id=2053750172]
 transform = Transform3D(0.766, 0.643, 0, -0.643, 0.766, 0, 0, 0, 1, -0.06021783, 1.3064777, -0.26375294)
@@ -1580,46 +1641,10 @@ transform = Transform3D(0.819, -0.574, 0, 0.574, 0.819, 0, 0, 0, 1, -0.11666003,
 size = Vector3(0.12, 1.4683106, 0.08)
 material = SubResource("mat_cable_white")
 
-[node name="TopFanRings" type="Node3D" parent="PC" unique_id=108868957]
-transform = Transform3D(0.8, 0, 0, 0, -3.4969112e-08, -0.8, 0, 0.8, -3.4969112e-08, -0.04533565, 2.5885813, -0.28445816)
-
-[node name="FanRing1" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=793596207]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.62, 0.35, 0.76)
-radius = 0.28
-height = 0.06
-material = SubResource("mat_fan_ring")
-
-[node name="FanRing2" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=2095430584]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.35, 0.76)
-radius = 0.28
-height = 0.06
-material = SubResource("mat_fan_ring")
-
-[node name="FanRing3" type="CSGCylinder3D" parent="PC/TopFanRings" unique_id=174240587]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.62, 0.35, 0.76)
-radius = 0.28
-height = 0.06
-material = SubResource("mat_fan_ring")
-
-[node name="SideFanRings" type="Node3D" parent="PC" unique_id=1018321782]
-transform = Transform3D(-3.4969112e-08, -0.8, 0, 0.8, -3.4969112e-08, 0, 0, 0, 0.8, 0.7708118, 1.7112345, 0.0085372925)
-
-[node name="TopRing1" type="CSGCylinder3D" parent="PC/SideFanRings" unique_id=2110208333]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.62, 2.01, 0)
-radius = 0.28
-height = 0.06
-material = SubResource("mat_fan_ring")
-
-[node name="TopRing2" type="CSGCylinder3D" parent="PC/SideFanRings" unique_id=1308110802]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01, 0)
-radius = 0.28
-height = 0.06
-material = SubResource("mat_fan_ring")
-
 [node name="PCLights" type="Node3D" parent="PC" unique_id=195384425]
 
 [node name="RgbYellow" type="OmniLight3D" parent="PC/PCLights" unique_id=1620512029]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3197031, 1, -0.3741169)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3197031, 1, 0.043525696)
 light_color = Color(0.8, 1, 0.05, 1)
 light_energy = 0.634
 omni_range = 3.0

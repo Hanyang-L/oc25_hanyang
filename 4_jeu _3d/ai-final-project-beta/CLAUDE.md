@@ -79,7 +79,7 @@ Les scènes 1–3 utilisent un pattern commun : `NextSceneArea.body_entered` →
 
 Différences script par script :
 
-- `scene_1.gd` : crée au runtime les ventilateurs du PC RGB (`_setup_fans()` — 9 ventilateurs face Z+ + 3 ventilateurs dessus), les anime via `_process` (`rotate_z` pour côté, `rotate_y` pour dessus). Affiche le sous-titre "Trouve la sortie du data center".
+- `scene_1.gd` : crée au runtime les ventilateurs du PC RGB (`_setup_fans()`). Sources : `$PC/Radiator3` (ventilateurs dessus), `$PC/Radiator2` (côté), `$PC/GPU/GpuBody` et `$PC/GPU/GpuFace` (ventilateurs GPU). Tous animés via `rotate_y(360°/s)` dans `_process` (tableau `_fans` unique). Affiche le sous-titre "Trouve la sortie du data center".
 - `scene_2.gd` : gère les zones de danger sur les traces, les étincelles électriques, les ventilateurs rotatifs et le mécanisme des caps à placer. La `NextSceneArea` est **désactivée au démarrage** et ne s'active que quand tous les caps sont placés.
 - `scene_4_neuralnet.gd` (utilisé par **scene_4_neuralnet**) : système de puzzle complet — boutons (32, un par chemin), poids W (1/x), détection de croisements algorithmique, visibilité dynamique des chemins (off/vert/rouge), minimap via SubViewport. Gère uniquement la kill zone — **pas de `_on_next_scene_area_body_entered`**.
 - `scene_3_llm.gd` (utilisé par **scene_3_llm**) : puzzle de blocs-mots (3 phrases × 5 slots). Gère `NextSceneArea` activée quand `_correct_count >= 15`.
@@ -172,11 +172,10 @@ DataCenter (Node3D) — script scene_1.gd
 │       └── LedRed (CSGBox3D, émissif rouge, point indicateur)
 ├── PC (Node3D, Z=−13.5) — grand PC RGB au fond
 │   ├── CaseBody (CSGBox3D 2×2×1.5, boîtier noir)
-│   ├── GlassPanel (CSGBox3D transparent, face Z+)
-│   ├── GPU / GpuBody / GpuLed / GpuFan1-3 (CSGCylinder3D)
-│   ├── Radiator, CablePurple (émissif violet), CableWhite
-│   ├── FanRings (9 CSGCylinder3D statiques, grille 3×3 face Z+)
-│   ├── TopFanRings (3 CSGCylinder3D, dessus)
+│   ├── GlassPanel / GlassPanel2 (CSGBox3D, visible=false — masqués)
+│   ├── GPU / GpuBody (GpuFan1-3 en CSG soustraction) / GpuLed / GpuFace (GpuFan1-3 en CSG soustraction)
+│   ├── Radiator (élargi) / Radiator2 (Ring1-2 CSG soustraction) / Radiator3 (Ring1-3 CSG soustraction)
+│   ├── CablePurple (émissif violet), CableWhite
 │   ├── Fans / TopFans (Node3D vides — remplis par scene_1.gd)
 │   └── PCLights / RgbYellow / RgbPurple (OmniLight3D)
 ├── AmbientLights — ServerGlowF/B (vert), CeilingL/R (bleu), PCGlow (jaune-vert)
@@ -198,8 +197,14 @@ DataCenter (Node3D) — script scene_1.gd
 
 **Ventilateurs PC (créés au runtime par `scene_1.gd._setup_fans()`) :**
 
-- 9 ventilateurs face Z+ (grille 3×3) : lames jaune-vert émissives, hub métallique, 8 bras à 45°. Pivots à X∈{−0.62, 0, +0.62}, Y∈{0.35, 0.97, 1.59}, Z=0.76 relatif au PC. Rotation via `rotate_z(480°/s)`.
-- 3 ventilateurs dessus : X∈{−0.62, 0, +0.62}, Y=2.02. Rotation via `rotate_y(360°/s)`.
+Sources des ventilateurs (CSGCylinder3D enfants lus dynamiquement) :
+
+- `$PC/Radiator3` → ventilateurs dessus, ajoutés dans `$PC/TopFans`
+- `$PC/Radiator2` → ventilateurs côté, ajoutés dans `$PC/Fans`
+- `$PC/GPU/GpuBody` → 3 ventilateurs GPU face corps (lames réduites 0.170×0.010×0.030), dans `$PC/TopFans`
+- `$PC/GPU/GpuFace` → 3 ventilateurs GPU face avant (mêmes lames), dans `$PC/Fans`
+
+Tous les pivots sont construits par `_add_fan()` → `_make_fan_aligned()` : l'axe de rotation est lu depuis `cyl.global_basis.y`. Lames jaune-vert (0.238×0.014×0.042 pour les grands), hub métallique, 8 bras à 45°. Tous animés via `rotate_y(360°/s)` (tableau `_fans` unique, plus de distinction côté/dessus). Rayon des lames = `cyl.radius × 0.50`.
 
 **Matériaux définis en sub_resource dans le .tscn :** `mat_concrete`, `mat_rack`, `mat_rack_panel`, `mat_led_green`, `mat_led_yellow`, `mat_led_red`, `mat_case`, `mat_glass` (transparent 15%), `mat_gpu`, `mat_gpu_led`, `mat_cable_purple`, `mat_cable_white`, `mat_fan_ring`.
 
