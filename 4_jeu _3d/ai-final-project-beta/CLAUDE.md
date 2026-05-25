@@ -102,9 +102,11 @@ Unique source de vérité partagée entre scènes :
 - **Air momentum** : en l'air sans input, `air_drag = 0.5` u/s² (élan conservé) ; en l'air avec input, `air_acceleration = 4.0` u/s² (guidage limité). Au sol : décélération instantanée comme avant.
 - Mode sous-marin (`underwater: bool`) : vitesse × `underwater_speed_factor`, gravité × `underwater_gravity_factor`
 - Signal `interact_pressed` (touche E) — écouté par `key_pickup.gd`
+- Signal `left_click_pressed` (clic gauche souris quand capturée) — utilisé dans `scene_3_llm.gd` (pick up blocs) et `scene_4_neuralnet.gd` (raycast boutons). Clic gauche quand souris **non** capturée → re-capture la souris sans émettre le signal.
 - Méthode `die()` — recharge la scène via `Global.reload_current_scene()`
-- La souris est capturée au `_ready()` ; `_notification(WM_WINDOW_FOCUS_IN)` la re-capture. Échap la relâche, clic gauche la recapture.
+- La souris est capturée au `_ready()` ; `_notification(WM_WINDOW_FOCUS_IN)` la re-capture. Échap la relâche, clic gauche la recapture (sans émettre `left_click_pressed`).
 - **Animations** : `AnimationPlayer` récupéré à `$SophiaMesh/AnimationPlayer`. 8 animations disponibles dans `sophia.glb` : `EdgeGrab`, `Fall`, `Idle`, `Jump`, `Run`, `RunTiltL`, `RunTiltR`, `WallSlide`. `_update_animation()` appelé chaque frame : Idle/Run/RunTiltL/RunTiltR au sol, Jump/Fall en l'air.
+- **Angle de vue vertical** : `look_rotation.x` clampé entre −80° et +80° (limite haute étendue de 45° à 80°).
 - **Caméra double** : Tab bascule entre la caméra FPS (`$Head/Camera3D`, `cull_mask=1`) et la caméra top-down (`$TopDownCamera`, `cull_mask=3`). Le mesh de Sophia (`VisualInstance3D` enfants de `$SophiaMesh`) est mis à `layers=2` au `_ready()` → invisible en FPS, visible en top-down.
 
 **Structure de `sophia_player.tscn` :**
@@ -290,7 +292,7 @@ Environnement thématique : puzzle de blocs-mots. Sophia ramasse des blocs et le
 **`scene_3_llm.gd` — mécanique :**
 
 - 3 phrases × 5 mots, 15 blocs `RigidBody3D` créés au runtime (couleur par phrase)
-- Sophia ramasse un bloc (E), le tient devant la caméra, le place (1–5) dans le rack le plus proche
+- Sophia ramasse un bloc (**E ou clic gauche**), le tient devant la caméra, le place (1–5) dans le rack le plus proche. E/clic gauche à nouveau → lâcher.
 - `_try_validate_phrase()` : si les 5 mots sont dans le bon ordre → blocs verts, `_solved_phrases++`
 - `_check_all_complete()` : quand `_correct_count >= 15` → active `$NextSceneArea`
 
@@ -352,13 +354,17 @@ Stockés dans `PATH_DENOM` (dict `name → dénominateur x`). Plus petit dénomi
 **`scene_4_neuralnet.gd` — fonctions clés :**
 
 - `_init_paths()` : `$Paths.find_children("*","CSGBox3D")` + filtre `PATH_DENOM.has()` → rend invisibles.
-- `_init_buttons()` : lit les `Btn_XXXX/Zone` sous `$ButtonPanel`, connecte `body_entered/exited.bind(path_name)`.
+- `_init_buttons()` : lit les `Btn_XXXX/Zone` sous `$ButtonPanel`, connecte `body_entered/exited.bind(path_name)`. Zones ont `collision_layer = 4`.
 - `_init_minimap()` : applique `ViewportTexture` du `$MinimapViewport` sur `$MapScreen.material`.
 - `_on_btn_interact(path_name)` : toggle `_path_active[path_name]` → `_update_all_paths()`.
 - `_update_all_paths()` : recalcule tous les croisements (`_paths_cross` pairwise), appelle `_set_path_state()` + met à jour couleurs boutons.
 - `_set_path_state(name, "off"|"green"|"red")` : matériau chemin + création/suppression `StaticBody3D` et `Area3D` kill via `_path_bodies[name]` et `_path_kills[name]` (`queue_free` pour retirer).
+- `_on_raycast_interact()` : raycast depuis la caméra (range 15 u, `collision_mask=4`) → détecte les `Area3D` boutons, appelle `_on_btn_interact(path_name)`. Connecté à `left_click_pressed`.
 
-**Interaction boutons :** Pattern `key_pickup.gd` — `body_entered` → connect `_sophia.interact_pressed` ; `body_exited` → disconnect. Un seul callable actif à la fois via `_current_btn_callable`.
+**Interaction boutons — double mode :**
+
+1. **Proximité (E)** : `body_entered` → connect `_sophia.interact_pressed` à `_on_btn_interact.bind(path_name)` ; `body_exited` → disconnect. Un seul callable actif à la fois via `_current_btn_callable`.
+2. **Clic gauche à distance** : `left_click_pressed` → `_on_raycast_interact()` → raycast mask=4 → toggle le chemin pointé sans nécessiter de proximité.
 
 **Minimap :** `MinimapViewport` (`own_world_3d=false`) + `MinimapCamera` (orthogonale Y=120, regarde vers −Y). Texture sur `MapScreen` (dalle plate sur I3).
 

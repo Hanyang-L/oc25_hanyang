@@ -203,29 +203,6 @@ material = SubResource("Mat_Platform")
 
 [node name="Paths" type="Node3D" parent="." unique_id=23]
 
-[node name="L3" type="CSGCombiner3D" parent="Paths" unique_id=102324163]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -136.45299)
-
-[node name="H5O" type="CSGBox3D" parent="Paths/L3" unique_id=52]
-transform = Transform3D(0.39994004, 0, -0.91653, 0, 1, 0, 0.91653, 0, 0.39994004, -12, 2, -67.5)
-size = Vector3(60.008, 0.4, 3)
-material = SubResource("Mat_Path")
-
-[node name="H6O" type="CSGBox3D" parent="Paths/L3" unique_id=53]
-transform = Transform3D(0.14394002, 0, -0.98961, 0, 1, 0, 0.98961, 0, 0.14394002, -4, 2, -67.5)
-size = Vector3(55.577, 0.4, 3)
-material = SubResource("Mat_Path")
-
-[node name="H7O" type="CSGBox3D" parent="Paths/L3" unique_id=54]
-transform = Transform3D(-0.14393999, 0, -0.98961, 0, 1, 0, 0.98961, 0, -0.14393999, 4, 2, -67.5)
-size = Vector3(55.577, 0.4, 3)
-material = SubResource("Mat_Path")
-
-[node name="H8O" type="CSGBox3D" parent="Paths/L3" unique_id=55]
-transform = Transform3D(-0.39994, 0, -0.91653, 0, 1, 0, 0.91653, 0, -0.39994, 12, 2, -67.5)
-size = Vector3(60.008, 0.4, 3)
-material = SubResource("Mat_Path")
-
 [node name="L1" type="CSGCombiner3D" parent="Paths" unique_id=701746563]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 99.73063)
 
@@ -369,6 +346,29 @@ material = SubResource("Mat_Path")
 [node name="H4H8" type="CSGBox3D" parent="Paths/L2" unique_id=51]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 24, 2, -10)
 size = Vector3(60, 0.4, 3)
+material = SubResource("Mat_Path")
+
+[node name="L3" type="CSGCombiner3D" parent="Paths" unique_id=102324163]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -136.45299)
+
+[node name="H5O" type="CSGBox3D" parent="Paths/L3" unique_id=52]
+transform = Transform3D(0.39994004, 0, -0.91653, 0, 1, 0, 0.91653, 0, 0.39994004, -12, 2, -67.5)
+size = Vector3(60.008, 0.4, 3)
+material = SubResource("Mat_Path")
+
+[node name="H6O" type="CSGBox3D" parent="Paths/L3" unique_id=53]
+transform = Transform3D(0.14394002, 0, -0.98961, 0, 1, 0, 0.98961, 0, 0.14394002, -4, 2, -67.5)
+size = Vector3(55.577, 0.4, 3)
+material = SubResource("Mat_Path")
+
+[node name="H7O" type="CSGBox3D" parent="Paths/L3" unique_id=54]
+transform = Transform3D(-0.14393999, 0, -0.98961, 0, 1, 0, 0.98961, 0, -0.14393999, 4, 2, -67.5)
+size = Vector3(55.577, 0.4, 3)
+material = SubResource("Mat_Path")
+
+[node name="H8O" type="CSGBox3D" parent="Paths/L3" unique_id=55]
+transform = Transform3D(-0.39994, 0, -0.91653, 0, 1, 0, 0.91653, 0, -0.39994, 12, 2, -67.5)
+size = Vector3(60.008, 0.4, 3)
 material = SubResource("Mat_Path")
 
 [node name="KillZone" type="Area3D" parent="." unique_id=56]
@@ -1042,6 +1042,7 @@ font_size = 10
 
 [node name="MapScreen" type="CSGBox3D" parent="." unique_id=1002]
 transform = Transform3D(-4.371139e-08, -1, 0, -4.371139e-08, 1.9106855e-15, 1, -1, 4.371139e-08, -4.371139e-08, 16, 5.060848, 80)
+use_collision = true
 size = Vector3(7, 0.1, 7)
 
 [node name="MinimapViewport" type="SubViewport" parent="." unique_id=1003]

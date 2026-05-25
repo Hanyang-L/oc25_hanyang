@@ -45,10 +45,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0140513, -0.045634866)
 target_position = Vector3(0, 0, -3)
 collision_mask = 4
 
-[node name="Crosshair" type="CanvasLayer" parent="." unique_id=132818434]
+[node name="Panel" type="CanvasLayer" parent="." unique_id=132818434]
 layer = 127
 
-[node name="Label" type="Label" parent="Crosshair" unique_id=1390961916]
+[node name="Label" type="Label" parent="Panel" unique_id=1390961916]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

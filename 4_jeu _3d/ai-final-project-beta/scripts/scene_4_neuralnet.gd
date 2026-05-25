@@ -28,9 +28,10 @@ var _btn_meshes: Dictionary = {}   # name → CSGBox3D (button visual)
 var _mat_off: StandardMaterial3D
 var _mat_btn_green: StandardMaterial3D
 var _mat_btn_red: StandardMaterial3D
-var _path_mat_off: StandardMaterial3D
 var _path_mat_green: StandardMaterial3D
 var _path_mat_red: StandardMaterial3D
+var _mat_indicator: StandardMaterial3D
+var _path_indicators: Dictionary = {}
 
 var _sophia: CharacterBody3D
 var _hud: CanvasLayer
@@ -47,29 +48,31 @@ func _ready() -> void:
 	_init_minimap()
 	_sophia.left_click_pressed.connect(_on_raycast_interact)
 	$KillZone.body_entered.connect(_on_kill_zone_body_entered)
-	_hud.set_subtitle("Saute sur I1 pour activer les chemins — trouve W=1/2")
+	_hud.set_subtitle("Saute sur I1 pour activer les chemins.")
 
 
 func _build_materials() -> void:
-	_path_mat_off = StandardMaterial3D.new()
-	_path_mat_off.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_path_mat_off.albedo_color = Color(0.0, 0.0, 0.0, 0.0)
-
 	_path_mat_green = StandardMaterial3D.new()
 	_path_mat_green.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_path_mat_green.albedo_color = Color(0.05, 0.9, 0.2, 0.88)
+	_path_mat_green.albedo_color = Color(0.0, 0.05, 0.45, 0.50)
 	_path_mat_green.emission_enabled = true
-	_path_mat_green.emission = Color(0.0, 1.0, 0.3)
-	_path_mat_green.emission_energy_multiplier = 2.0
-	_path_mat_green.metallic = 0.5
+	_path_mat_green.emission = Color(0.05, 0.25, 0.9)
+	_path_mat_green.emission_energy_multiplier = 1.5
+	_path_mat_green.metallic = 0.2
 
 	_path_mat_red = StandardMaterial3D.new()
 	_path_mat_red.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_path_mat_red.albedo_color = Color(0.9, 0.05, 0.05, 0.88)
+	_path_mat_red.albedo_color = Color(0.9, 0.05, 0.05, 0.50)
 	_path_mat_red.emission_enabled = true
 	_path_mat_red.emission = Color(1.0, 0.1, 0.05)
 	_path_mat_red.emission_energy_multiplier = 2.0
 	_path_mat_red.metallic = 0.5
+
+	_mat_indicator = StandardMaterial3D.new()
+	_mat_indicator.albedo_color = Color(0.0, 0.85, 1.0, 1.0)
+	_mat_indicator.emission_enabled = true
+	_mat_indicator.emission = Color(0.0, 0.9, 1.0)
+	_mat_indicator.emission_energy_multiplier = 4.5
 
 	_mat_off = StandardMaterial3D.new()
 	_mat_off.albedo_color = Color(0.18, 0.18, 0.22)
@@ -97,7 +100,7 @@ func _init_paths() -> void:
 			continue
 		_path_nodes[n] = path_node
 		_path_active[n] = false
-		path_node.material = _path_mat_off
+		path_node.visible = false
 
 
 func _init_buttons() -> void:
@@ -197,12 +200,14 @@ func _set_path_state(path_name: String, state: String) -> void:
 			_path_kills[path_name].queue_free()
 			_path_kills.erase(path_name)
 	if state == "off":
-		path_node.material = _path_mat_off
+		path_node.visible = false
+		_remove_indicators(path_name)
 		if _path_bodies.has(path_name):
 			_path_bodies[path_name].queue_free()
 			_path_bodies.erase(path_name)
 		return
-	# green or red: ensure walkable StaticBody exists
+	# green or red: visible + ensure walkable StaticBody exists
+	path_node.visible = true
 	if not _path_bodies.has(path_name):
 		var body := StaticBody3D.new()
 		var col := CollisionShape3D.new()
@@ -214,7 +219,9 @@ func _set_path_state(path_name: String, state: String) -> void:
 		_path_bodies[path_name] = body
 	if state == "green":
 		path_node.material = _path_mat_green
+		_create_indicators(path_name, path_node)
 	else:
+		_remove_indicators(path_name)
 		path_node.material = _path_mat_red
 		if not _path_kills.has(path_name):
 			var kill := Area3D.new()
@@ -228,6 +235,31 @@ func _set_path_state(path_name: String, state: String) -> void:
 			kill.body_entered.connect(_on_kill_zone_body_entered)
 			path_node.add_child(kill)
 			_path_kills[path_name] = kill
+
+
+func _create_indicators(path_name: String, path_node: CSGBox3D) -> void:
+	if _path_indicators.has(path_name):
+		return
+	var sz: Vector3 = path_node.size
+	var indicators: Array = []
+	for side in [-1, 1]:
+		var ind := MeshInstance3D.new()
+		var mesh := BoxMesh.new()
+		mesh.size = Vector3(sz.x, 0.06, 0.2)
+		ind.mesh = mesh
+		ind.material_override = _mat_indicator
+		ind.position = Vector3(0.0, sz.y * 0.5 + 0.04, side * (sz.z * 0.5 - 0.7))
+		path_node.add_child(ind)
+		indicators.append(ind)
+	_path_indicators[path_name] = indicators
+
+
+func _remove_indicators(path_name: String) -> void:
+	if not _path_indicators.has(path_name):
+		return
+	for ind in _path_indicators[path_name]:
+		ind.queue_free()
+	_path_indicators.erase(path_name)
 
 
 # Two paths cross if their X endpoints swap order (geometric inversion criterion).
