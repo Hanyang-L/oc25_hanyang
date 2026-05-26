@@ -26,7 +26,7 @@ func _process(delta: float) -> void:
 
 func _setup_fans() -> void:
 	var blade_mat := StandardMaterial3D.new()
-	blade_mat.albedo_color = Color(0.015, 0.117, 0.0, 1.0)
+	blade_mat.albedo_color = Color(0.154, 0.185, 0.149, 1.0)
 
 	var hub_mat := StandardMaterial3D.new()
 	hub_mat.albedo_color = Color(0.04, 0.04, 0.05)
