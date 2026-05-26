@@ -9,7 +9,7 @@ var _display_connected: bool = false
 
 func _ready() -> void:
 	Engine.time_scale = 1.0
-	Global.current_scene_path = "res://scenes/scene_1_data.tscn"
+	Global.current_scene_path = "res://scenes/scene_5_data_end.tscn"
 	_sophia = $Sophia
 	_setup_fans()
 	_setup_display()
@@ -91,9 +91,7 @@ func _on_display_exited(body: Node3D) -> void:
 	if _display_connected:
 		_sophia.interact_pressed.disconnect(_on_display_interact)
 		_display_connected = false
-	if not Global.has_key:
-		$HUD.set_subtitle("Trouve la sortie du data center")
-	else:
+	if Global.has_key:
 		$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
 func _on_display_interact() -> void:
