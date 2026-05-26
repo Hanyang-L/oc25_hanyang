@@ -1435,6 +1435,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.516067, 0, -12.0688095)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Table" unique_id=1972220632]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23391724, 0.34381104, -0.9248047)
+use_collision = true
 size = Vector3(1.4678345, 0.9815674, 4.8496094)
 material = SubResource("StandardMaterial3D_nc2yg")
 
@@ -1454,6 +1455,7 @@ material = SubResource("StandardMaterial3D_he52y")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Display" unique_id=1543645268]
 transform = Transform3D(0.9989595, 0.045607083, 0, -0.045607083, 0.9989595, 0, 0, 0, 1, -10.547461, 1.6114464, -13.330508)
+use_collision = true
 size = Vector3(0.1027832, 1.2612915, 3.2419434)
 material = SubResource("StandardMaterial3D_6kcvo")
 
@@ -1511,13 +1513,13 @@ transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -9.458281, -0.2598328, 
 
 [node name="GlassPanel" type="CSGBox3D" parent="PC" unique_id=663087171]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.011074543, 1.3766242, 0.23421288)
-visible = false
+use_collision = true
 size = Vector3(1.7345746, 1.2494824, 0.04)
 material = SubResource("mat_glass")
 
 [node name="GlassPanel2" type="CSGBox3D" parent="PC" unique_id=1046790486]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.88002455, 1.3766242, -0.03259468)
-visible = false
+use_collision = true
 size = Vector3(0.6040814, 1.2494824, 0.04)
 material = SubResource("mat_glass")
 
@@ -1526,6 +1528,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, 0)
 
 [node name="GpuBody" type="CSGBox3D" parent="PC/GPU" unique_id=1254877511]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.14167088, 0)
+use_collision = true
 size = Vector3(1.8, 0.55, 0.4740918)
 material = SubResource("mat_gpu")
 
@@ -1556,8 +1559,9 @@ height = 0.08
 material = SubResource("mat_fan_ring")
 
 [node name="GpuFace" type="CSGBox3D" parent="PC/GPU" unique_id=1750492741]
-transform = Transform3D(-3.4969112e-08, 0.8, 0, -0.8, -3.4969112e-08, 0, 0, 0, 0.8, 0.6831455, 0.99893016, -0.32366943)
-size = Vector3(1.6114258, 0.55, 0.14056641)
+transform = Transform3D(-3.4969112e-08, 0.8, 0, -0.8, -3.4969112e-08, 0, 0, 0, 0.8, 0.67838573, 0.99893016, -0.2935791)
+use_collision = true
+size = Vector3(1.6114258, 0.55, 0.21579102)
 material = SubResource("mat_gpu")
 
 [node name="GpuFan1" type="CSGCylinder3D" parent="PC/GPU/GpuFace" unique_id=1342694315]
@@ -1581,14 +1585,15 @@ radius = 0.2
 height = 0.08
 material = SubResource("mat_fan_ring")
 
-[node name="Radiator" type="CSGBox3D" parent="PC" unique_id=738088210]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0029525757, 1.1565725, -0.32523346)
-size = Vector3(1.8319879, 1.6768554, 0.10599365)
+[node name="Radiator" type="CSGBox3D" parent="PC/GPU/GpuFace" unique_id=738088210]
+transform = Transform3D(-5.463924e-08, -1.25, 0, 1.25, -5.463924e-08, 0, 0, 0, 1.25, 0.2779472, -0.86142635, -0.05458641)
+size = Vector3(1.8163846, 1.6768554, 0.12877122)
 material = SubResource("mat_case")
 
 [node name="Radiator2" type="CSGBox3D" parent="PC" unique_id=941833629]
-transform = Transform3D(-4.3711392e-08, 0, 1, 0, 1, 0, -1, 0, -4.3711392e-08, -0.8707695, 1.1565725, -0.060943604)
-size = Vector3(0.6486914, 1.6768554, 0.11145477)
+transform = Transform3D(-4.3711392e-08, 0, 1, 0, 1, 0, -1, 0, -4.3711392e-08, -0.8707695, 1.1565725, -0.05612564)
+use_collision = true
+size = Vector3(0.6583301, 1.6768554, 0.11145477)
 material = SubResource("mat_case")
 
 [node name="Ring1" type="CSGCylinder3D" parent="PC/Radiator2" unique_id=2110208333]
@@ -1607,6 +1612,7 @@ material = SubResource("mat_fan_ring")
 
 [node name="Radiator3" type="CSGBox3D" parent="PC" unique_id=2081068448]
 transform = Transform3D(-4.3711392e-08, 1, -4.3711392e-08, 0, -4.3711392e-08, -1, -1, -4.3711392e-08, 1.9106855e-15, -0.01629448, 2.0034447, -0.060943604)
+use_collision = true
 size = Vector3(0.6486914, 1.818689, 0.0845993)
 material = SubResource("mat_case")
 
