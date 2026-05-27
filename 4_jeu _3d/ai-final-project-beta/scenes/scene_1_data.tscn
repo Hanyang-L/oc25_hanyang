@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bhudpatrick01" path="res://ui/hud.tscn" id="2_hud"]
 [ext_resource type="Texture2D" uid="uid://b4haqph50vcjw" path="res://assets/sky_background/autumn_field_puresky_4k.hdr" id="2_lwuvj"]
 [ext_resource type="PackedScene" uid="uid://dp7nk3mx2bq5f" path="res://scenes/beach_bar.tscn" id="3_rg0s2"]
-[ext_resource type="Script" uid="uid://c5h224h5nuohn" path="res://scripts/scene_1.gd" id="3_script"]
+[ext_resource type="Script" uid="uid://c5h224h5nuohn" path="res://scripts/scene_1_data.gd" id="3_script"]
 [ext_resource type="PackedScene" uid="uid://bogbm7nei4ffw" path="res://scenes/chest_gold.tscn" id="4_chest"]
 [ext_resource type="Script" uid="uid://dtl2fs4vfurjc" path="res://scripts/chest.gd" id="5_chest_script"]
 [ext_resource type="Script" uid="uid://deuuxmoatwhxs" path="res://scripts/stairs.gd" id="6_ucjih"]

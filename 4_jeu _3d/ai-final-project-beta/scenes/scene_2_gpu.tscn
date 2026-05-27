@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dqxuo7idfxwvg" path="res://scenes/sophia_player.tscn" id="1_sophia"]
 [ext_resource type="PackedScene" uid="uid://bhudpatrick01" path="res://ui/hud.tscn" id="2_hud"]
-[ext_resource type="Script" uid="uid://cfquqqcuwxx0r" path="res://scripts/scene_2.gd" id="3_script"]
+[ext_resource type="Script" uid="uid://cfquqqcuwxx0r" path="res://scripts/scene_2_gpu.gd" id="3_script"]
 [ext_resource type="Script" uid="uid://bcuro45t2l5rp" path="res://scripts/moving_cap.gd" id="4_mc"]
 
 [sub_resource type="Environment" id="Env_GPU"]
