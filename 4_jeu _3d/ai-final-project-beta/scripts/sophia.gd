@@ -75,7 +75,7 @@ func _input(event: InputEvent) -> void:
 	if mouse_captured and event is InputEventMouseMotion:
 		rotate_look(event.relative)
 
-# clic gauche sert seulement à recapturer ou relacher le curseur
+# clic gauche sert seulement à recapturer et Esc relacher le curseur
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -86,7 +86,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_ESCAPE):
 		release_mouse()
 	
-	# Interaction (touche E)
+	# touche E
 	if InputMap.has_action(input_interact) and Input.is_action_just_pressed(input_interact):
 		interact_pressed.emit()
 
@@ -116,11 +116,11 @@ func _physics_process(delta: float) -> void:
 	else:
 		move_speed = base_speed
 	
-	# Sous-marin = plus lent
+	# lowgravity speed
 	if lowgravity:
 		move_speed *= lowgravity_speed_factor
 	
-	# Mouvement
+	# movement
 	if can_move:
 		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
 		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -164,7 +164,7 @@ func rotate_look(rot_input: Vector2):
 	look_rotation.x -= rot_input.y * look_speed
 	look_rotation.x = clamp(look_rotation.x, deg_to_rad(-80), deg_to_rad(80))
 	look_rotation.y -= rot_input.x * look_speed
-	# Réinitialiser Basis() à chaque frame évite l'accumulation d'erreurs flottantes sur la rotation Y.
+	# réinitialisation Basis() (évite l'accumulation d'erreurs sur la rotation Y)
 	transform.basis = Basis()
 	rotate_y(look_rotation.y)
 	head.transform.basis = Basis()
