@@ -45,7 +45,7 @@ data = PackedVector3Array(-0.19929999, 0.9756, -0.88159996, 0.17999999, 1.5406, 
 
 [node name="Barrel" type="StaticBody3D" unique_id=653704603]
 
-[node name="barrel_large" type="MeshInstance3D" parent="." unique_id=1960378299]
+[node name="BarrelShape" type="MeshInstance3D" parent="." unique_id=1960378299]
 mesh = SubResource("ArrayMesh_3bkui")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1850155304]

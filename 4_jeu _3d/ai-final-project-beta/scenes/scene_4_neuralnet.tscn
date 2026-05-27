@@ -381,11 +381,8 @@ shape = SubResource("Shape_Kill")
 
 [node name="Sophia" parent="." unique_id=60 instance=ExtResource("1_sophia")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 80)
-can_double_jump = true
 jump_velocity = 5.5
-underwater = true
-underwater_speed_factor = 1.0
-underwater_gravity_factor = 0.55
+lowgravity = true
 
 [node name="HUD" parent="." unique_id=61 instance=ExtResource("2_hud")]
 
@@ -393,7 +390,7 @@ underwater_gravity_factor = 0.55
 transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 3.5, -95)
 collision_layer = 1
 collision_mask = 1
-next_scene_override = "res://scenes/scene_1_data.tscn"
+next_scene_override = "res://scenes/scene_5_data_end.tscn"
 
 [node name="ButtonPanel" type="CSGBox3D" parent="." unique_id=1001]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -16, 5.8737307, 84.755196)

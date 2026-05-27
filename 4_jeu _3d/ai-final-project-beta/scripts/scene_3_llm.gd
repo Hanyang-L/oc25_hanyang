@@ -8,9 +8,9 @@ const STATE_HELD   = 1
 const STATE_PLACED = 2
 
 const PHRASES = [
-	{"text": "Bob est un bon ___",    "words": ["ami", "bricoleur", "jaune", "fruit", "mauvais"]},
-	{"text": "L'ordinateur a un ___", "words": ["Bug", "problème", "ecran", "ami",  "une"]},
-	{"text": "Je suis ___",           "words": ["jaune", "mauvais", "bricoleur", "ami", "une"]}
+	{"words": ["ami", "bricoleur", "jaune", "fruit", "mauvais"]},
+	{"words": ["Bug", "problème", "ecran", "ami",  "une"]},
+	{"words": ["IAs", "deep learning", "générations", "Large Language Model", "des"]}
 ]
 
 # Must match .tscn geometry
@@ -32,6 +32,7 @@ var _place_pending: Dictionary = {}   # RigidBody3D -> Vector3
 const RACK_RANGE = 6.0
 var _correct_count: int   = 0
 var _solved_phrases: int  = 0
+var _rng := RandomNumberGenerator.new()
 
 @onready var _sophia: CharacterBody3D = $Sophia
 @onready var _sophia_head: Node3D     = $Sophia/Head
@@ -40,6 +41,7 @@ var _solved_phrases: int  = 0
 
 
 func _ready() -> void:
+	_rng.randomize()
 	Engine.time_scale = 1.0
 	Global.current_scene_path = "res://scenes/scene_3_llm.tscn"
 	_next_area.monitoring = false
@@ -58,10 +60,12 @@ func _ready() -> void:
 
 	# Create word blocks (physics — must be runtime)
 	for pi in 3:
+		var positions := [-10.0, -5.0, 0.0, 5.0, 10.0]
+		_shuffle(positions)
 		for wi in 5:
 			_create_word_block(
 				PHRASES[pi]["words"][wi], pi,
-				Vector3(BLOCK_X[wi], 1.4, ZONE_SHELF_Z[pi])
+				Vector3(positions[wi], 1.4, ZONE_SHELF_Z[pi])
 			)
 
 	_sophia.interact_pressed.connect(_on_interact)
@@ -113,6 +117,14 @@ func _create_word_block(word: String, phrase_idx: int, pos: Vector3) -> void:
 
 	add_child(rb)
 	_blocks.append({"node": rb, "word": word, "phrase_idx": phrase_idx, "state": STATE_FREE})
+
+
+func _shuffle(arr: Array) -> void:
+	for i in range(arr.size() - 1, 0, -1):
+		var j := _rng.randi_range(0, i)
+		var tmp = arr[i]
+		arr[i] = arr[j]
+		arr[j] = tmp
 
 
 # ─── Interaction ─────────────────────────────────────────────────

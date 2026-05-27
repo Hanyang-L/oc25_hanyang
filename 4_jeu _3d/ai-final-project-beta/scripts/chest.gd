@@ -32,7 +32,7 @@ func _on_body_exited(body: Node3D) -> void:
 	_player_in_range = false
 	var hud = get_tree().current_scene.get_node_or_null("HUD")
 	if hud:
-		hud.set_subtitle("Trouve la sortie du data center")
+		hud.set_subtitle("")
 	if body.has_signal("interact_pressed"):
 		if body.interact_pressed.is_connected(_on_interact):
 			body.interact_pressed.disconnect(_on_interact)
@@ -48,9 +48,10 @@ func _on_interact() -> void:
 		return
 	_opened = true
 	if hud:
-		hud.show_message("Coffre ouvert ! Félicitations !", 6.0)
 		hud.set_subtitle("")
 	if _player and _player.has_signal("interact_pressed"):
 		if _player.interact_pressed.is_connected(_on_interact):
 			_player.interact_pressed.disconnect(_on_interact)
 	$ChestMesh/AnimationPlayer.play("open")
+	var end_screen = load("res://ui/end_screen.tscn").instantiate()
+	get_tree().current_scene.add_child(end_screen)

@@ -161,10 +161,10 @@ albedo_color = Color(0.92, 0.92, 0.92, 1)
 roughness = 0.8
 
 [sub_resource type="BoxShape3D" id="shape_chest_col"]
-size = Vector3(1.8040283, 1.3458008, 1.4219726)
+size = Vector3(1.8040283, 1.3458008, 1.1776978)
 
 [sub_resource type="BoxShape3D" id="shape_chest_area"]
-size = Vector3(3, 2, 3)
+size = Vector3(3, 2, 3.2491455)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ontf5"]
 albedo_color = Color(0.9, 0.85, 0.6, 1)
@@ -181,7 +181,7 @@ light_color = Color(0.6, 0.7, 1, 1)
 light_energy = 0.3
 
 [node name="Sophia" parent="." unique_id=2106063097 instance=ExtResource("3_ku1wj")]
-transform = Transform3D(0.9500211, 0, 0.3121857, 0, 1, 0, -0.3121857, 0, 0.9500211, 15, 9.46963, 21.775503)
+transform = Transform3D(-0.5973451, 0, -0.80198425, 0, 1, 0, 0.80198425, 0, -0.5973451, -8.79803, 0.81747353, -14.731429)
 can_double_jump = true
 
 [node name="Room" type="Node3D" parent="." unique_id=1369994462]
@@ -1703,14 +1703,14 @@ script = ExtResource("7_q1art")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07343483, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Chest/ChestBody" unique_id=2100000004]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12972426, 0.67290044, 0.31098652)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12972546, 0.67290044, 0.1888485)
 shape = SubResource("shape_chest_col")
 
 [node name="InteractArea" type="Area3D" parent="Chest" unique_id=2100000005]
 collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Chest/InteractArea" unique_id=2100000006]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.12457466)
 shape = SubResource("shape_chest_area")
 
 [node name="HUD" parent="." unique_id=81398406 instance=ExtResource("9_dgnjp")]

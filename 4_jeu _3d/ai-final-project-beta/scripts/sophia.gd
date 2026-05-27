@@ -1,30 +1,28 @@
 extends CharacterBody3D
 
-## Sophia — joueur FPS avec mouvement, saut, interaction (touche E) et mode sous-marin.
+## Sophia — joueur FPS avec mouvement, saut, interaction (touche E, clic gauche souris) et mode low gravity.
 
-# === Paramètres exposés ===
+# Paramètres exposés
 @export var can_move: bool = true
 @export var has_gravity: bool = true
 @export var can_jump: bool = true
-@export var can_double_jump: bool = false
-@export var can_sprint: bool = false
-@export var can_freefly: bool = false
+@export var can_double_jump: bool = true
+@export var can_sprint: bool = true
+
 
 @export_group("Speeds")
 @export var look_speed: float = 0.002
 @export var base_speed: float = 7.0
 @export var jump_velocity: float = 4.5
 @export var sprint_speed: float = 10.0
-@export var freefly_speed: float = 25.0
-@export var air_drag: float = 0.5
-@export var air_acceleration: float = 4.0
 
-@export_group("Underwater")
-## Active le mode sous-marin (mouvement plus lent, gravité réduite)
-@export var underwater: bool = false
-@export var underwater_speed_factor: float = 0.5
-@export var underwater_gravity_factor: float = 0.2
+# mode low gravity (mouvement plus lent, gravité réduite)
+@export_group("Lowgravity")
+@export var lowgravity: bool = false
+@export var lowgravity_speed_factor: float = 0.8
+@export var lowgravity_gravity_factor: float = 0.7
 
+# actions input utilisées par joueur
 @export_group("Input Actions")
 @export var input_left: String = "ui_left"
 @export var input_right: String = "ui_right"
@@ -32,29 +30,26 @@ extends CharacterBody3D
 @export var input_back: String = "ui_down"
 @export var input_jump: String = "ui_accept"
 @export var input_sprint: String = "sprint"
-@export var input_freefly: String = "freefly"
 @export var input_interact: String = "interact"
 
-# === État interne ===
+# État interne
 var mouse_captured: bool = false
 var look_rotation: Vector2
 var move_speed: float = 0.0
-var freeflying: bool = false
 var _double_jump_available: bool = false
 var topdown_mode: bool = false
+var _current_anim: String = ""  # mémorisation de l'animation cours
 
-# === Signaux ===
-signal interact_pressed   ## Émis quand le joueur appuie sur E
-signal left_click_pressed   ## Émis sur clic gauche souris (quand capturée)
+# Signaux
+signal interact_pressed   # Émis quand touche E appuiée
+signal left_click_pressed   # Émis lors clic gauche souris
 
-# === Références ===
+# Références
 @onready var head: Node3D = $Head
 @onready var collider: CollisionShape3D = $Collider
 @onready var fps_camera: Camera3D = $Head/Camera3D
 @onready var topdown_camera: Camera3D = $TopDownCamera
 @onready var _anim: AnimationPlayer = $SophiaMesh/AnimationPlayer
-
-var _current_anim: String = ""
 
 
 func _ready() -> void:
@@ -75,6 +70,7 @@ func _notification(what: int) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
+# _input capte les événements avant l'UI ; _unhandled_input laisse l'UI les consommer en premier.
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB:
 		_toggle_camera()
@@ -87,16 +83,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if not mouse_captured:
 				capture_mouse()
+				# Ne pas émettre left_click_pressed : ce clic sert uniquement à recapturer la souris.
 			else:
 				left_click_pressed.emit()
 	if Input.is_key_pressed(KEY_ESCAPE):
 		release_mouse()
-
-	if can_freefly and Input.is_action_just_pressed(input_freefly):
-		if not freeflying:
-			enable_freefly()
-		else:
-			disable_freefly()
 	
 	# Interaction (touche E)
 	if InputMap.has_action(input_interact) and Input.is_action_just_pressed(input_interact):
@@ -104,40 +95,33 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if can_freefly and freeflying:
-		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
-		var motion := (head.global_basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-		motion *= freefly_speed * delta
-		move_and_collide(motion)
-		return
-	
-	# Gravité (réduite sous l'eau)
+	# low gravity
 	if has_gravity:
 		if not is_on_floor():
 			var grav = get_gravity()
-			if underwater:
-				grav *= underwater_gravity_factor
+			if lowgravity:
+				grav *= lowgravity_gravity_factor
 			velocity += grav * delta
 	
-	# Saut
+	# jump
 	if can_jump:
 		if is_on_floor():
 			_double_jump_available = can_double_jump
 			if Input.is_action_just_pressed(input_jump):
-				velocity.y = jump_velocity * 1.2
+				velocity.y = jump_velocity * 1.2  # boost léger : pop distinct du double-saut
 		elif can_double_jump and _double_jump_available and Input.is_action_just_pressed(input_jump):
 			velocity.y = jump_velocity
 			_double_jump_available = false
 	
-	# Vitesse
+	# speed
 	if can_sprint and Input.is_action_pressed(input_sprint):
 		move_speed = sprint_speed
 	else:
 		move_speed = base_speed
 	
 	# Sous-marin = plus lent
-	if underwater:
-		move_speed *= underwater_speed_factor
+	if lowgravity:
+		move_speed *= lowgravity_speed_factor
 	
 	# Mouvement
 	if can_move:
@@ -150,13 +134,6 @@ func _physics_process(delta: float) -> void:
 			else:
 				velocity.x = move_toward(velocity.x, 0, move_speed)
 				velocity.z = move_toward(velocity.z, 0, move_speed)
-		else:
-			if move_dir:
-				velocity.x = move_toward(velocity.x, move_dir.x * move_speed, air_acceleration * delta)
-				velocity.z = move_toward(velocity.z, move_dir.z * move_speed, air_acceleration * delta)
-			else:
-				velocity.x = move_toward(velocity.x, 0, air_drag * delta)
-				velocity.z = move_toward(velocity.z, 0, air_drag * delta)
 	else:
 		velocity.x = 0
 		velocity.z = 0
@@ -190,22 +167,11 @@ func rotate_look(rot_input: Vector2):
 	look_rotation.x -= rot_input.y * look_speed
 	look_rotation.x = clamp(look_rotation.x, deg_to_rad(-80), deg_to_rad(80))
 	look_rotation.y -= rot_input.x * look_speed
+	# Réinitialiser Basis() à chaque frame évite l'accumulation d'erreurs flottantes sur la rotation Y.
 	transform.basis = Basis()
 	rotate_y(look_rotation.y)
 	head.transform.basis = Basis()
 	head.rotate_x(look_rotation.x)
-
-
-func enable_freefly():
-	collider.disabled = true
-	freeflying = true
-	velocity = Vector3.ZERO
-
-
-func disable_freefly():
-	collider.disabled = false
-	freeflying = false
-
 
 func capture_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -252,6 +218,3 @@ func check_input_mappings():
 	if can_sprint and not InputMap.has_action(input_sprint):
 		push_error("Sprinting disabled. No InputAction: " + input_sprint)
 		can_sprint = false
-	if can_freefly and not InputMap.has_action(input_freefly):
-		push_error("Freefly disabled. No InputAction: " + input_freefly)
-		can_freefly = false

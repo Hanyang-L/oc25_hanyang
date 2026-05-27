@@ -104,7 +104,7 @@ emission = Color(0.28, 0.3, 0.7, 1)
 emission_energy_multiplier = 1.1
 
 [sub_resource type="BoxShape3D" id="BoxShape_Next"]
-size = Vector3(40, 8, 4)
+size = Vector3(43.021973, 8, 86.41707)
 
 [node name="Scene3LLM" type="Node3D" unique_id=167060103]
 script = ExtResource("3_script")
@@ -729,12 +729,6 @@ modulate = Color(0.95, 0.98, 1, 1)
 text = "Bob est un bon ___"
 font_size = 54
 
-[node name="SubLabel" type="Label3D" parent="Zone1/BoardPanel" unique_id=1350825145]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.25, 0.22)
-modulate = Color(0.5, 0.6, 0.75, 1)
-text = "<- Plus probable                 Moins probable ->"
-font_size = 26
-
 [node name="HeaderLabel" type="Label3D" parent="Zone1/BoardPanel" unique_id=855771659]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0.22)
 modulate = Color(0.55, 0.65, 1, 1)
@@ -914,12 +908,6 @@ modulate = Color(0.95, 0.98, 1, 1)
 text = "L'ordinateur a un ___"
 font_size = 54
 
-[node name="SubLabel" type="Label3D" parent="Zone2/BoardPanel" unique_id=573422646]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.25, 0.22)
-modulate = Color(0.5, 0.6, 0.75, 1)
-text = "<- Plus probable                 Moins probable ->"
-font_size = 26
-
 [node name="HeaderLabel" type="Label3D" parent="Zone2/BoardPanel" unique_id=725746630]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0.22)
 modulate = Color(0.85, 0.55, 1, 1)
@@ -1096,14 +1084,8 @@ material = SubResource("Mat_Board")
 [node name="PhraseLabel" type="Label3D" parent="Zone3/BoardPanel" unique_id=748584269]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0.22)
 modulate = Color(0.95, 0.98, 1, 1)
-text = "Je suis ___"
+text = "Le LLM est utilisé dans les__"
 font_size = 54
-
-[node name="SubLabel" type="Label3D" parent="Zone3/BoardPanel" unique_id=1793659151]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.25, 0.22)
-modulate = Color(0.5, 0.6, 0.75, 1)
-text = "<- Plus probable                 Moins probable ->"
-font_size = 26
 
 [node name="HeaderLabel" type="Label3D" parent="Zone3/BoardPanel" unique_id=405957973]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0.22)
@@ -1325,6 +1307,7 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NextSceneArea" unique_id=779242362]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5109863, 3.6697989, 41.208534)
 shape = SubResource("BoxShape_Next")
 disabled = true
 

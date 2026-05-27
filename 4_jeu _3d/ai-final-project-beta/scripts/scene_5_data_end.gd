@@ -1,24 +1,14 @@
 extends Node3D
 
-const SCENES_DIR = "res://scenes/"
-const SCENE_PREFIX = "scene_"
-
 var _fans: Array[Node3D] = []
-var _sophia: CharacterBody3D
-var _display_connected: bool = false
 
 func _ready() -> void:
 	Engine.time_scale = 1.0
 	Global.current_scene_path = "res://scenes/scene_5_data_end.tscn"
-	_sophia = $Sophia
+	Global.has_key = true
 	_setup_fans()
-	_setup_display()
 
-	$HUD.set_subtitle("Trouve la sortie du data center")
-	if Global.has_key:
-		$Sophia.global_position = Vector3(3.5, 1.0, -11.0)
-		$Sophia.rotation.y = 0.0
-		$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
+	$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
 func _process(delta: float) -> void:
 	for fan in _fans:
@@ -60,62 +50,6 @@ func _setup_fans() -> void:
 		_add_fan(cyl, gpu_blade_mesh, hub_mesh, $PC/TopFans)
 	for cyl in $PC/GPU/GpuFace.get_children():
 		_add_fan(cyl, gpu_blade_mesh, hub_mesh, $PC/Fans)
-
-func _setup_display() -> void:
-	var screen: Node3D = $Display/CSGBox3D
-
-	# Zone de proximité pour déclencher l'interaction
-	var area := Area3D.new()
-	area.collision_layer = 0
-	area.collision_mask = 1
-	var col := CollisionShape3D.new()
-	var shape := BoxShape3D.new()
-	shape.size = Vector3(5.0, 3.0, 6.0)
-	col.shape = shape
-	area.add_child(col)
-	area.position = screen.position
-	$Display.add_child(area)
-	area.body_entered.connect(_on_display_entered)
-	area.body_exited.connect(_on_display_exited)
-
-func _on_display_entered(body: Node3D) -> void:
-	if body != _sophia:
-		return
-	$HUD.set_subtitle("E : OK")
-	_sophia.interact_pressed.connect(_on_display_interact)
-	_display_connected = true
-
-func _on_display_exited(body: Node3D) -> void:
-	if body != _sophia:
-		return
-	if _display_connected:
-		_sophia.interact_pressed.disconnect(_on_display_interact)
-		_display_connected = false
-	if Global.has_key:
-		$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
-
-func _on_display_interact() -> void:
-	if _display_connected:
-		_sophia.interact_pressed.disconnect(_on_display_interact)
-		_display_connected = false
-
-	_sophia.can_move = false
-	_sophia.has_gravity = false
-	_sophia.velocity = Vector3.ZERO
-
-	$HUD.set_subtitle("")
-	$HUD.show_message("Sophia est aspirée dans le GPU...", 2.0)
-
-	var target: Vector3 = $PC/GPU/GpuBody.global_position
-
-	var tween := create_tween().set_parallel(true)
-	tween.tween_property(_sophia, "global_position", target, 1.5) \
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	tween.tween_property(_sophia, "scale", Vector3.ZERO, 1.5) \
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	tween.chain().tween_callback(func():
-		Global.change_scene("res://scenes/scene_2_gpu.tscn")
-	)
 
 func _add_fan(node: Node, blade_mesh: Mesh, hub_mesh: Mesh, container: Node3D,
 		force_axis: Vector3 = Vector3.ZERO) -> void:
