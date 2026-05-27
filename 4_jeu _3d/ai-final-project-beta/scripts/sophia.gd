@@ -41,8 +41,8 @@ var topdown_mode: bool = false
 var _current_anim: String = ""  # mémorisation de l'animation cours
 
 # Signaux
-signal interact_pressed   # Émis quand touche E appuiée
-signal left_click_pressed   # Émis lors clic gauche souris
+signal interact_pressed   # émis quand touche E appuiée
+signal left_click_pressed   # émis lors clic gauche souris
 
 # Références
 @onready var head: Node3D = $Head
@@ -59,31 +59,28 @@ func _ready() -> void:
 	capture_mouse()
 	if _anim == null:
 		push_warning("sophia.gd: AnimationPlayer introuvable à SophiaMesh/AnimationPlayer")
-	# Layer 2 seulement → invisible pour la caméra FPS (cull_mask=1), visible pour TopDown (cull_mask=3)
+	# layer 2: invisible pour la caméra FPS, visible pour TopDown
 	for vi in $SophiaMesh.find_children("*", "VisualInstance3D", true, false):
 		vi.layers = 2
 
-
+# focus du curseur
 func _notification(what: int) -> void:
-	# Re-capture quand la fenêtre reprend le focus (ex: retour depuis le menu)
 	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN and mouse_captured:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-
-# _input capte les événements avant l'UI ; _unhandled_input laisse l'UI les consommer en premier.
+# input capte les événements avant l'UI ; _unhandled_input laisse l'UI les consommer en premier.
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB:
 		_toggle_camera()
-	if mouse_captured and not topdown_mode and event is InputEventMouseMotion:
+	if mouse_captured and event is InputEventMouseMotion:
 		rotate_look(event.relative)
 
-
+# clic gauche sert seulement à recapturer ou relacher le curseur
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if not mouse_captured:
 				capture_mouse()
-				# Ne pas émettre left_click_pressed : ce clic sert uniquement à recapturer la souris.
 			else:
 				left_click_pressed.emit()
 	if Input.is_key_pressed(KEY_ESCAPE):
@@ -188,7 +185,6 @@ func _toggle_camera() -> void:
 	if topdown_mode:
 		fps_camera.current = false
 		topdown_camera.current = true
-		release_mouse()
 	else:
 		topdown_camera.current = false
 		fps_camera.current = true
