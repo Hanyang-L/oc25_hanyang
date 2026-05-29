@@ -66,42 +66,6 @@ transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0, 0)
 light_color = Color(0.75, 0.8, 1, 1)
 light_energy = 1.2
 
-[node name="LightInput" type="OmniLight3D" parent="." unique_id=4]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25, 80)
-light_color = Color(0.7, 0.4, 1, 1)
-light_energy = 2.0
-omni_range = 50.0
-
-[node name="LightHidden" type="OmniLight3D" parent="." unique_id=5]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25, -10)
-light_color = Color(0.3, 0.5, 1, 1)
-light_energy = 2.0
-omni_range = 70.0
-
-[node name="LightOutput" type="OmniLight3D" parent="." unique_id=6]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25, -95)
-light_color = Color(0.9, 0.95, 1, 1)
-light_energy = 1.5
-omni_range = 45.0
-
-[node name="UnderGlow1" type="OmniLight3D" parent="." unique_id=62]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 60)
-light_color = Color(0, 0.5, 1, 1)
-light_energy = 1.8
-omni_range = 35.0
-
-[node name="UnderGlow2" type="OmniLight3D" parent="." unique_id=63]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, -10)
-light_color = Color(0, 0.5, 1, 1)
-light_energy = 1.8
-omni_range = 50.0
-
-[node name="UnderGlow3" type="OmniLight3D" parent="." unique_id=64]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, -65)
-light_color = Color(0, 0.5, 1, 1)
-light_energy = 1.5
-omni_range = 35.0
-
 [node name="InputLayer" type="Node3D" parent="." unique_id=7]
 
 [node name="I1" type="CSGCylinder3D" parent="InputLayer" unique_id=8]
@@ -386,8 +350,6 @@ collision_layer = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="KillZone" unique_id=57]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.5, 0, -69.5)
 shape = SubResource("Shape_Kill")
-
-[node name="HUD" parent="." unique_id=61 instance=ExtResource("2_hud")]
 
 [node name="KeyPickup" parent="." unique_id=714673381 instance=ExtResource("4_bhyty")]
 transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 3.5, -95)
@@ -1046,6 +1008,8 @@ transform = Transform3D(1.3113416e-07, 1, -4.371139e-08, 3.821371e-15, 4.371139e
 use_collision = true
 size = Vector3(7, 0.1, 7)
 
+[node name="HUD" parent="." unique_id=61 instance=ExtResource("2_hud")]
+
 [node name="MinimapViewport" type="SubViewport" parent="." unique_id=1003]
 render_target_update_mode = 4
 
@@ -1058,34 +1022,49 @@ size = 210.0
 layer = 2
 
 [node name="VBox" type="VBoxContainer" parent="ConstraintsRulesHUD" unique_id=582380142]
-offset_left = 90.0
-offset_top = 281.0
-offset_right = 817.0
-offset_bottom = 847.0
+offset_left = 20.0
+offset_top = 196.0
+offset_right = 520.0
+offset_bottom = 479.0
 
 [node name="TitleContraintes" type="Label" parent="ConstraintsRulesHUD/VBox" unique_id=2077523046]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 40
 text = "Contraintes"
 
 [node name="ConstraintsLabel" type="RichTextLabel" parent="ConstraintsRulesHUD/VBox" unique_id=617955052]
-custom_minimum_size = Vector2(250, 0)
+custom_minimum_size = Vector2(480, 0)
 layout_mode = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 36
 bbcode_enabled = true
 text = "Chemins activés : 0/18
-Chaque plateforme : 2 chemins partants
- "
+Chaque plateforme a 2 chemins partants"
 fit_content = true
 
-[node name="TitleRules" type="Label" parent="ConstraintsRulesHUD/VBox" unique_id=458339972]
+[node name="VBoxRules" type="VBoxContainer" parent="ConstraintsRulesHUD" unique_id=502223474]
+offset_left = 40.367737
+offset_top = 978.97363
+offset_right = 540.36786
+offset_bottom = 1173.9736
+
+[node name="TitleRules" type="Label" parent="ConstraintsRulesHUD/VBoxRules" unique_id=458339972]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
 text = "Règles"
 
-[node name="RulesLabel" type="Label" parent="ConstraintsRulesHUD/VBox" unique_id=529349938]
-custom_minimum_size = Vector2(250, 0)
+[node name="RulesLabel" type="Label" parent="ConstraintsRulesHUD/VBoxRules" unique_id=529349938]
+custom_minimum_size = Vector2(480, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 25
 text = "Active ou désactive les boutons pour trouver la combinaison vers la clé.
 Attention aux chemins rouges.
