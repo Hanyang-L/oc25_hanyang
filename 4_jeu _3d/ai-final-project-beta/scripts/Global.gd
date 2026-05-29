@@ -3,9 +3,9 @@ extends Node
 ## Singleton autoload pour partager l'état entre toutes les scènes.
 ## CONFIGURATION : Project Settings > Autoload > ajouter ce fichier avec le nom "Global"
 
-# === État du joueur ===
-var has_key: bool = false  ## Sophia a-t-elle ramassé la clé ?
-var current_scene_path: String = ""  ## Pour respawn (scène 2)
+# état de Sophia
+var has_key: bool = false 
+var current_scene_path: String = ""
 
 
 ## Change de scène avec fade noir.

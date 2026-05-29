@@ -56,6 +56,11 @@ script = ExtResource("3_script")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2]
 environment = SubResource("Env_NN")
 
+[node name="Sophia" parent="." unique_id=60 instance=ExtResource("1_sophia")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 80)
+jump_velocity = 5.5
+lowgravity = true
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=3]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0, 0)
 light_color = Color(0.75, 0.8, 1, 1)
@@ -124,6 +129,7 @@ sides = 16
 material = SubResource("Mat_Platform")
 
 [node name="HiddenLayer1" type="Node3D" parent="." unique_id=11]
+transform = Transform3D(-1, 8.742278e-08, 0, 8.742278e-08, 1, 1.509958e-07, 1.3200472e-14, 1.509958e-07, -1, 0, 0.11385536, -22.83945)
 
 [node name="H1" type="CSGCylinder3D" parent="HiddenLayer1" unique_id=12]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 2, 20)
@@ -158,6 +164,7 @@ sides = 16
 material = SubResource("Mat_Platform")
 
 [node name="HiddenLayer2" type="Node3D" parent="." unique_id=16]
+transform = Transform3D(-1, 8.742278e-08, 0, 8.742278e-08, 1, 1.509958e-07, 1.3200472e-14, 1.509958e-07, -1, 0, 0.11385536, -22.83945)
 
 [node name="H5" type="CSGCylinder3D" parent="HiddenLayer2" unique_id=17]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 2, -40)
@@ -194,7 +201,7 @@ material = SubResource("Mat_Platform")
 [node name="OutputLayer" type="Node3D" parent="." unique_id=21]
 
 [node name="O" type="CSGCylinder3D" parent="OutputLayer" unique_id=22]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7080965, -95)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7629614, -95)
 use_collision = true
 radius = 4.0
 height = 1.0
@@ -267,6 +274,7 @@ size = Vector3(60.53, 0.4, 3)
 material = SubResource("Mat_Path")
 
 [node name="L2" type="CSGCombiner3D" parent="Paths" unique_id=336603443]
+transform = Transform3D(-1, 8.742278e-08, 0, 8.742278e-08, 1, 1.509958e-07, 1.3200472e-14, 1.509958e-07, -1, 0, 0.11385536, -22.83945)
 
 [node name="H1H5" type="CSGBox3D" parent="Paths/L2" unique_id=36]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -24, 2, -10)
@@ -378,11 +386,6 @@ collision_layer = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="KillZone" unique_id=57]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.5, 0, -69.5)
 shape = SubResource("Shape_Kill")
-
-[node name="Sophia" parent="." unique_id=60 instance=ExtResource("1_sophia")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 80)
-jump_velocity = 5.5
-lowgravity = true
 
 [node name="HUD" parent="." unique_id=61 instance=ExtResource("2_hud")]
 
@@ -614,7 +617,7 @@ shape = SubResource("SphereBtn")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
 pixel_size = 0.02
 text = "I3→H3
-W=1/4"
+W=1/7"
 font_size = 10
 
 [node name="Btn_I3H4" type="Node3D" parent="ButtonPanel" unique_id=1065]
@@ -634,7 +637,7 @@ shape = SubResource("SphereBtn")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.12)
 pixel_size = 0.02
 text = "I3→H4
-W=1/7"
+W=1/4"
 font_size = 10
 
 [node name="Btn_H1H5" type="Node3D" parent="ButtonPanel" unique_id=1070]
