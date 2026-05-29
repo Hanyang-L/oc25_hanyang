@@ -2,14 +2,14 @@ extends CharacterBody3D
 
 ## Sophia — joueur FPS avec mouvement, saut, interaction (touche E, clic gauche souris) et mode low gravity.
 
-# Paramètres exposés
+# paramètres exposés
 @export var can_move: bool = true
 @export var has_gravity: bool = true
 @export var can_jump: bool = true
 @export var can_double_jump: bool = true
 @export var can_sprint: bool = true
 
-
+# paramètres de déplacements
 @export_group("Speeds")
 @export var look_speed: float = 0.002
 @export var base_speed: float = 7.0
@@ -32,7 +32,7 @@ extends CharacterBody3D
 @export var input_sprint: String = "sprint"
 @export var input_interact: String = "interact"
 
-# État interne
+# état interne
 var mouse_captured: bool = false
 var look_rotation: Vector2
 var move_speed: float = 0.0
@@ -40,11 +40,11 @@ var _double_jump_available: bool = false
 var topdown_mode: bool = false
 var _current_anim: String = ""  # mémorisation de l'animation cours
 
-# Signaux
+# signaux
 signal interact_pressed   # émis quand touche E appuiée
 signal left_click_pressed   # émis lors clic gauche souris
 
-# Références
+# références
 @onready var head: Node3D = $Head
 @onready var collider: CollisionShape3D = $Collider
 @onready var fps_camera: Camera3D = $Head/Camera3D
@@ -53,7 +53,6 @@ signal left_click_pressed   # émis lors clic gauche souris
 
 
 func _ready() -> void:
-	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
 	capture_mouse()
@@ -159,7 +158,7 @@ func _update_animation() -> void:
 		_current_anim = anim
 		_anim.play(anim)
 
-
+# rotation de la vision (limites)
 func rotate_look(rot_input: Vector2):
 	look_rotation.x -= rot_input.y * look_speed
 	look_rotation.x = clamp(look_rotation.x, deg_to_rad(-80), deg_to_rad(80))
@@ -174,7 +173,7 @@ func capture_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	mouse_captured = true
 
-
+# cuerseur visible -> camera ne bouge pas
 func release_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	mouse_captured = false
@@ -190,27 +189,5 @@ func _toggle_camera() -> void:
 		fps_camera.current = true
 		capture_mouse()
 
-
 func die():
 	Global.reload_current_scene()
-
-
-func check_input_mappings():
-	if can_move and not InputMap.has_action(input_left):
-		push_error("Movement disabled. No InputAction: " + input_left)
-		can_move = false
-	if can_move and not InputMap.has_action(input_right):
-		push_error("Movement disabled. No InputAction: " + input_right)
-		can_move = false
-	if can_move and not InputMap.has_action(input_forward):
-		push_error("Movement disabled. No InputAction: " + input_forward)
-		can_move = false
-	if can_move and not InputMap.has_action(input_back):
-		push_error("Movement disabled. No InputAction: " + input_back)
-		can_move = false
-	if can_jump and not InputMap.has_action(input_jump):
-		push_error("Jumping disabled. No InputAction: " + input_jump)
-		can_jump = false
-	if can_sprint and not InputMap.has_action(input_sprint):
-		push_error("Sprinting disabled. No InputAction: " + input_sprint)
-		can_sprint = false

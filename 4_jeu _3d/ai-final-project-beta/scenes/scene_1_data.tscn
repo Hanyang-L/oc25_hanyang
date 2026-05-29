@@ -182,7 +182,6 @@ light_energy = 0.3
 
 [node name="Sophia" parent="." unique_id=2106063097 instance=ExtResource("1_sophia")]
 transform = Transform3D(0.9500211, 0, 0.3121857, 0, 1, 0, -0.3121857, 0, 0.9500211, 15, 9.46963, 21.775503)
-can_double_jump = true
 
 [node name="Room" type="Node3D" parent="." unique_id=1369994462]
 

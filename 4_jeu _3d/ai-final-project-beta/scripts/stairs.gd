@@ -1,53 +1,51 @@
-@tool
+@tool # exécution du code aussi dans l'éditeur
 extends Node3D
-## This class creates a staircase.
+## création par code d'escalier
 class_name Stairs
 
-## Number of steps.
+# nb. d'e marches
 @export var repeat = 18:
 	set(x):
 		repeat = x
 		if is_node_ready():
 			create()
-		
-## Size of a step.
+
+# talle d'une marche (x;y;z)
 @export var size = Vector3(2, 0.5, 4):
 	set(x):
 		size = x
 		if is_node_ready():
 				create()
-		
-## Transposition vector (offset).
+
+# translation de vecteur(x;y;z)
 @export var transpose = Vector3(1.3, 0.5, 0):
 	set(x):
 		transpose = x 
 		create()
-		
-# Euler angles of rotation
+
+# rotation en deg. sur y
 @export var rotate_3d = Vector3(0, 20, 0):
 	set(x):
 		rotate_3d = x
 		create()
 
-# Show nodes in scene tree		
+# recrée les marches si changement dans l'inspecteur
 @export var show_node = false:
 	set(x):
 		show_node = x
 		create()
 
-# Staircase material		
+# material
 @export var material: BaseMaterial3D		
 
-		
 func _ready():
 	create()
-	
-	
+
 func create():
 	for child in get_children():
 		child.free()
-	
-	var box	
+
+	var box
 	box = CSGBox3D.new()
 	box.name = "Step"
 	box.size = size
