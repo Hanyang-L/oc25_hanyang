@@ -1,15 +1,23 @@
 extends Node3D
 
-const PATH_DENOM: Dictionary = {
-	"I1H1":9, "I1H2":6, "I1H3":5, "I1H4":8,
-	"I2H1":7, "I2H2":2, "I2H3":4, "I2H4":6,
-	"I3H1":10, "I3H2":5, "I3H3":7, "I3H4":4,
-	"H1H5":8, "H1H6":5, "H1H7":6, "H1H8":9,
-	"H2H5":6, "H2H6":2, "H2H7":7, "H2H8":5,
-	"H3H5":4, "H3H6":4, "H3H7":3, "H3H8":6,
-	"H4H5":8, "H4H6":3, "H4H7":5, "H4H8":6,
-	"H5O":5, "H6O":2, "H7O":3, "H8O":6,
-}
+const PATH_NAMES: Array[String] = [
+	"I1H1", "I1H2", "I1H3", "I1H4",
+	"I2H1", "I2H2", "I2H3", "I2H4",
+	"I3H1", "I3H2", "I3H3", "I3H4",
+	"H1H5", "H1H6", "H1H7", "H1H8",
+	"H2H5", "H2H6", "H2H7", "H2H8",
+	"H3H5", "H3H6", "H3H7", "H3H8",
+	"H4H5", "H4H6", "H4H7", "H4H8",
+	"H5O", "H6O", "H7O", "H8O",
+]
+
+const CORRECT_PATHS: Array[String] = [
+	"I1H1", "I1H2", "I3H4",
+	"I2H3", "I2H4", "I3H2",
+	"H1H5",
+	"H1H8", "H2H6", "H2H8", "H3H5", "H3H6", "H4H6", "H4H7",
+	"H5O", "H6O", "H7O", "H8O",
+]
 
 # X world positions of each neuron, used to detect geometric crossings
 const NEURON_X: Dictionary = {
@@ -36,6 +44,7 @@ var _path_indicators: Dictionary = {}
 var _sophia: CharacterBody3D
 var _hud: CanvasLayer
 var _current_btn_callable: Callable
+var _constraints_label: RichTextLabel
 
 
 func _ready() -> void:
@@ -48,7 +57,11 @@ func _ready() -> void:
 	_init_minimap()
 	_sophia.left_click_pressed.connect(_on_raycast_interact)
 	$KillZone.body_entered.connect(_on_kill_zone_body_entered)
-	_hud.set_subtitle("Saute sur I1 pour activer les chemins.")
+	$KeyPickup.visible = false
+	$KeyPickup.monitoring = false
+	_hud.set_subtitle("")
+	_constraints_label = $ConstraintsHUD/Panel/VBox/ConstraintsLabel
+	_update_constraints_display([])
 
 
 func _build_materials() -> void:
@@ -96,7 +109,7 @@ func _build_materials() -> void:
 func _init_paths() -> void:
 	for path_node in $Paths.find_children("*", "CSGBox3D"):
 		var n: String = path_node.name
-		if not PATH_DENOM.has(n):
+		if not n in PATH_NAMES:
 			continue
 		_path_nodes[n] = path_node
 		_path_active[n] = false
@@ -104,7 +117,7 @@ func _init_paths() -> void:
 
 
 func _init_buttons() -> void:
-	for path_name in PATH_DENOM:
+	for path_name in PATH_NAMES:
 		var btn := $ButtonPanel.get_node_or_null("Btn_" + path_name) as Node3D
 		if not btn:
 			continue
@@ -143,8 +156,7 @@ func _on_btn_body_entered(body: Node3D, path_name: String) -> void:
 		_sophia.interact_pressed.disconnect(_current_btn_callable)
 	_current_btn_callable = _on_btn_interact.bind(path_name)
 	_sophia.interact_pressed.connect(_current_btn_callable)
-	var action := "désactiver" if _path_active.get(path_name, false) else "activer"
-	_hud.set_subtitle("E : " + action + " " + path_name)
+	_hud.set_subtitle("")
 
 
 func _on_btn_body_exited(body: Node3D, _path_name: String) -> void:
@@ -153,20 +165,19 @@ func _on_btn_body_exited(body: Node3D, _path_name: String) -> void:
 	if _current_btn_callable.is_valid() and _sophia.interact_pressed.is_connected(_current_btn_callable):
 		_sophia.interact_pressed.disconnect(_current_btn_callable)
 	_current_btn_callable = Callable()
-	_hud.set_subtitle("Saute sur I1 pour activer les chemins — trouve W=1/2")
+	_hud.set_subtitle("")
 
 
 func _on_btn_interact(path_name: String) -> void:
 	_path_active[path_name] = not _path_active.get(path_name, false)
 	_update_all_paths()
-	var action := "désactiver" if _path_active.get(path_name, false) else "activer"
-	_hud.set_subtitle("E : " + action + " " + path_name)
+	_hud.set_subtitle("")
 
 
 func _update_all_paths() -> void:
 	var crossing: Dictionary = {}
 	var active_list: Array = []
-	for n in PATH_DENOM:
+	for n in PATH_NAMES:
 		if _path_active.get(n, false):
 			active_list.append(n)
 	for i in range(active_list.size()):
@@ -174,7 +185,7 @@ func _update_all_paths() -> void:
 			if _paths_cross(active_list[i], active_list[j]):
 				crossing[active_list[i]] = true
 				crossing[active_list[j]] = true
-	for path_name in PATH_DENOM:
+	for path_name in PATH_NAMES:
 		if not _path_active.get(path_name, false):
 			_set_path_state(path_name, "off")
 		elif crossing.has(path_name):
@@ -189,6 +200,34 @@ func _update_all_paths() -> void:
 			mesh.material = _mat_btn_red
 		else:
 			mesh.material = _mat_btn_green
+	var solved := active_list.size() == CORRECT_PATHS.size()
+	if solved:
+		for n in CORRECT_PATHS:
+			if not n in active_list:
+				solved = false
+				break
+	$KeyPickup.visible = solved
+	$KeyPickup.monitoring = solved
+	_update_constraints_display(active_list)
+
+
+func _update_constraints_display(active_list: Array) -> void:
+	var count := active_list.size()
+	var count_color := "red" if count > 18 else "white"
+	var platform_ok := true
+	for src in ["I1", "I2", "I3", "H1", "H2", "H3", "H4"]:
+		var c := 0
+		for p in active_list:
+			if p.begins_with(src):
+				c += 1
+		if c != 2:
+			platform_ok = false
+			break
+	var platform_color := "white" if platform_ok else "red"
+	_constraints_label.parse_bbcode(
+		"[color=%s]Chemins activés : %d/18[/color]\n[color=%s]Chaque plateforme : 2 chemins partants[/color]" \
+		% [count_color, count, platform_color]
+	)
 
 
 func _set_path_state(path_name: String, state: String) -> void:
@@ -301,7 +340,7 @@ func _on_raycast_interact() -> void:
 	if not btn:
 		return
 	var path_name := btn.name.trim_prefix("Btn_")
-	if not PATH_DENOM.has(path_name):
+	if not path_name in PATH_NAMES:
 		return
 	_on_btn_interact(path_name)
 
