@@ -60,7 +60,7 @@ func _ready() -> void:
 	$KeyPickup.visible = false
 	$KeyPickup.monitoring = false
 	_hud.set_subtitle("")
-	_constraints_label = $ConstraintsHUD/Panel/VBox/ConstraintsLabel
+	_constraints_label = $ConstraintsRulesHUD/VBox/ConstraintsLabel
 	_update_constraints_display([])
 
 
