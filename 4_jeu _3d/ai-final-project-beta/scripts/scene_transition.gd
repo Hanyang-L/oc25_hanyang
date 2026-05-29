@@ -1,10 +1,9 @@
 extends CanvasLayer
 
-## Gère le fondu noir entre scènes.
-## CONFIGURATION : Project Settings > Autoload > ajouter SceneTransition.tscn avec le nom "SceneTransition"
+## Gestion des animations de scene noire entre scènes.
 
 @onready var color_rect: ColorRect = $ColorRect
-const FADE_DURATION: float = 0.5
+const FADE_DURATION: float = 1.2
 
 
 func _ready() -> void:

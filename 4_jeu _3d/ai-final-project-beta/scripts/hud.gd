@@ -12,6 +12,7 @@ var message_timer: float = 0.0
 func _ready() -> void:
 	message_label.text = ""
 	subtitle_label.text = ""
+	key_label.visible = false
 	_update_key_display()
 
 
@@ -41,3 +42,8 @@ func show_message(text: String, duration: float = 2.0) -> void:
 ## Affiche un sous-titre permanent en bas (ex: "Appuie sur E pour interagir").
 func set_subtitle(text: String) -> void:
 	subtitle_label.text = text
+
+
+## Affiche ou cache l'icône clé (seulement en scene_4 et scene_5).
+func set_key_visible(val: bool) -> void:
+	key_label.visible = val

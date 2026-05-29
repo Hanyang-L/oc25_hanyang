@@ -8,6 +8,7 @@ func _ready() -> void:
 	Global.has_key = true
 	_setup_fans()
 
+	$HUD.set_key_visible(true)
 	$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
 func _process(delta: float) -> void:

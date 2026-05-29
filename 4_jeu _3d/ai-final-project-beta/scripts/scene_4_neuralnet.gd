@@ -51,6 +51,7 @@ func _ready() -> void:
 	Engine.time_scale = 1.0
 	_sophia = $Sophia
 	_hud = $HUD
+	_hud.set_key_visible(true)
 	_build_materials()
 	_init_paths()
 	_init_buttons()
