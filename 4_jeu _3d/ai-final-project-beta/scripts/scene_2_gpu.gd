@@ -16,8 +16,14 @@ func _ready() -> void:
 	next_scene_area.monitoring = false
 	$NextSceneArea/CollisionShape3D.disabled = true
 	_moving_cap.all_placed.connect(_on_all_caps_placed)
+	_moving_cap.cap_placed.connect(_on_cap_placed)
+	_hud.set_subtitle("But: Déplacer les condensateurs cylindriques pour réparer le GPU.")
+	_hud.set_cap_counter(0, 7)
 	_setup_trace_hazards()
 	_setup_fans()
+
+func _on_cap_placed(placed: int, total: int) -> void:
+	_hud.set_cap_counter(placed, total)
 
 func _on_all_caps_placed() -> void:
 	next_scene_area.monitoring = true

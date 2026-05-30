@@ -1,14 +1,16 @@
 [gd_scene format=3 uid="uid://mainmenu2025"]
 
-[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_menu"]
+[ext_resource type="Script" uid="uid://cwd7bqsc4tdc1" path="res://scripts/main_menu.gd" id="1_menu"]
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=103760057]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1_menu")
 
-[node name="Background" type="TextureRect" parent="."]
-anchors_preset = 15
+[node name="Background" type="TextureRect" parent="." unique_id=1749276553]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -16,8 +18,8 @@ grow_vertical = 2
 expand_mode = 1
 stretch_mode = 6
 
-[node name="StartButton" type="Button" parent="."]
-anchors_preset = 8
+[node name="StartButton" type="Button" parent="." unique_id=1909427186]
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

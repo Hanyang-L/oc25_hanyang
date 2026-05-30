@@ -1,6 +1,7 @@
 extends Node3D
 
 signal all_placed
+signal cap_placed(placed_count: int, total_count: int)
 
 const PUSH_FORCE = 100.0
 
@@ -53,5 +54,6 @@ func on_cap_entered_trace(rb: RigidBody3D, trace_pos: Vector3) -> void:
 	new_cyl.height = old_cyl.height
 	col_shape.shape = new_cyl
 	_placed_count += 1
+	cap_placed.emit(_placed_count, _cap_bodies.size())
 	if _placed_count >= _cap_bodies.size():
 		all_placed.emit()

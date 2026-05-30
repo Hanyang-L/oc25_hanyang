@@ -4,10 +4,9 @@ extends CanvasLayer
 @onready var blind_timer: Timer = $BlindTimer
 @onready var end_panel: Control = $EndPanel
 
-
 func _ready() -> void:
 	end_panel.visible = false
-	anim_player.play("blind")
+	anim_player.play("blind") # lance animation
 	blind_timer.start()
 
 

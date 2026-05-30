@@ -71,7 +71,8 @@ func _ready() -> void:
 	_sophia.interact_pressed.connect(_on_interact)
 	_sophia.left_click_pressed.connect(_on_interact)
 	$NextSceneArea.body_entered.connect(_on_next_scene_body_entered)
-	_hud.set_subtitle("E : prendre un bloc  |  approche le panneau  |  1-5 : placer dans le rang")
+	_hud.set_subtitle("E/clic gauche: prendre un bloc  |  approche le panneau  |  touches 1-5: placer dans la case correspondante")
+	_hud.set_rules("Règles : Placer les mots dans la phrase correspondante, du plus probable au moins probable.")
 
 
 func _create_word_block(word: String, phrase_idx: int, pos: Vector3) -> void:
@@ -151,7 +152,7 @@ func _pick_up(bd: Dictionary) -> void:
 	bd["state"]       = STATE_HELD
 	_held_block       = bd
 	_hud.set_subtitle(
-		"Tenu : \"" + bd["word"] + "\"   —   Approche le panneau + 1-5   |   E = lâcher"
+		"Tenu : \"" + bd["word"] + "\"   —   Approche le panneau + 1-5   |  touches 1-5: placer dans la case correspondante"
 	)
 
 
@@ -162,7 +163,7 @@ func _drop_block() -> void:
 	_held_block["node"].linear_velocity = Vector3.ZERO
 	_held_block["state"]                = STATE_FREE
 	_held_block                         = null
-	_hud.set_subtitle("E : prendre un bloc  |  approche le panneau  |  1-5 : placer dans le rang")
+	_hud.set_subtitle("E : prendre un bloc  |  approche le panneau  |   touches 1-5: placer dans la case correspondante")
 
 
 func _physics_process(_delta: float) -> void:
@@ -220,7 +221,7 @@ func _try_place(slot_idx: int) -> void:
 	sd["filled"]               = true
 	sd["block_data"]           = bd
 	_held_block                = null
-	_hud.set_subtitle("E : prendre un bloc  |  approche le panneau  |  1-5 : placer dans le rang")
+	_hud.set_subtitle("E : prendre un bloc  |  approche le panneau  |   touches 1-5: placer dans la case correspondante")
 	_try_validate_phrase(pi)
 
 

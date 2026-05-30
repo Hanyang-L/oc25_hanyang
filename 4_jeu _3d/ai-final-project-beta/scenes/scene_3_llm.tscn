@@ -1313,6 +1313,5 @@ disabled = true
 
 [node name="Sophia" parent="." unique_id=351844804 instance=ExtResource("1_sophia")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 44)
-can_double_jump = true
 
 [node name="HUD" parent="." unique_id=391814201 instance=ExtResource("2_hud")]

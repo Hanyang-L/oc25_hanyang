@@ -14,7 +14,7 @@ func _ready() -> void:
 	_setup_fans()
 	_setup_display()
 
-	$HUD.set_subtitle("Trouve la sortie du data center")
+	$HUD.set_subtitle("Il se passe quelque chose au data center.")
 	if Global.has_key:
 		$Sophia.global_position = Vector3(3.5, 1.0, -11.0)
 		$Sophia.rotation.y = 0.0
@@ -92,7 +92,7 @@ func _on_display_exited(body: Node3D) -> void:
 		_sophia.interact_pressed.disconnect(_on_display_interact)
 		_display_connected = false
 	if not Global.has_key:
-		$HUD.set_subtitle("Trouve la sortie du data center")
+		$HUD.set_subtitle("Il se passe quelque chose au data center.")
 	else:
 		$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 

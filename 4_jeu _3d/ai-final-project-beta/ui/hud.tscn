@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://bhudpatrick01"]
 
-[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+[ext_resource type="Script" uid="uid://dspnse8owxt8y" path="res://scripts/hud.gd" id="1_hud"]
 
-[node name="HUD" type="CanvasLayer"]
+[node name="HUD" type="CanvasLayer" unique_id=1949879667]
 script = ExtResource("1_hud")
 
-[node name="MessageLabel" type="Label" parent="."]
+[node name="MessageLabel" type="Label" parent="." unique_id=629515531]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -24,7 +24,7 @@ theme_override_font_sizes/font_size = 28
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SubtitleLabel" type="Label" parent="."]
+[node name="SubtitleLabel" type="Label" parent="." unique_id=1778015581]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -33,23 +33,56 @@ anchor_bottom = 1.0
 offset_left = -300.0
 offset_top = -80.0
 offset_right = 300.0
-offset_bottom = -30.0
+offset_bottom = -22.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 25
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="KeyLabel" type="Label" parent="."]
+[node name="TopLeftPanel" type="MarginContainer" parent="." unique_id=513247498]
+offset_top = 329.0
+offset_right = 631.0
+offset_bottom = 536.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="VBox" type="VBoxContainer" parent="TopLeftPanel" unique_id=1758892053]
+layout_mode = 2
+
+[node name="CapCounterLabel" type="Label" parent="TopLeftPanel/VBox" unique_id=328409539]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 1, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 24
+text = "🔧 Condensateurs Cylindriques : 0 / 7"
+
+[node name="KeyLabel" type="Label" parent="." unique_id=666097009]
 visible = false
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 250.0
-offset_bottom = 60.0
+offset_bottom = 72.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 24
 text = "🔑 Clé : ❌"
+
+[node name="RulesLabel" type="Label" parent="." unique_id=812634172]
+visible = false
+offset_left = 60.0
+offset_top = 284.0
+offset_right = 364.0
+offset_bottom = 404.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+autowrap_mode = 3

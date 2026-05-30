@@ -5,6 +5,8 @@ extends CanvasLayer
 @onready var message_label: Label = $MessageLabel
 @onready var key_label: Label = $KeyLabel
 @onready var subtitle_label: Label = $SubtitleLabel
+@onready var cap_counter_label: Label = $TopLeftPanel/VBox/CapCounterLabel
+@onready var rules_label: Label = $RulesLabel
 
 var message_timer: float = 0.0
 
@@ -47,3 +49,21 @@ func set_subtitle(text: String) -> void:
 ## Affiche ou cache l'icône clé (seulement en scene_4 et scene_5).
 func set_key_visible(val: bool) -> void:
 	key_label.visible = val
+
+
+func set_cap_counter(placed: int, total: int) -> void:
+	cap_counter_label.visible = true
+	cap_counter_label.text = "🔧 Condensateurs Cylindriques: %d / %d" % [placed, total]
+
+
+func hide_cap_counter() -> void:
+	cap_counter_label.visible = false
+
+
+func set_rules(text: String) -> void:
+	rules_label.text = text
+	rules_label.visible = true
+
+
+func hide_rules() -> void:
+	rules_label.visible = false

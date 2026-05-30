@@ -43,7 +43,6 @@ wait_time = 4.0
 one_shot = true
 
 [node name="EndPanel" type="CenterContainer" parent="." unique_id=1054263738]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -55,11 +54,11 @@ layout_mode = 2
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="EndPanel/VBoxContainer" unique_id=982733411]
+[node name="EndText" type="Label" parent="EndPanel/VBoxContainer" unique_id=1281676119]
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "Félicitations !"
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.8923905, 0.67180747, 0.19455093, 1)
+theme_override_font_sizes/font_size = 52
+text = "Félicitations! Vous avez réparé le système. Merci et à bientôt."
 
 [node name="RestartButton" type="Button" parent="EndPanel/VBoxContainer" unique_id=840380937]
 custom_minimum_size = Vector2(280, 60)
