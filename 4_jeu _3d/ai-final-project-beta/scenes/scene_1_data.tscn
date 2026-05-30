@@ -519,16 +519,22 @@ use_collision = true
 size = Vector3(23, 5, 0.5)
 material = SubResource("mat_concrete")
 
-[node name="WallL" type="CSGBox3D" parent="Room" unique_id=1028496382]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.25, 2, 0)
+[node name="WallFront" type="CSGBox3D" parent="Room" unique_id=1354164852]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 28.373539)
 use_collision = true
-size = Vector3(0.5, 5, 35)
+size = Vector3(23, 5, 0.5)
+material = SubResource("mat_concrete")
+
+[node name="WallL" type="CSGBox3D" parent="Room" unique_id=1028496382]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.25, 2, 8.248779)
+use_collision = true
+size = Vector3(0.5, 5, 51.49756)
 material = SubResource("mat_concrete")
 
 [node name="WallR" type="CSGBox3D" parent="Room" unique_id=1167391329]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.25, 2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.25, 2, 7.9238586)
 use_collision = true
-size = Vector3(0.5, 5, 35)
+size = Vector3(0.5, 5, 50.847717)
 material = SubResource("mat_concrete")
 
 [node name="ServerRacks" type="Node3D" parent="." unique_id=644269199]
