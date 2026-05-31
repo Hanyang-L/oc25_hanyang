@@ -5,17 +5,14 @@ var _fans: Array[Node3D] = []
 func _ready() -> void:
 	Engine.time_scale = 1.0
 	Global.current_scene_path = "res://scenes/scene_5_data_end.tscn"
-	# Sophia arrive de scene_4 avec la clé — forcé à true au cas où
-	Global.has_key = true
-	_setup_fans()  # même structure de fans que scene_1 (même PC, même radiateurs)
-
-	$HUD.set_key_visible(true)  # affiche l'icône clé immédiatement dans le HUD
+	Global.has_key = true # Sophia arrive dans scene 5 avec la clé par défaut
+	_setup_fans()  # construction des ventito du pc
+	$HUD.set_key_visible(true)  # affiche la clé dans HUD
 	$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
 func _process(delta: float) -> void:
 	for fan in _fans:
-		# rotation locale — suit l'axe de chaque ventilateur peu importe son orientation
-		fan.rotate_object_local(Vector3.UP, deg_to_rad(360.0) * delta)
+		fan.rotate_object_local(Vector3.UP, deg_to_rad(360.0) * delta) # rotation locale
 
 func _setup_fans() -> void:
 	# matériaux identiques à scene_1 (même PC, même assets)
@@ -24,7 +21,7 @@ func _setup_fans() -> void:
 
 	# matériau métallique brillant pour le moyeu central
 	var hub_mat := StandardMaterial3D.new()
-	hub_mat.albedo_color = Color(0.04, 0.04, 0.05)
+	hub_mat.albedo_color = Color(0.237, 0.262, 0.433, 1.0)
 	hub_mat.metallic = 0.9
 	hub_mat.roughness = 0.2
 

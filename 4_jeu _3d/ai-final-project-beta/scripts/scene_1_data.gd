@@ -33,7 +33,7 @@ func _setup_fans() -> void:
 
 	# matériau métallique brillant pour le moyeu central
 	var hub_mat := StandardMaterial3D.new()
-	hub_mat.albedo_color = Color(0.04, 0.04, 0.05)
+	hub_mat.albedo_color = Color(0.237, 0.262, 0.433, 1.0)
 	hub_mat.metallic = 0.9
 	hub_mat.roughness = 0.2
 
