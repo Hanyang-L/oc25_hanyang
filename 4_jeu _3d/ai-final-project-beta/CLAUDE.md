@@ -58,13 +58,14 @@ main_menu → scene_1_data → scene_2_gpu → scene_3_llm → scene_4_neuralnet
 - `scenes/scene_4_neuralnet.tscn` — puzzle réseau de neurones : panneau de boutons sur I1 (poids W=1/x par chemin), activer les chemins (vert=valide, rouge=croisé+deadly), traverser les neurones jusqu'à Output pour ramasser la clé. Minimap temps réel sur I3. **Pas de NextSceneArea.** Pilotée par `scripts/scene_4_neuralnet.gd`. Voir section dédiée ci-dessous.
 - `scenes/scene_5_data_end.tscn` — salle finale : data center avec skybox extérieure (HDR automne), beach bar instancié, PC avec ventilateurs, coffre, CeilingStairs. `Global.has_key` est posé à `true` au `_ready()`. Pilotée par `scripts/scene_5_data_end.gd`. Voir section dédiée ci-dessous.
 - `scenes/chest_gold.tscn` — coffre interactif (instance de `chest_gold.glb` + AnimationPlayer "open"). Piloté par `scripts/chest.gd`. Ouvrir le coffre charge `ui/end_screen.tscn`.
-- `scenes/beach_bar.tscn` — scène de bar intérieur instanciable avec assets dungeon_assets texturés et collision complète (voir section dédiée ci-dessous). Utilisée dans scene_5_data_end.
+- `scenes/beach_bar.tscn` — scène de bar intérieur instanciable avec assets dungeon_assets texturés et collision complète (voir section dédiée ci-dessous). Utilisée dans `scene_1_data.tscn` **et** `scene_5_data_end.tscn`.
 - `scenes/transition.tscn` — overlay de fondu noir (autoload `SceneTransition`). Script : `scripts/scene_transition.gd`.
 - `scenes/key_pickup.tscn` — pickup de clé (CSG + AnimationPlayer). Export `next_scene_override: String` : si renseigné, appelle `Global.change_scene()` après ramassage.
 - `scenes/barrel.tscn` — baril décoratif (StaticBody3D + ConcavePolygonShape3D, GLB).
 - `scenes/sophia_player.tscn` — le joueur actif dans toutes les scènes (Sophia). Référencé dans les scènes par le nœud `$Sophia`. Piloté par `scripts/sophia.gd`.
 - `scenes/patrick_player.tscn` — ancien joueur (Patrick/SpongeBob), remplacé par Sophia dans les scènes jouables. Non utilisé en jeu.
-- `scenes/skeleton_mage.tscn` — instance du GLB skeleton_mage avec pose de bones adjustée (non utilisé en jeu).
+- `scenes/skeleton.tscn` — instance du GLB `skeleton_mage.glb` avec pose de bones ajustée et scale 1.2. Placé derrière le comptoir du bar (`BarSkeleton`) dans `scene_1_data.tscn` et `scene_5_data_end.tscn`. L'animation Idle est démarrée en boucle via `_setup_skeleton()` dans chaque script.
+- `scenes/skeleton_mage.tscn` — ancienne version de la scène squelette (pose de bones, non utilisée en jeu).
 - `scenes/zombie.tscn` — instance du GLB zombie avec animations retravaillées ("move", etc.) (non utilisé en jeu).
 - `ui/end_screen.tscn` — écran de fin (CanvasLayer). AnimationPlayer "blind" + BlindTimer + EndPanel (boutons Restart / Menu). Script : `scripts/end_screen.gd`.
 
@@ -86,11 +87,11 @@ main_menu → scene_1_data → scene_2_gpu → scene_3_llm → scene_4_neuralnet
 
 Différences script par script :
 
-- `scene_1_data.gd` : crée les ventilateurs PC au runtime (`_setup_fans()`), crée une `Area3D` de proximité autour de `$Display` (`_setup_display()`). Quand Sophia appuie E près de l'écran : `can_move=false`, tween vers `$PC/GPU/GpuBody`, puis `Global.change_scene("scene_2_gpu")`. Si `Global.has_key=true` au `_ready()` : Sophia spawn près du coffre (`Vector3(3.5, 1.0, -11.0)`).
+- `scene_1_data.gd` : crée les ventilateurs PC au runtime (`_setup_fans()`), crée une `Area3D` de proximité autour de `$Display` (`_setup_display()`), démarre l'animation Idle du squelette et installe une zone de dialogue (`_setup_skeleton()`). Sous-titre de départ : `"Rendez vous au comptoir"`. Quand Sophia s'approche du squelette : `show_message("Bonjour. Êtes-vous prête pour un repas gratuit ?...")`. Après sortie de la zone Display (sans clé) : `"Que se passe-t-il donc au sous-sol?"`. Quand Sophia appuie E près de l'écran : `can_move=false`, tween vers `$PC/GPU/GpuBody`, puis `Global.change_scene("scene_2_gpu")`. Si `Global.has_key=true` au `_ready()` : Sophia spawn près du coffre (`Vector3(3.5, 1.0, -11.0)`).
 - `scene_2_gpu.gd` : gère zones de danger sur les traces, étincelles, ventilateurs rotatifs, et caps. La `NextSceneArea` est **désactivée au démarrage** et ne s'active que quand tous les caps sont placés. `_on_trace_body_entered` appelle `_moving_cap.on_cap_entered_trace()` pour les RigidBody3D (caps).
 - `scene_4_neuralnet.gd` : système de puzzle complet — boutons (32), poids W (1/x), croisements algorithmiques, chemins off/vert/rouge, indicateurs de bord cyan, minimap via SubViewport. Gère uniquement la kill zone — **pas de `_on_next_scene_area_body_entered`**.
 - `scene_3_llm.gd` : puzzle de blocs-mots (3 phrases × 5 slots). Gère `NextSceneArea` activée quand `_correct_count >= 15`. Fallback sur `main_menu.tscn` si aucune scène suivante trouvée.
-- `scene_5_data_end.gd` : quasi-identique à `scene_1_data.gd` mais avec skybox HDR, `has_key = true` forcé, et `beach_bar.tscn` instancié dans la scène.
+- `scene_5_data_end.gd` : quasi-identique à `scene_1_data.gd` mais avec skybox HDR, `has_key = true` forcé, `beach_bar.tscn` instancié dans la scène, et `_setup_skeleton()` pour l'animation Idle (sans zone de dialogue).
 
 ### Singleton Global (`scripts/global.gd`)
 
@@ -204,7 +205,8 @@ DataCenter (Node3D) — script scene_1_data.gd
 │   ├── ChestBody (StaticBody3D)
 │   └── InteractArea (Area3D, mask=1)
 ├── Sophia (sophia_player.tscn, spawn Z=+13 ; ou Z=−11 si has_key=true)
-└── HUD (ui/hud.tscn)
+├── HUD (ui/hud.tscn)
+└── BarSkeleton (skeleton.tscn, pos (9.78, 9.37, 13.33), scale 1.2) — squelette derrière le comptoir du bar
 ```
 
 **Disposition des racks :**
@@ -372,6 +374,7 @@ Salle finale : même structure que scene_1_data mais avec éclairage extérieur 
 - `WorldEnvironment` : skybox HDR (`autumn_field_puresky_4k.hdr`) au lieu du fond noir
 - `Global.has_key = true` posé au `_ready()` — Sophia arrive déjà avec la clé
 - `beach_bar.tscn` instancié dans la scène (bar intérieur dungeon_assets)
+- `BarSkeleton` (skeleton.tscn, scale 1.2) derrière le comptoir — animation Idle uniquement, pas de zone de dialogue
 - `stairs.gd` utilisé pour le nœud `CeilingStairs/Stairs`
 - Pas de `_setup_display()` — la transition vers scene_2 ne s'applique pas ici
 - Sous-titre au démarrage : "Utilise la clé pour ouvrir le coffre !"
@@ -462,7 +465,7 @@ Chaque GLB instancié possède un enfant `StaticBody3D > CollisionShape3D` (BoxS
 
 - `patrick_3d.glb` + `patrick_3d_Patrick_texture.png` — modèle joueur (racine du projet)
 - `assets/dungeon_assets/` — pièces de bâtiment (murs, sols, piliers) + props. Texture atlas : `dungeon_albedo.png`. Matériau partagé : `DungeonMat.tres`.
-- `assets/skeleton/skeleton_mage.glb` — squelette mage. Scène wrappée : `scenes/skeleton_mage.tscn` (non utilisé en jeu).
+- `assets/skeleton/skeleton_mage.glb` — squelette mage avec animations embarquées (dont `Idle`). Scènes wrappées : `scenes/skeleton.tscn` (utilisé en jeu dans scene_1 et scene_5) et `scenes/skeleton_mage.tscn` (ancienne version, non utilisée).
 - `assets/zombie/zombie.glb` + `zombie_idle.glb`, `zombie_run.glb`, `zombie_jump.glb` — zombie avec animations. Scène wrappée : `scenes/zombie.tscn` (non utilisé en jeu).
 - `assets/import_examples/` — exemples barrel et chest_gold avec matériaux
 - `assets/sky_background/autumn_field_puresky_4k.hdr` — skybox HDR (utilisée dans scene_5_data_end)

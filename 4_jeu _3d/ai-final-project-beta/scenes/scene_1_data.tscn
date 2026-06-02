@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://dtl2fs4vfurjc" path="res://scripts/chest.gd" id="5_chest_script"]
 [ext_resource type="Script" uid="uid://deuuxmoatwhxs" path="res://scripts/stairs.gd" id="6_ucjih"]
 [ext_resource type="PackedScene" uid="uid://dgoyhqmxxy4e4" path="res://scenes/barrel.tscn" id="9_4ts44"]
+[ext_resource type="PackedScene" uid="uid://c3eb80nitbyrv" path="res://scenes/skeleton.tscn" id="10_skel"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_rg0s2"]
 panorama = ExtResource("2_lwuvj")
@@ -182,6 +183,9 @@ light_energy = 0.3
 
 [node name="Sophia" parent="." unique_id=2106063097 instance=ExtResource("1_sophia")]
 transform = Transform3D(0.9500211, 0, 0.3121857, 0, 1, 0, -0.3121857, 0, 0.9500211, 15, 9.46963, 21.775503)
+
+[node name="BarSkeleton" parent="." unique_id=2033110001 instance=ExtResource("10_skel")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 9.78, 9.37, 13.33)
 
 [node name="Room" type="Node3D" parent="." unique_id=1369994462]
 

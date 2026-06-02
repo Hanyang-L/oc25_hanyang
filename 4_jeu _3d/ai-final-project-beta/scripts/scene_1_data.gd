@@ -6,6 +6,7 @@ const SCENE_PREFIX = "scene_"
 var _fans: Array[Node3D] = []
 var _sophia: CharacterBody3D
 var _display_connected: bool = false
+var _skeleton: Node3D
 
 func _ready() -> void:
 	Engine.time_scale = 1.0  # réinitialise si on revient depuis un menu pausé
@@ -13,8 +14,9 @@ func _ready() -> void:
 	_sophia = $Sophia
 	_setup_fans()     # crée les ventilateurs PC au runtime (Jolt + CSGCylinder3D requis)
 	_setup_display()  # installe la zone de proximité autour de l'écran
+	_setup_skeleton() # lance l'animation Idle et installe la zone de dialogue
 
-	$HUD.set_subtitle("Il se passe quelque chose au data center.")
+	$HUD.set_subtitle("Rendez vous au comptoir")
 	if Global.has_key:
 		# si la clé est déjà ramassée (retour depuis scene_5), spawn près du coffre
 		$Sophia.global_position = Vector3(3.5, 1.0, -11.0)
@@ -106,7 +108,7 @@ func _on_display_exited(body: Node3D) -> void:
 		_display_connected = false
 	# rétablit le sous-titre approprié selon l'état de progression
 	if not Global.has_key:
-		$HUD.set_subtitle("Il se passe quelque chose au data center.")
+		$HUD.set_subtitle("Que se passe-t-il donc au sous-sol?")
 	else:
 		$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
@@ -137,10 +139,40 @@ func _on_display_interact() -> void:
 		Global.change_scene("res://scenes/scene_2_gpu.tscn")
 	)
 
+func _setup_skeleton() -> void:
+	_skeleton = $BarSkeleton
+	var anim := _skeleton.find_child("AnimationPlayer", true, false) as AnimationPlayer
+	if anim and anim.has_animation("Idle"):
+		anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
+		anim.play("Idle")
+	var area := Area3D.new()
+	area.collision_layer = 0
+	area.collision_mask = 1
+	var col := CollisionShape3D.new()
+	var shape := SphereShape3D.new()
+	shape.radius = 3.0
+	col.shape = shape
+	area.add_child(col)
+	_skeleton.add_child(area)
+	area.body_entered.connect(_on_skeleton_entered)
+
+func _on_skeleton_entered(body: Node3D) -> void:
+	if body != _sophia:
+		return
+	var anim := _skeleton.find_child("AnimationPlayer", true, false) as AnimationPlayer
+	if anim and anim.has_animation("Idle_B"):
+		anim.get_animation("Idle_B").loop_mode = Animation.LOOP_LINEAR
+		anim.play("Idle_B")
+	$HUD.show_message("Bonjour. Êtes-vous prête pour un repas gratuit ?\nUn problème vous attend au sous-sol alors.", 6.0)
+	await get_tree().create_timer(6.0).timeout
+	if anim and anim.has_animation("Idle"):
+		anim.play("Idle")
+	$HUD.set_subtitle("Que se passe-t-il donc au sous-sol?")
+
 func _add_fan(node: Node, blade_mesh: Mesh, hub_mesh: Mesh, container: Node3D,
 		force_axis: Vector3 = Vector3.ZERO) -> void:
 	if not node is CSGCylinder3D:
-		return  # ignore les enfants non-cylindriques des radiateurs
+		return  # si pas cylindriques alors ignorés
 	var cyl := node as CSGCylinder3D
 	# convertit la position globale du cylindre en locale dans $PC pour le pivot
 	var local_pos: Vector3 = $PC.to_local(cyl.global_position)

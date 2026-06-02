@@ -1,18 +1,27 @@
 extends Node3D
 
 var _fans: Array[Node3D] = []
+var _skeleton: Node3D
 
 func _ready() -> void:
 	Engine.time_scale = 1.0
 	Global.current_scene_path = "res://scenes/scene_5_data_end.tscn"
 	Global.has_key = true # Sophia arrive dans scene 5 avec la clé par défaut
 	_setup_fans()  # construction des ventito du pc
+	_setup_skeleton()
 	$HUD.set_key_visible(true)  # affiche la clé dans HUD
 	$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
 func _process(delta: float) -> void:
 	for fan in _fans:
 		fan.rotate_object_local(Vector3.UP, deg_to_rad(360.0) * delta) # rotation locale
+
+func _setup_skeleton() -> void:
+	_skeleton = $BarSkeleton
+	var anim := _skeleton.find_child("AnimationPlayer", true, false) as AnimationPlayer
+	if anim and anim.has_animation("Idle"):
+		anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
+		anim.play("Idle")
 
 func _setup_fans() -> void:
 	# matériaux identiques à scene_1 (même PC, même assets)
