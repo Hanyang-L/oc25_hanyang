@@ -23,6 +23,33 @@ func _setup_skeleton() -> void:
 		anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
 		anim.play("Idle")
 
+func _on_chest_opened(body: Node3D) -> void:
+	await SceneTransition.fade_out()
+
+	var plate_pos: Vector3 = $BeachBar/PlateMR.global_position
+	body.global_position = plate_pos + Vector3(0, -0.95, 3.0)
+	body.rotation.y = 0.0
+
+	await SceneTransition.fade_in()
+
+	var anim := _skeleton.find_child("AnimationPlayer", true, false) as AnimationPlayer
+	if anim and anim.has_animation("1H_Ranged_Aiming"):
+		anim.get_animation("1H_Ranged_Aiming").loop_mode = Animation.LOOP_NONE
+		anim.play("1H_Ranged_Aiming")
+		await get_tree().create_timer(0.4).timeout
+		$BeachBar/PlateMR.visible = true
+		await anim.animation_finished
+		if anim.has_animation("Idle"):
+			anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
+			anim.play("Idle")
+
+
+	$HUD.show_message("Merci beaucoup. Voici votre plat. Bon appétit !", 4.0)
+	await get_tree().create_timer(4.0).timeout
+
+	var end_screen = load("res://ui/end_screen.tscn").instantiate()
+	get_tree().current_scene.add_child(end_screen)
+
 func _setup_fans() -> void:
 	# matériaux identiques à scene_1 (même PC, même assets)
 	var blade_mat := StandardMaterial3D.new()

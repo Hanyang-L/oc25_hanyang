@@ -18,5 +18,10 @@ func _on_body_entered(body: Node3D) -> void:
 	_opened = true
 	body.can_move = false
 	$ChestMesh/AnimationPlayer.play("open")
-	var end_screen = load("res://ui/end_screen.tscn").instantiate()
-	get_tree().current_scene.add_child(end_screen)
+	await $ChestMesh/AnimationPlayer.animation_finished
+	var scene = get_tree().current_scene
+	if scene.has_method("_on_chest_opened"):
+		scene._on_chest_opened(body)
+	else:
+		var end_screen = load("res://ui/end_screen.tscn").instantiate()
+		scene.add_child(end_screen)

@@ -9,52 +9,41 @@ var _display_connected: bool = false
 var _skeleton: Node3D
 
 func _ready() -> void:
-	Engine.time_scale = 1.0  # réinitialise si on revient depuis un menu pausé
-	Global.current_scene_path = "res://scenes/scene_1_data.tscn"  # pour le respawn après mort
+	Engine.time_scale = 1.0
+	Global.current_scene_path = "res://scenes/scene_1_data.tscn"  # pour le respawn
 	_sophia = $Sophia
 	_setup_fans()     # crée les ventilateurs PC au runtime (Jolt + CSGCylinder3D requis)
-	_setup_display()  # installe la zone de proximité autour de l'écran
-	_setup_skeleton() # lance l'animation Idle et installe la zone de dialogue
-
+	_setup_display()  # installation de la zone de proximité autour de l'écran
+	_setup_skeleton() # lance animation Idle et instalation zone de dialogue
 	$HUD.set_subtitle("Rendez vous au comptoir")
-	if Global.has_key:
-		# si la clé est déjà ramassée (retour depuis scene_5), spawn près du coffre
-		$Sophia.global_position = Vector3(3.5, 1.0, -11.0)
-		$Sophia.rotation.y = 0.0
-		$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
 func _process(delta: float) -> void:
 	for fan in _fans:
-		# rotation locale : suit l'orientation du pivot peu importe l'axe du ventilateur
-		fan.rotate_object_local(Vector3.UP, deg_to_rad(360.0) * delta)
+		fan.rotate_object_local(Vector3.UP, deg_to_rad(360.0) * delta) # rotation locale --> suit l'orientation du pivot
 
 func _setup_fans() -> void:
-	# matériau sombre mat pour les pales (plastique PC)
+	# couleurs des pales
 	var blade_mat := StandardMaterial3D.new()
 	blade_mat.albedo_color = Color(0.106, 0.157, 0.176, 1.0)
-
-	# matériau métallique brillant pour le moyeu central
+	# couleurs du centre
 	var hub_mat := StandardMaterial3D.new()
 	hub_mat.albedo_color = Color(0.237, 0.262, 0.433, 1.0)
 	hub_mat.metallic = 0.9
 	hub_mat.roughness = 0.2
-
-	# pales des grands ventilateurs Radiator3 (radiateur principal du PC)
+	# pales des ventilo Radiator3
 	var blade_mesh := BoxMesh.new()
 	blade_mesh.size = Vector3(0.238, 0.014, 0.042)
 	blade_mesh.surface_set_material(0, blade_mat)
-
-	# pales plus petites pour le Radiator2 (radiateur secondaire)
+	# pales plus petites des ventilo le Radiator2
 	var rad2_blade_mesh := BoxMesh.new()
 	rad2_blade_mesh.size = Vector3(0.140, 0.010, 0.028)
 	rad2_blade_mesh.surface_set_material(0, blade_mat)
-
-	# pales GPU : légèrement plus grandes que Radiator2, plus petites que Radiator3
+	# pales GPU
 	var gpu_blade_mesh := BoxMesh.new()
 	gpu_blade_mesh.size = Vector3(0.170, 0.010, 0.030)
 	gpu_blade_mesh.surface_set_material(0, blade_mat)
 
-	# moyeu cylindrique partagé entre tous les fans
+	# moyeau cylindrique de tout les ventilos
 	var hub_mesh := CylinderMesh.new()
 	hub_mesh.top_radius = 0.04
 	hub_mesh.bottom_radius = 0.04
@@ -62,29 +51,28 @@ func _setup_fans() -> void:
 	hub_mesh.radial_segments = 10
 	hub_mesh.surface_set_material(0, hub_mat)
 
-	# Radiator3 → ventilateurs sur le dessus du PC ($PC/TopFans)
+	# instalation ventilos
 	for cyl in $PC/Radiator3.get_children():
 		_add_fan(cyl, blade_mesh, hub_mesh, $PC/TopFans)
-	# Radiator2 → ventilateurs latéraux ($PC/Fans), axe de rotation forcé en -X
+	# ventilo Radiator2 axe de rotation forcé en -X
 	for cyl in $PC/Radiator2.get_children():
 		_add_fan(cyl, rad2_blade_mesh, hub_mesh, $PC/Fans, Vector3(-1.0, 0.0, 0.0))
-	# GPU corps → ventilateurs dessus GPU (TopFans)
+	# ventilos dessus GPU
 	for cyl in $PC/GPU/GpuBody.get_children():
 		_add_fan(cyl, gpu_blade_mesh, hub_mesh, $PC/TopFans)
-	# GPU face → ventilateurs face GPU (Fans latéraux)
+	# ventilos face GPU
 	for cyl in $PC/GPU/GpuFace.get_children():
 		_add_fan(cyl, gpu_blade_mesh, hub_mesh, $PC/Fans)
 
 func _setup_display() -> void:
 	var screen: Node3D = $Display/CSGBox3D
-
-	# zone de proximité invisible autour de l'écran pour détecter Sophia
+	# area3d autour de l'écran pour détecter Sophia
 	var area := Area3D.new()
-	area.collision_layer = 0  # pas de couche propre — détection seulement
+	area.collision_layer = 0  # pas de couche propre
 	area.collision_mask = 1   # détecte Sophia (layer 1)
 	var col := CollisionShape3D.new()
 	var shape := BoxShape3D.new()
-	shape.size = Vector3(5.0, 3.0, 6.0)  # boîte large pour être facile à entrer
+	shape.size = Vector3(5.0, 3.0, 6.0)  # taille de zone
 	col.shape = shape
 	area.add_child(col)
 	area.position = screen.position
@@ -96,8 +84,7 @@ func _on_display_entered(body: Node3D) -> void:
 	if body != _sophia:
 		return
 	$HUD.set_subtitle("E : OK")
-	# connecte le signal interact_pressed de Sophia → permet d'appuyer E
-	_sophia.interact_pressed.connect(_on_display_interact)
+	_sophia.interact_pressed.connect(_on_display_interact) # connection du signal en apuyant sur E
 	_display_connected = true
 
 func _on_display_exited(body: Node3D) -> void:
@@ -106,7 +93,7 @@ func _on_display_exited(body: Node3D) -> void:
 	if _display_connected:
 		_sophia.interact_pressed.disconnect(_on_display_interact)
 		_display_connected = false
-	# rétablit le sous-titre approprié selon l'état de progression
+	# mettre le bon HUD en fonction de la position
 	if not Global.has_key:
 		$HUD.set_subtitle("Que se passe-t-il donc au sous-sol?")
 	else:
