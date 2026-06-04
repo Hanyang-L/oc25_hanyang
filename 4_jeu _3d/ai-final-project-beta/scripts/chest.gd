@@ -17,9 +17,11 @@ func _on_body_entered(body: Node3D) -> void:
 		return
 	_opened = true
 	body.can_move = false
+	var scene = get_tree().current_scene
+	if scene.has_method("_on_chest_opening"):
+		scene._on_chest_opening(body)
 	$ChestMesh/AnimationPlayer.play("open")
 	await $ChestMesh/AnimationPlayer.animation_finished
-	var scene = get_tree().current_scene
 	if scene.has_method("_on_chest_opened"):
 		scene._on_chest_opened(body)
 	else:

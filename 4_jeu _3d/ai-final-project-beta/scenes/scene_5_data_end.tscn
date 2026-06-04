@@ -174,6 +174,42 @@ size = Vector3(3, 2, 3.2491455)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ontf5"]
 albedo_color = Color(0.9, 0.85, 0.6, 1)
 
+[sub_resource type="Animation" id="Animation_fi_5"]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FadeRect:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_fo_5"]
+length = 3.7333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FadeRect:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3.7333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5"]
+_data = {
+&"fade_in": SubResource("Animation_fi_5"),
+&"fade_out": SubResource("Animation_fo_5")
+}
+
 [node name="Scene5DataEnd" type="Node3D" unique_id=264586001]
 script = ExtResource("1_kr873")
 
@@ -1743,3 +1779,19 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 16.0
 use_collision = true
 size = Vector3(645.21216, 1, 628.306)
 material = SubResource("StandardMaterial3D_ontf5")
+
+[node name="FadeOverlay" type="CanvasLayer" parent="." unique_id=-1253967295]
+layer = 99
+
+[node name="FadeRect" type="ColorRect" parent="FadeOverlay" unique_id=-1253967294]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.83137256, 0.078431375, 1)
+
+[node name="FadePlayer" type="AnimationPlayer" parent="FadeOverlay" unique_id=-1253967293]
+libraries/ = SubResource("AnimationLibrary_5")

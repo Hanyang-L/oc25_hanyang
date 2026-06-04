@@ -2,6 +2,7 @@ extends Node3D
 
 var _fans: Array[Node3D] = []
 var _skeleton: Node3D
+@onready var _fade_player: AnimationPlayer = $FadeOverlay/FadePlayer
 
 func _ready() -> void:
 	Engine.time_scale = 1.0
@@ -9,6 +10,7 @@ func _ready() -> void:
 	Global.has_key = true # Sophia arrive dans scene 5 avec la clé par défaut
 	_setup_fans()  # construction des ventito du pc
 	_setup_skeleton()
+	
 	$HUD.set_key_visible(true)  # affiche la clé dans HUD
 	$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
@@ -23,14 +25,21 @@ func _setup_skeleton() -> void:
 		anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
 		anim.play("Idle")
 
+func _on_chest_opening(_body: Node3D) -> void:
+	$FadeOverlay.visible = true
+	_fade_player.play("fade_out")
+
 func _on_chest_opened(body: Node3D) -> void:
-	await SceneTransition.fade_out()
+	if _fade_player.is_playing():
+		await _fade_player.animation_finished
 
 	var plate_pos: Vector3 = $BeachBar/PlateMR.global_position
 	body.global_position = plate_pos + Vector3(0, -0.95, 3.0)
 	body.rotation.y = 0.0
-
-	await SceneTransition.fade_in()
+	body.can_look = false
+	body.has_gravity = false
+	_fade_player.play("fade_in")
+	await _fade_player.animation_finished
 
 	var anim := _skeleton.find_child("AnimationPlayer", true, false) as AnimationPlayer
 	if anim and anim.has_animation("1H_Ranged_Aiming"):

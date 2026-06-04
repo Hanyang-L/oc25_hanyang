@@ -4,6 +4,7 @@ extends CharacterBody3D
 
 # paramètres exposés
 @export var can_move: bool = true
+@export var can_look: bool = true
 @export var has_gravity: bool = true
 @export var can_jump: bool = true
 @export var can_double_jump: bool = true
@@ -71,7 +72,7 @@ func _notification(what: int) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB:
 		_toggle_camera()
-	if mouse_captured and event is InputEventMouseMotion:
+	if mouse_captured and can_look and event is InputEventMouseMotion:
 		rotate_look(event.relative)
 
 # clic gauche sert seulement à recapturer et Esc relacher le curseur

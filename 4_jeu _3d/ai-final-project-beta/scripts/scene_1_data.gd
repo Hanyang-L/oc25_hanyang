@@ -101,11 +101,11 @@ func _on_display_exited(body: Node3D) -> void:
 
 func _on_display_interact() -> void:
 	if _display_connected:
-		# déconnecte immédiatement pour éviter un double déclenchement
+		# déconection imediate lors du signal E transmis
 		_sophia.interact_pressed.disconnect(_on_display_interact)
 		_display_connected = false
 
-	# gèle Sophia pendant la cinématique d'aspiration
+	# gèle Sophia pendant la animation d'aspiration
 	_sophia.can_move = false
 	_sophia.has_gravity = false
 	_sophia.velocity = Vector3.ZERO
