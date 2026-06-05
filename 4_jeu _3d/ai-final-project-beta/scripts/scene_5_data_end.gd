@@ -8,21 +8,22 @@ func _ready() -> void:
 	Engine.time_scale = 1.0
 	Global.current_scene_path = "res://scenes/scene_5_data_end.tscn"
 	Global.has_key = true # Sophia arrive dans scene 5 avec la clé par défaut
-	_setup_fans()  # construction des ventito du pc
-	_setup_skeleton()
+	_setup_fans()  # crée les ventilateurs PC au runtime (Jolt + CSGCylinder3D requis)
+	_setup_skeleton() # lance animation Idle et instalation zone de dialogue
 	
 	$HUD.set_key_visible(true)  # affiche la clé dans HUD
 	$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
 func _process(delta: float) -> void:
 	for fan in _fans:
-		fan.rotate_object_local(Vector3.UP, deg_to_rad(360.0) * delta) # rotation locale
+		fan.rotate_object_local(Vector3.UP, deg_to_rad(360.0) * delta) # rotation locale --> suit l'orientation du pivot
 
 func _setup_skeleton() -> void:
 	_skeleton = $BarSkeleton
 	var anim := _skeleton.find_child("AnimationPlayer", true, false) as AnimationPlayer
+
 	if anim and anim.has_animation("Idle"):
-		anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
+		anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR  # boucle infinie, sinon s'arrête à la fin
 		anim.play("Idle")
 
 func _on_chest_opening(_body: Node3D) -> void:
@@ -61,32 +62,32 @@ func _on_chest_opened(body: Node3D) -> void:
 	get_tree().current_scene.add_child(end_screen)
 
 func _setup_fans() -> void:
-	# matériaux identiques à scene_1 (même PC, même assets)
+	# couleurs des pales
 	var blade_mat := StandardMaterial3D.new()
 	blade_mat.albedo_color = Color(0.106, 0.157, 0.176, 1.0)
 
-	# matériau métallique brillant pour le moyeu central
+	# couleurs du centre
 	var hub_mat := StandardMaterial3D.new()
 	hub_mat.albedo_color = Color(0.237, 0.262, 0.433, 1.0)
 	hub_mat.metallic = 0.9
 	hub_mat.roughness = 0.2
 
-	# pales des grands ventilateurs Radiator3
+	# pales des ventilo Radiator3
 	var blade_mesh := BoxMesh.new()
 	blade_mesh.size = Vector3(0.238, 0.014, 0.042)
 	blade_mesh.surface_set_material(0, blade_mat)
 
-	# pales Radiator2 (plus petites)
+	# pales plus petites des ventilo le Radiator2
 	var rad2_blade_mesh := BoxMesh.new()
 	rad2_blade_mesh.size = Vector3(0.140, 0.010, 0.028)
 	rad2_blade_mesh.surface_set_material(0, blade_mat)
 
-	# pales GPU corps et face
+	# pales GPU
 	var gpu_blade_mesh := BoxMesh.new()
 	gpu_blade_mesh.size = Vector3(0.170, 0.010, 0.030)
 	gpu_blade_mesh.surface_set_material(0, blade_mat)
 
-	# moyeu cylindrique partagé entre tous les fans
+	# moyeau cylindrique de tout les ventilos
 	var hub_mesh := CylinderMesh.new()
 	hub_mesh.top_radius = 0.04
 	hub_mesh.bottom_radius = 0.04
@@ -94,26 +95,27 @@ func _setup_fans() -> void:
 	hub_mesh.radial_segments = 10
 	hub_mesh.surface_set_material(0, hub_mat)
 
-	# même disposition que scene_1 : Radiator3 → TopFans, Radiator2 → Fans latéraux
+	# créer ventilos
 	for cyl in $PC/Radiator3.get_children():
 		_add_fan(cyl, blade_mesh, hub_mesh, $PC/TopFans)
+	# ventilo Radiator2 axe de rotation forcé en -X
 	for cyl in $PC/Radiator2.get_children():
 		_add_fan(cyl, rad2_blade_mesh, hub_mesh, $PC/Fans, Vector3(-1.0, 0.0, 0.0))
-	# GPU corps → ventilateurs dessus GPU
+	# ventilos dessus GPU
 	for cyl in $PC/GPU/GpuBody.get_children():
 		_add_fan(cyl, gpu_blade_mesh, hub_mesh, $PC/TopFans)
-	# GPU face → ventilateurs latéraux
+	# ventilos face GPU
 	for cyl in $PC/GPU/GpuFace.get_children():
 		_add_fan(cyl, gpu_blade_mesh, hub_mesh, $PC/Fans)
 
 func _add_fan(node: Node, blade_mesh: Mesh, hub_mesh: Mesh, container: Node3D,
-		force_axis: Vector3 = Vector3.ZERO) -> void:
+		force_axis: Vector3 = Vector3.ZERO) -> void:  # impose l'axe le vecteur nul
 	if not node is CSGCylinder3D:
-		return  # ignore les enfants non-cylindriques des radiateurs
+		return  # si pas cylindriques alors ignorés
 	var cyl := node as CSGCylinder3D
-	# convertit la position globale du cylindre en locale dans $PC pour le pivot
+	# convertissement position en position locale de $PC pour le pivot
 	var local_pos: Vector3 = $PC.to_local(cyl.global_position)
-	# si pas de force_axis → déduit l'axe depuis l'orientation Y du cylindre source
+	# si pas de force_axis --> utilise axe Y naturel
 	var spin_axis: Vector3 = force_axis if force_axis != Vector3.ZERO else cyl.global_basis.y.normalized()
 	var pivot := _make_fan_aligned(local_pos, spin_axis, blade_mesh, hub_mesh, 8, (cyl as CSGCylinder3D).radius * 0.50)
 	container.add_child(pivot)
@@ -123,12 +125,12 @@ func _make_fan_aligned(center: Vector3, spin_axis: Vector3, blade_mesh: Mesh,
 		hub_mesh: Mesh, n_blades: int, radius: float) -> Node3D:
 	var pivot := Node3D.new()
 	pivot.position = center
-	# aligne le pivot sur l'axe de rotation réel du ventilateur
+	# aligne la base du pivot sur l'axe spin réel
 	pivot.transform.basis = Basis(Quaternion(Vector3.UP, spin_axis))
 	var hub := MeshInstance3D.new()
 	hub.mesh = hub_mesh
 	pivot.add_child(hub)
-	# 8 bras espacés de 45° autour du moyeu
+	# 8 bras espacés de 45deg autour du moyeau
 	for i in n_blades:
 		var arm := Node3D.new()
 		arm.rotation_degrees.y = i * (360.0 / n_blades)
@@ -136,6 +138,6 @@ func _make_fan_aligned(center: Vector3, spin_axis: Vector3, blade_mesh: Mesh,
 		var blade := MeshInstance3D.new()
 		blade.mesh = blade_mesh
 		blade.position = Vector3(radius, 0.0, 0.0)
-		blade.rotation_degrees.x = 30.0  # inclinaison de pale pour l'effet visuel
+		blade.rotation_degrees.x = 30.0  # inclinaison de pale (pour (effet visuel)
 		arm.add_child(blade)
 	return pivot

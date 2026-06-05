@@ -3,35 +3,35 @@ extends Node3D
 const SCENES_DIR = "res://scenes/"
 const SCENE_PREFIX = "scene_"
 
-# états possibles d'un bloc-mot au cours de la partie
-const STATE_FREE   = 0  # posé sur l'étagère, ramassable
-const STATE_HELD   = 1  # tenu par Sophia devant la caméra
-const STATE_PLACED = 2  # placé dans un slot du panneau (freeze kinematic)
+# états possibles d'un bloc-mot
+const STATE_FREE   = 0  # posé sur l'etagère, ramassable
+const STATE_HELD   = 1  # tenu devant la caméra
+const STATE_PLACED = 2  # posé dans un slot (freeze kinematic)
 
-# 3 phrases à reconstituer — les mots sont dans le bon ordre dans chaque tableau
+# 3 phrases à reconstituer, mots dans le bon ordre
 const PHRASES = [
 	{"words": ["ami", "bricoleur", "jaune", "fruit", "mauvais"]},
 	{"words": ["Bug", "problème", "ecran", "ami",  "une"]},
 	{"words": ["IAs", "deep learning", "générations", "Large Language Model", "des"]}
 ]
 
-# positions Z des étagères et panneaux — correspondent EXACTEMENT à la géométrie du .tscn
+# positions Z des étagères et panneaux -- correspondent exactement au .tscn
 const ZONE_SHELF_Z = [38.0,  12.0, -14.0]
 const ZONE_RACK_Z  = [22.0,  -4.0, -30.0]
-const SLOT_Y       = [5.5, 4.2, 2.9, 1.6, 0.3]  # hauteurs des 5 emplacements sur chaque panneau
-const BLOCK_X      = [-10.0, -5.0, 0.0, 5.0, 10.0]
+const SLOT_Y       = [5.5, 4.2, 2.9, 1.6, 0.3]  # hauteurs des 5 emplacements
 const ZONE_COLORS  = [
 	Color(0.15, 0.25, 0.78),
 	Color(0.45, 0.15, 0.78),
 	Color(0.1,  0.45, 0.62)
 ]
 const INTERACT_RANGE = 4.0
+const RACK_RANGE = 6.0
+const SUBTITLE_DEFAULT = "E : prendre un bloc  |  approche le panneau  |   touches 1-5: placer dans la case correspondante"
 
 var _blocks: Array = []
 var _slots:  Array = []
 var _held_block           = null
-var _place_pending: Dictionary = {}  # buffer de téléports différés : RigidBody3D → Vector3
-const RACK_RANGE = 6.0
+var _place_pending: Dictionary = {}  # téléports en atente pour le prochain tick physique
 var _correct_count: int   = 0
 var _solved_phrases: int  = 0
 var _rng := RandomNumberGenerator.new()
@@ -43,14 +43,14 @@ var _rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
-	_rng.randomize()  # seed différent chaque partie → ordre de blocs différent
+	_rng.randomize()  # seed aléatoire --> ordre de blocs différent à chaque partie
 	Engine.time_scale = 1.0
 	Global.current_scene_path = "res://scenes/scene_3_llm.tscn"
-	# sortie bloquée tant que les 3 phrases ne sont pas résolues
+	# sortie bloquée tant que les 3 phrases ne sont pas bonnes
 	_next_area.monitoring = false
 	$NextSceneArea/CollisionShape3D.disabled = true
 
-	# initialise les données de slots (world_pos correspond aux positions du .tscn)
+	# initialise les slots (world_pos correspond aux positions du .tscn)
 	for pi in 3:
 		var row: Array = []
 		for si in 5:
@@ -61,7 +61,7 @@ func _ready() -> void:
 			})
 		_slots.append(row)
 
-	# crée les blocs au runtime (RigidBody3D obligatoire — pas déclarable en .tscn avec Jolt)
+	# crée les blocs au runtime (RigidBody3D obligatoire avec Jolt, pas déclarable en .tscn)
 	for pi in 3:
 		var positions := [-10.0, -5.0, 0.0, 5.0, 10.0]
 		_shuffle(positions)  # mélange les positions X pour que l'ordre soit aléatoire
@@ -72,38 +72,38 @@ func _ready() -> void:
 			)
 
 	_sophia.interact_pressed.connect(_on_interact)
-	_sophia.left_click_pressed.connect(_on_interact)  # E ou clic gauche → même action
+	_sophia.left_click_pressed.connect(_on_interact)  # E ou clic gauche --> même action
 	$NextSceneArea.body_entered.connect(_on_next_scene_body_entered)
 	_hud.set_subtitle("E/clic gauche: prendre un bloc  |  approche le panneau  |  touches 1-5: placer dans la case correspondante")
 	_hud.set_rules("Règles : Placer les mots dans la phrase correspondante, du plus probable au moins probable.")
 
 
 func _create_word_block(word: String, phrase_idx: int, pos: Vector3) -> void:
+	# RigidBody3D avec freeze kinematic --> peut etre téléporté par script même si freeze=true
 	var rb := RigidBody3D.new()
 	rb.mass            = 2.0
 	rb.linear_damp     = 5.0
 	rb.angular_damp    = 8.0
-	# empêche les blocs de rouler ou de se coucher sur le côté
+	# empêche les blocs de rouler ou de se coucher sur le coté
 	rb.axis_lock_angular_x = true
 	rb.axis_lock_angular_z = true
 	rb.collision_layer = 1
 	rb.collision_mask  = 1
-	# kinematic freeze : la position peut être forcée par script même quand freeze=true
 	rb.freeze_mode     = RigidBody3D.FREEZE_MODE_KINEMATIC
 	rb.position        = pos
 
 	# couleur par phrase : bleu / violet / cyan-vert
 	var col: Color = ZONE_COLORS[phrase_idx]
 	var m   := StandardMaterial3D.new()
-	m.albedo_color             = col * 0.32  # couleur sombre en diffus
+	m.albedo_color             = col * 0.32  # diffus sombre
 	m.emission_enabled         = true
-	m.emission                 = col          # couleur vive en émissif
+	m.emission                 = col          # émissif vif
 	m.emission_energy_multiplier = 0.55
 
 	var visual := CSGBox3D.new()
-	visual.name          = "Visual"  # nommé pour être retrouvé via get_node("Visual")
+	visual.name          = "Visual"  # nommé pour etre retrouvé via get_node("Visual")
 	visual.size          = Vector3(0.5, 0.5, 0.5)
-	visual.use_collision = false  # collision gérée par le CollisionShape3D séparé
+	visual.use_collision = false  # collision gérée par CollisionShape3D séparé
 	visual.material      = m
 	rb.add_child(visual)
 
@@ -113,7 +113,7 @@ func _create_word_block(word: String, phrase_idx: int, pos: Vector3) -> void:
 	cs.shape = box
 	rb.add_child(cs)
 
-	# label 3D billboard : toujours face caméra, pas de depth test
+	# label billboard : toujours face caméra, pas de depth test
 	var lbl := Label3D.new()
 	lbl.text          = word
 	lbl.font_size     = 52
@@ -128,7 +128,7 @@ func _create_word_block(word: String, phrase_idx: int, pos: Vector3) -> void:
 
 
 func _shuffle(arr: Array) -> void:
-	# Fisher-Yates in-place — évite les doublons de position
+	# Fisher-Yates sur place --> évite les doubles de position
 	for i in range(arr.size() - 1, 0, -1):
 		var j := _rng.randi_range(0, i)
 		var tmp = arr[i]
@@ -136,13 +136,13 @@ func _shuffle(arr: Array) -> void:
 		arr[j] = tmp
 
 
-# ─── Interaction ─────────────────────────────────────────────────
+# interaction
 
 func _on_interact() -> void:
 	if _held_block != null:
-		_drop_block()  # si on tient déjà un bloc → le lâcher
+		_drop_block()  # tient déja un bloc --> le lacher
 		return
-	# sinon → prendre le bloc libre le plus proche dans INTERACT_RANGE
+	# sinon prend le bloc libre le plus proche dans INTERACT_RANGE
 	var nearest = null
 	var best    := INTERACT_RANGE
 	for bd in _blocks:
@@ -157,7 +157,7 @@ func _on_interact() -> void:
 
 
 func _pick_up(bd: Dictionary) -> void:
-	bd["node"].freeze = true  # freeze kinematic : position contrôlée par le script
+	bd["node"].freeze = true  # freeze kinematic --> position controlée par le script
 	bd["state"]       = STATE_HELD
 	_held_block       = bd
 	_hud.set_subtitle(
@@ -168,21 +168,21 @@ func _pick_up(bd: Dictionary) -> void:
 func _drop_block() -> void:
 	if _held_block == null:
 		return
-	_held_block["node"].freeze          = false  # libère la physique
+	_held_block["node"].freeze          = false  # relache la physique
 	_held_block["node"].linear_velocity = Vector3.ZERO
 	_held_block["state"]                = STATE_FREE
 	_held_block                         = null
-	_hud.set_subtitle("E : prendre un bloc  |  approche le panneau  |   touches 1-5: placer dans la case correspondante")
+	_hud.set_subtitle(SUBTITLE_DEFAULT)
 
 
 func _physics_process(_delta: float) -> void:
-	# Carry : met à jour la position du bloc tenu (doit être dans _physics_process avec Jolt)
+	# carry : met à jour la position du bloc tenu (doit etre dans _physics_process avec Jolt)
 	if _held_block != null:
 		_held_block["node"].global_position = (
 			_sophia_head.global_position
-			+ _sophia_head.global_basis * Vector3(0.0, -0.2, -1.65)  # légèrement sous la caméra
+			+ _sophia_head.global_basis * Vector3(0.0, -0.2, -1.65)  # sous la caméra
 		)
-	# Placement différé : applique les téléports en attente au tick physique (compatibilité Jolt)
+	# téléports en atente --> applique au tick physique (Jolt oblige)
 	if not _place_pending.is_empty():
 		for rb in _place_pending:
 			rb.global_position = _place_pending[rb]
@@ -191,7 +191,7 @@ func _physics_process(_delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _held_block == null:
-		return  # touches 1-5 ignorées si on ne tient rien
+		return  # touches 1-5 ignorées si rien tenu
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
 	match event.keycode:
@@ -218,7 +218,7 @@ func _try_place(slot_idx: int) -> void:
 		return
 	var pi: int = _held_block["phrase_idx"]
 	if near_zone != pi:
-		# le joueur a essayé de placer un bloc dans le mauvais panneau
+		# bloc du mauvais panneau
 		_hud.show_message("Ce bloc appartient à la zone " + str(pi + 1) + " !", 2.0)
 		return
 	var sd: Dictionary = _slots[pi][slot_idx]
@@ -227,17 +227,17 @@ func _try_place(slot_idx: int) -> void:
 		return
 	var bd: Dictionary = _held_block
 	bd["node"].freeze = true   # reste kinematic pour ne pas tomber
-	# téléport différé dans _physics_process (compatibilité Jolt)
+	# téléport différé dans _physics_process (Jolt oblige)
 	_place_pending[bd["node"]] = sd["world_pos"] + Vector3(0.0, 0.3, 0.5)
 	bd["state"]       = STATE_PLACED
 	sd["filled"]               = true
 	sd["block_data"]           = bd
 	_held_block                = null
-	_hud.set_subtitle("E : prendre un bloc  |  approche le panneau  |   touches 1-5: placer dans la case correspondante")
+	_hud.set_subtitle(SUBTITLE_DEFAULT)
 	_try_validate_phrase(pi)
 
 
-# ─── Validation ──────────────────────────────────────────────────
+# validation
 
 func _try_validate_phrase(pi: int) -> void:
 	# ne valide que si les 5 slots sont tous remplis
@@ -263,7 +263,7 @@ func _try_validate_phrase(pi: int) -> void:
 		)
 		_check_all_complete()
 	else:
-		# éjecte les mauvais blocs vers Sophia pour un feedback visuel immédiat
+		# éjecte les mauvais blocs vers Sophia pour un feedback visuel
 		for item in wrong_items:
 			var bd: Dictionary = item[0]
 			var sd: Dictionary = item[1]
@@ -272,11 +272,12 @@ func _try_validate_phrase(pi: int) -> void:
 			bd["state"]       = STATE_FREE
 			bd["node"].freeze = false
 			bd["node"].global_position += Vector3(0.0, 0.4, 1.8)
-			bd["node"].linear_velocity  = Vector3(0.0, 2.5, 3.5)  # projecté vers Sophia
+			bd["node"].linear_velocity  = Vector3(0.0, 2.5, 3.5)  # projeté vers Sophia
 		_hud.show_message(str(correct) + " / 5 correct(s) — Réessaie !", 3.0)
 
 
 func _set_block_correct(bd: Dictionary) -> void:
+	# passe le visuel au vert pour montrer que le bloc est bien placé
 	var visual := bd["node"].get_node("Visual") as CSGBox3D
 	var m      := StandardMaterial3D.new()
 	m.albedo_color             = Color(0.08, 0.45, 0.15)
@@ -287,9 +288,9 @@ func _set_block_correct(bd: Dictionary) -> void:
 
 
 func _check_all_complete() -> void:
-	if _correct_count < 15:  # 3 phrases × 5 mots = 15 blocs corrects requis
+	if _correct_count < 15:  # 3 phrases × 5 mots = 15 au total
 		return
-	# déverrouille la sortie
+	# déverouille la sortie
 	_next_area.monitoring = true
 	$NextSceneArea/CollisionShape3D.disabled = false
 	_hud.set_subtitle("Bravo ! Toutes les phrases résolues — dirige-toi vers la sortie.")
@@ -298,7 +299,7 @@ func _check_all_complete() -> void:
 func _on_next_scene_body_entered(body: Node3D) -> void:
 	if not body.has_method("die"):
 		return
-	# trouve dynamiquement scene_N+1 par numéro sans hardcoder le chemin
+	# trouve scène N+1 par numéro sans hardcoder le chemin
 	var filename := get_tree().current_scene.scene_file_path.get_file()
 	var num      := filename.split("_")[1].to_int()
 	var dir      := DirAccess.open(SCENES_DIR)
@@ -307,4 +308,4 @@ func _on_next_scene_body_entered(body: Node3D) -> void:
 			if f.begins_with(SCENE_PREFIX + str(num + 1)):
 				Global.change_scene(SCENES_DIR + f)
 				return
-	Global.change_scene("res://scenes/main_menu.tscn")  # fallback si aucune scène suivante trouvée
+	Global.change_scene("res://scenes/main_menu.tscn")  # fallback si aucune scène suivante
