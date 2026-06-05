@@ -104,7 +104,6 @@ func _on_display_interact() -> void:
 		# déconection imediate lors du signal E transmis
 		_sophia.interact_pressed.disconnect(_on_display_interact)
 		_display_connected = false
-
 	# gèle Sophia pendant la animation d'aspiration
 	_sophia.can_move = false
 	_sophia.has_gravity = false

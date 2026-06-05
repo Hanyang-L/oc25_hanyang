@@ -38,6 +38,7 @@ func _on_chest_opened(body: Node3D) -> void:
 	body.rotation.y = 0.0
 	body.can_look = false
 	body.has_gravity = false
+	body.aim_at(_skeleton.global_position + Vector3(0,-1.4, 0))
 	_fade_player.play("fade_in")
 	await _fade_player.animation_finished
 

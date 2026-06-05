@@ -161,6 +161,9 @@ emission_energy_multiplier = 2.0
 albedo_color = Color(0.92, 0.92, 0.92, 1)
 roughness = 0.8
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_6kcvo"]
+size = Vector3(14.552277, 2.0853882, 0.44873047)
+
 [sub_resource type="BoxShape3D" id="shape_chest_col"]
 size = Vector3(1.8040283, 1.3458008, 1.4219726)
 
@@ -1702,6 +1705,12 @@ transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -1.6995306, 0.068068504
 
 [node name="Barrel2" parent="BeachBar" unique_id=610965226 instance=ExtResource("9_4ts44")]
 transform = Transform3D(0.14898992, 0, -0.68396056, 0, 0.7, 0, 0.68396056, 0, 0.14898992, -9.269556, 0.064816475, 5.946745)
+
+[node name="Limit" type="StaticBody3D" parent="BeachBar" unique_id=1638391543]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BeachBar/Limit" unique_id=801783727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.863327, 2.0913525, -2.2612934)
+shape = SubResource("BoxShape3D_6kcvo")
 
 [node name="Chest" type="Node3D" parent="." unique_id=2100000001]
 transform = Transform3D(0.030486226, 0, -0.9995352, 0, 1, 0, 0.9995352, 0, 0.030486226, 9.838955, 0, -14.672122)

@@ -170,6 +170,15 @@ func rotate_look(rot_input: Vector2):
 	head.transform.basis = Basis()
 	head.rotate_x(look_rotation.x)
 
+func aim_at(target: Vector3) -> void:
+	var dir := (target - global_position).normalized()
+	look_rotation.y = atan2(dir.x, -dir.z)
+	look_rotation.x = clamp(-asin(dir.y), deg_to_rad(-80.0), deg_to_rad(80.0))
+	transform.basis = Basis()
+	rotate_y(look_rotation.y)
+	head.transform.basis = Basis()
+	head.rotate_x(look_rotation.x)
+
 func capture_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	mouse_captured = true
