@@ -1,8 +1,5 @@
 extends Node3D
 
-const SCENES_DIR = "res://scenes/"
-const SCENE_PREFIX = "scene_"
-
 var _fans: Array[Node3D] = []
 var _sophia: CharacterBody3D
 var _display_connected: bool = false
@@ -51,7 +48,7 @@ func _setup_fans() -> void:
 	hub_mesh.radial_segments = 10
 	hub_mesh.surface_set_material(0, hub_mat)
 
-	# instalation ventilos
+	# créer ventilos
 	for cyl in $PC/Radiator3.get_children():
 		_add_fan(cyl, blade_mesh, hub_mesh, $PC/TopFans)
 	# ventilo Radiator2 axe de rotation forcé en -X
@@ -93,11 +90,8 @@ func _on_display_exited(body: Node3D) -> void:
 	if _display_connected:
 		_sophia.interact_pressed.disconnect(_on_display_interact)
 		_display_connected = false
-	# mettre le bon HUD en fonction de la position
 	if not Global.has_key:
 		$HUD.set_subtitle("Que se passe-t-il donc au sous-sol?")
-	else:
-		$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
 func _on_display_interact() -> void:
 	if _display_connected:
@@ -108,61 +102,61 @@ func _on_display_interact() -> void:
 	_sophia.can_move = false
 	_sophia.has_gravity = false
 	_sophia.velocity = Vector3.ZERO
-
 	$HUD.set_subtitle("")
-	$HUD.show_message("Sophia est aspirée dans le GPU...", 2.0)
+	$HUD.show_message("Sophia est aspirée dans le GPU...", 2.0) # message temporaire
 
-	var target: Vector3 = $PC/GPU/GpuBody.global_position
+	var gpu_position: Vector3 = $PC/GPU/GpuBody.global_position
 
-	# tween parallèle : position ET scale réduisent en même temps → effet aspiration
+	# tween (in-between, terme d'animation) --> position et scale reduction en meme temps --> effet aspiration
 	var tween := create_tween().set_parallel(true)
-	tween.tween_property(_sophia, "global_position", target, 1.5) \
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	tween.tween_property(_sophia, "scale", Vector3.ZERO, 1.5) \
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	# changement de scène seulement après la fin des 1.5 secondes
-	tween.chain().tween_callback(func():
-		Global.change_scene("res://scenes/scene_2_gpu.tscn")
-	)
+	# en 1.5 sec, bouge doucement debut --> accelere vers la fin
+	tween.tween_property(_sophia, "global_position", gpu_position, 1.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(_sophia, "scale", Vector3.ZERO, 1.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.chain().tween_callback(func(): # revient en mode sequentielle puis changement de scène
+		Global.change_scene("res://scenes/scene_2_gpu.tscn"))
 
 func _setup_skeleton() -> void:
 	_skeleton = $BarSkeleton
 	var anim := _skeleton.find_child("AnimationPlayer", true, false) as AnimationPlayer
+
 	if anim and anim.has_animation("Idle"):
-		anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
+		anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR  # boucle infinie, sinon s'arrête à la fin
 		anim.play("Idle")
+
+	# zone de détection sphérique du squelette (detection exlusif)
 	var area := Area3D.new()
 	area.collision_layer = 0
-	area.collision_mask = 1
+	area.collision_mask = 1   # détecte seulemt Sophia
 	var col := CollisionShape3D.new()
 	var shape := SphereShape3D.new()
 	shape.radius = 3.0
 	col.shape = shape
 	area.add_child(col)
-	_skeleton.add_child(area)
+	_skeleton.add_child(area)  # node attaché au squelette
 	area.body_entered.connect(_on_skeleton_entered)
 
 func _on_skeleton_entered(body: Node3D) -> void:
-	if body != _sophia:
+	if body != _sophia:  # ignore autre que Sophia
 		return
 	var anim := _skeleton.find_child("AnimationPlayer", true, false) as AnimationPlayer
 	if anim and anim.has_animation("Idle_B"):
 		anim.get_animation("Idle_B").loop_mode = Animation.LOOP_LINEAR
-		anim.play("Idle_B")
+		anim.play("Idle_B")  # change animation quand Sophia est proche
 	$HUD.show_message("Bonjour. Êtes-vous prête pour un repas gratuit ?\nUn problème vous attend au sous-sol alors.", 6.0)
+	# revient à l'animation par défaut apre 6 sec (durée du dialogue)
 	await get_tree().create_timer(6.0).timeout
 	if anim and anim.has_animation("Idle"):
 		anim.play("Idle")
-	$HUD.set_subtitle("Que se passe-t-il donc au sous-sol?")
+	$HUD.set_subtitle("Que se passe-t-il donc au sous-sol?") # change de HUD
 
 func _add_fan(node: Node, blade_mesh: Mesh, hub_mesh: Mesh, container: Node3D,
-		force_axis: Vector3 = Vector3.ZERO) -> void:
+		force_axis: Vector3 = Vector3.ZERO) -> void:  # impose l'axe le vecteur nul
 	if not node is CSGCylinder3D:
 		return  # si pas cylindriques alors ignorés
 	var cyl := node as CSGCylinder3D
-	# convertit la position globale du cylindre en locale dans $PC pour le pivot
+	# convertissement position en position locale de $PC pour le pivot
 	var local_pos: Vector3 = $PC.to_local(cyl.global_position)
-	# si pas de force_axis → utilise l'axe Y naturel du cylindre (face vers le haut)
+	# si pas de force_axis --> utilise axe Y naturel
 	var spin_axis: Vector3 = force_axis if force_axis != Vector3.ZERO else cyl.global_basis.y.normalized()
 	var pivot := _make_fan_aligned(local_pos, spin_axis, blade_mesh, hub_mesh, 8, (cyl as CSGCylinder3D).radius * 0.50)
 	container.add_child(pivot)
@@ -172,12 +166,12 @@ func _make_fan_aligned(center: Vector3, spin_axis: Vector3, blade_mesh: Mesh,
 		hub_mesh: Mesh, n_blades: int, radius: float) -> Node3D:
 	var pivot := Node3D.new()
 	pivot.position = center
-	# aligne la base du pivot sur l'axe de spin réel
+	# aligne la base du pivot sur l'axe spin réel
 	pivot.transform.basis = Basis(Quaternion(Vector3.UP, spin_axis))
 	var hub := MeshInstance3D.new()
 	hub.mesh = hub_mesh
 	pivot.add_child(hub)
-	# 8 bras espacés de 45° autour du moyeu
+	# 8 bras espacés de 45deg autour du moyeau
 	for i in n_blades:
 		var arm := Node3D.new()
 		arm.rotation_degrees.y = i * (360.0 / n_blades)
@@ -185,6 +179,6 @@ func _make_fan_aligned(center: Vector3, spin_axis: Vector3, blade_mesh: Mesh,
 		var blade := MeshInstance3D.new()
 		blade.mesh = blade_mesh
 		blade.position = Vector3(radius, 0.0, 0.0)
-		blade.rotation_degrees.x = 30.0  # inclinaison de pale pour l'effet visuel
+		blade.rotation_degrees.x = 30.0  # inclinaison de pale (pour (effet visuel)
 		arm.add_child(blade)
 	return pivot
