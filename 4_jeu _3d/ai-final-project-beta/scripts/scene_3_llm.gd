@@ -3,12 +3,12 @@ extends Node3D
 const SCENES_DIR = "res://scenes/"
 const SCENE_PREFIX = "scene_"
 
-# états possibles d'un bloc-mot
+# états possibles d'un bloc
 const STATE_FREE   = 0  # posé sur l'etagère, ramassable
 const STATE_HELD   = 1  # tenu devant la caméra
-const STATE_PLACED = 2  # posé dans un slot (freeze kinematic)
+const STATE_PLACED = 2  # posé dans un slot
 
-# 3 phrases à reconstituer, mots dans le bon ordre
+# phrases à reconstituer, mots dans le bon ordre
 const PHRASES = [
 	{"words": ["ami", "bricoleur", "jaune", "fruit", "mauvais"]},
 	{"words": ["Bug", "problème", "ecran", "ami",  "une"]},
@@ -46,8 +46,7 @@ func _ready() -> void:
 	_rng.randomize()  # seed aléatoire --> ordre de blocs différent à chaque partie
 	Engine.time_scale = 1.0
 	Global.current_scene_path = "res://scenes/scene_3_llm.tscn"
-	# sortie bloquée tant que les 3 phrases ne sont pas bonnes
-	_next_area.monitoring = false
+	_next_area.monitoring = false # sortie bloquée tant que les 3 phrases ne sont pas bonnes
 	$NextSceneArea/CollisionShape3D.disabled = true
 
 	# initialise les slots (world_pos correspond aux positions du .tscn)
@@ -79,12 +78,12 @@ func _ready() -> void:
 
 
 func _create_word_block(word: String, phrase_idx: int, pos: Vector3) -> void:
-	# RigidBody3D avec freeze kinematic --> peut etre téléporté par script même si freeze=true
+	# RigidBody3D avec freeze_mode_kinematic --> peut etre téléporté par script même si freeze=true
 	var rb := RigidBody3D.new()
 	rb.mass            = 2.0
 	rb.linear_damp     = 5.0
 	rb.angular_damp    = 8.0
-	# empêche les blocs de rouler ou de se coucher sur le coté
+	# empêche les blocs de se coucher sur le coté
 	rb.axis_lock_angular_x = true
 	rb.axis_lock_angular_z = true
 	rb.collision_layer = 1
@@ -120,7 +119,7 @@ func _create_word_block(word: String, phrase_idx: int, pos: Vector3) -> void:
 	lbl.modulate      = Color(1, 1, 1)
 	lbl.billboard     = BaseMaterial3D.BILLBOARD_ENABLED
 	lbl.no_depth_test = true
-	lbl.position      = Vector3(0.0, 0.0, 0.3)  # en avant du bloc pour la lisibilité
+	lbl.position      = Vector3(0.0, 0.0, 0.3)  # edevant le bloc pour la lisibilité
 	rb.add_child(lbl)
 
 	add_child(rb)
@@ -161,8 +160,7 @@ func _pick_up(bd: Dictionary) -> void:
 	bd["state"]       = STATE_HELD
 	_held_block       = bd
 	_hud.set_subtitle(
-		"Tenu : \"" + bd["word"] + "\"   —   Approche le panneau + 1-5   |  touches 1-5: placer dans la case correspondante"
-	)
+		"Tenu : \"" + bd["word"] + "\"   —   Approche le panneau + 1-5   |  touches 1-5: placer dans la case correspondante")
 
 
 func _drop_block() -> void:
@@ -201,7 +199,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_4: _try_place(3)
 		KEY_5: _try_place(4)
 
-
 func _find_near_rack() -> int:
 	# retourne l'index de la phrase (0-2) si Sophia est assez proche d'un panneau
 	for pi in 3:
@@ -236,9 +233,7 @@ func _try_place(slot_idx: int) -> void:
 	_hud.set_subtitle(SUBTITLE_DEFAULT)
 	_try_validate_phrase(pi)
 
-
 # validation
-
 func _try_validate_phrase(pi: int) -> void:
 	# ne valide que si les 5 slots sont tous remplis
 	for si in 5:
@@ -292,14 +287,14 @@ func _check_all_complete() -> void:
 		return
 	# déverouille la sortie
 	_next_area.monitoring = true
+	_hud.set_subtitle("Bravo ! Toutes les phrases résolues.")
+	await get_tree().create_timer(3.0).timeout
 	$NextSceneArea/CollisionShape3D.disabled = false
-	_hud.set_subtitle("Bravo ! Toutes les phrases résolues — dirige-toi vers la sortie.")
-
 
 func _on_next_scene_body_entered(body: Node3D) -> void:
 	if not body.has_method("die"):
 		return
-	# trouve scène N+1 par numéro sans hardcoder le chemin
+	# trouve scène N+1
 	var filename := get_tree().current_scene.scene_file_path.get_file()
 	var num      := filename.split("_")[1].to_int()
 	var dir      := DirAccess.open(SCENES_DIR)

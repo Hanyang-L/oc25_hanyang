@@ -8,9 +8,9 @@ func _ready() -> void:
 	Engine.time_scale = 1.0
 	Global.current_scene_path = "res://scenes/scene_5_data_end.tscn"
 	Global.has_key = true # Sophia arrive dans scene 5 avec la clé par défaut
-	_setup_fans()  # crée les ventilateurs PC au runtime (Jolt + CSGCylinder3D requis)
-	_setup_skeleton() # lance animation Idle et instalation zone de dialogue
-	
+	_setup_fans()  # crée les ventilos
+	_setup_skeleton() # lance animation Idle + instalation zone  dialogue
+
 	$HUD.set_key_visible(true)  # affiche la clé dans HUD
 	$HUD.set_subtitle("Utilise la clé pour ouvrir le coffre !")
 
@@ -23,11 +23,12 @@ func _setup_skeleton() -> void:
 	var anim := _skeleton.find_child("AnimationPlayer", true, false) as AnimationPlayer
 
 	if anim and anim.has_animation("Idle"):
-		anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR  # boucle infinie, sinon s'arrête à la fin
+		anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
 		anim.play("Idle")
 
 func _on_chest_opening(_body: Node3D) -> void:
 	$FadeOverlay.visible = true
+	$HUD.set_subtitle("")
 	_fade_player.play("fade_out")
 
 func _on_chest_opened(body: Node3D) -> void:
@@ -42,7 +43,6 @@ func _on_chest_opened(body: Node3D) -> void:
 	body.aim_at(_skeleton.global_position + Vector3(0,-1.4, 0))
 	_fade_player.play("fade_in")
 	await _fade_player.animation_finished
-
 	var anim := _skeleton.find_child("AnimationPlayer", true, false) as AnimationPlayer
 	if anim and anim.has_animation("1H_Ranged_Aiming"):
 		anim.get_animation("1H_Ranged_Aiming").loop_mode = Animation.LOOP_NONE
@@ -55,8 +55,10 @@ func _on_chest_opened(body: Node3D) -> void:
 			anim.play("Idle")
 
 
-	$HUD.show_message("Merci beaucoup. Voici votre plat. Bon appétit !", 4.0)
-	await get_tree().create_timer(4.0).timeout
+	$HUD.show_message("Merci beaucoup pour votre aide.\nVoici votre plat. Bon appétit !", 4.0)
+	await get_tree().create_timer(3.0).timeout
+	$HUD.set_subtitle("Merci!")
+	await get_tree().create_timer(2.0).timeout
 
 	var end_screen = load("res://ui/end_screen.tscn").instantiate()
 	get_tree().current_scene.add_child(end_screen)

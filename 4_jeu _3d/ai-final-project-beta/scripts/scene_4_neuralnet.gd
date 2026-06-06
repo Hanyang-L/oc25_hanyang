@@ -46,12 +46,10 @@ var _path_indicators: Dictionary = {}  # name -> Array[MeshInstance3D] bandes cy
 
 var _sophia: CharacterBody3D
 var _hud: CanvasLayer
-var _current_btn_callable: Callable  # un seul callable connecté à la fois (évite les doubles E)
 var _constraints_label: RichTextLabel
 
 
 func _ready() -> void:
-	Engine.time_scale = 1.0
 	_sophia = $Sophia
 	_hud = $HUD
 	_hud.set_key_visible(true)
@@ -59,7 +57,7 @@ func _ready() -> void:
 	_init_paths()    # collecte les CSGBox3D de $Paths, tous invisibles au debut
 	_init_buttons()  # configure boutons du panneau (taille, layer 4, signaux)
 	_init_minimap()  # branche texture SubViewport sur l'écran minimap
-	_sophia.left_click_pressed.connect(_on_raycast_interact)  # clic gauche --> toglé bouton à distance
+	_sophia.left_click_pressed.connect(_on_raycast_interact)  # clic gauche --> inverse l'état d'un bouton à distance
 	$KillZone.body_entered.connect(_on_kill_zone_body_entered)
 	# clé cachée jusqu'a ce que la solution exacte soit activée
 	$KeyPickup.visible = false
@@ -88,7 +86,7 @@ func _build_materials() -> void:
 	_path_mat_red.emission_energy_multiplier = 2.0
 	_path_mat_red.metallic = 0.5
 
-	# bandes cyan sur les bords des chemins verts (indique que c'est marchable)
+	# bandes cyan sur les bords des chemins verts (indique que marchable)
 	_mat_indicator = StandardMaterial3D.new()
 	_mat_indicator.albedo_color = Color(0.0, 0.85, 1.0, 1.0)
 	_mat_indicator.emission_enabled = true
@@ -145,10 +143,6 @@ func _init_buttons() -> void:
 		box.size = Vector3(1.1, 1.1, 0.4)
 		cs.shape = box
 		(_btn_meshes[path_name] as CSGBox3D).material = _mat_off
-		# body_entered --> connecte E pour ce bouton ; body_exited --> déconnecte
-		zone.body_entered.connect(_on_btn_body_entered.bind(path_name))
-		zone.body_exited.connect(_on_btn_body_exited.bind(path_name))
-
 
 func _init_minimap() -> void:
 	# texture live du SubViewport sur l'écran MapScreen
@@ -163,36 +157,13 @@ func _init_minimap() -> void:
 	mat.cull_mode = BaseMaterial3D.CULL_DISABLED  # visible des deux côtés
 	$MapScreen.material = mat
 
-
-func _on_btn_body_entered(body: Node3D, path_name: String) -> void:
-	if body != _sophia:
-		return
-	# déconnecte l'ancien callable avant de connecter le nouveau (évite les doubles E)
-	if _current_btn_callable.is_valid() and _sophia.interact_pressed.is_connected(_current_btn_callable):
-		_sophia.interact_pressed.disconnect(_current_btn_callable)
-	_current_btn_callable = _on_btn_interact.bind(path_name)
-	_sophia.interact_pressed.connect(_current_btn_callable)
-	_hud.set_subtitle("")
-
-
-func _on_btn_body_exited(body: Node3D, _path_name: String) -> void:
-	if body != _sophia:
-		return
-	if _current_btn_callable.is_valid() and _sophia.interact_pressed.is_connected(_current_btn_callable):
-		_sophia.interact_pressed.disconnect(_current_btn_callable)
-	_current_btn_callable = Callable()  # réinitialise le callable actif
-	_hud.set_subtitle("")
-
-
 func _on_btn_interact(path_name: String) -> void:
-	# toglé l'état actif du chemin puis recalcule tout le réseau
+	# inverse l'état actif du chemin puis recalcule tout le réseau
 	_path_active[path_name] = not _path_active.get(path_name, false)
 	_update_all_paths()
-	_hud.set_subtitle("")
-
 
 func _update_all_paths() -> void:
-	# recalcule les croisements à chaque toglé (calcul global, pas incrémental)
+	# recalcule les croisements à chaque changement (calcul global, pas incrémental)
 	var crossing: Dictionary = {}
 	var active_list: Array = []
 	for n in PATH_NAMES:
@@ -352,7 +323,7 @@ func _get_layer(path_name: String) -> int:
 
 
 func _on_raycast_interact() -> void:
-	# clic gauche --> raycast 15u sur layer 4 pour toglé un bouton à distance
+	# clic gauche --> raycast 15u sur layer 4 pour appuyer un bouton à distance
 	var camera := _sophia.get_node("Head/Camera3D") as Camera3D
 	var from := camera.global_position
 	var to := from + camera.global_basis * Vector3(0, 0, -1) * 15.0
@@ -371,7 +342,7 @@ func _on_raycast_interact() -> void:
 	var path_name := btn.name.trim_prefix("Btn_")
 	if not path_name in PATH_NAMES:
 		return
-	_on_btn_interact(path_name)  # même logique que le E de proximité
+	_on_btn_interact(path_name)
 
 
 func _on_kill_zone_body_entered(body: Node3D) -> void:

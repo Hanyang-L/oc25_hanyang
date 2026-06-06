@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-## HUD du joueur — affiche les messages contextuels et l'état de la clé.
+# label du HUD, tous recupérés automatiquement
 
 @onready var message_label: Label = $MessageLabel
 @onready var key_label: Label = $KeyLabel
@@ -8,18 +8,17 @@ extends CanvasLayer
 @onready var cap_counter_label: Label = $TopLeftPanel/VBox/CapCounterLabel
 @onready var rules_label: Label = $RulesLabel
 
-var message_timer: float = 0.0
-
+var message_timer: float = 0.0  # valeur message temporaire
 
 func _ready() -> void:
 	message_label.text = ""
 	subtitle_label.text = ""
-	key_label.visible = false
+	key_label.visible = false  # cachée par defaut
 	_update_key_display()
 
 
 func _process(delta: float) -> void:
-	_update_key_display()
+	_update_key_display()  # mis a jour chaque frame --> reflete l'etat de Global.has_key
 	if message_timer > 0:
 		message_timer -= delta
 		if message_timer <= 0:
@@ -27,6 +26,7 @@ func _process(delta: float) -> void:
 
 
 func _update_key_display() -> void:
+	# jaune si clé obtenue, gris si pas encore
 	if Global.has_key:
 		key_label.text = "🔑 Clé : ✅"
 		key_label.modulate = Color(1, 0.9, 0.3)
@@ -35,18 +35,17 @@ func _update_key_display() -> void:
 		key_label.modulate = Color(0.7, 0.7, 0.7)
 
 
-## Affiche un message temporaire en haut (ex: "Clé ramassée !").
+# message temporaire --> disparait automatiquement apres x secondes
 func show_message(text: String, duration: float = 2.0) -> void:
 	message_label.text = text
 	message_timer = duration
 
 
-## Affiche un sous-titre permanent en bas (ex: "Appuie sur E pour interagir").
 func set_subtitle(text: String) -> void:
 	subtitle_label.text = text
 
 
-## Affiche ou cache l'icône clé (seulement en scene_4 et scene_5).
+# seulment en scene_4 et scene_5
 func set_key_visible(val: bool) -> void:
 	key_label.visible = val
 

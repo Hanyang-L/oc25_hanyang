@@ -3,7 +3,7 @@ extends CanvasLayer
 ## Gestion des animations de scene noire entre scènes.
 
 @onready var color_rect: ColorRect = $ColorRect
-const FADE_DURATION: float = 1.2
+const FADE_DURATION: float = 1.5
 
 
 func _ready() -> void:
@@ -11,7 +11,7 @@ func _ready() -> void:
 	color_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
-## Fade noir → change de scène → fade de retour.
+# Fade noir -> change de scène -> fade de retour.
 func fade_to_scene(scene_path: String) -> void:
 	var tween = create_tween()
 	tween.tween_property(color_rect, "color:a", 1.0, FADE_DURATION)

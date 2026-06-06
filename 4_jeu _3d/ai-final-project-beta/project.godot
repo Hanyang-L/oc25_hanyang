@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 
 Global="*uid://bacy5j0hkfff4"
 SceneTransition="*uid://86yxvc6jwxoo"
+Soundtrack="*uid://c25oxrujbcmrc"
 
 [display]
 

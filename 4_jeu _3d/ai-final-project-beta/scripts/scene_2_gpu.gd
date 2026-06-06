@@ -16,13 +16,13 @@ func _ready() -> void:
 	# sortie bloquée au debut --> s'ouvre seulment quand tous les caps sont placés
 	next_scene_area.monitoring = false
 	$NextSceneArea/CollisionShape3D.disabled = true
-	# écoute les signaux de MovingCap pour le HUD et débloquer la sortie
+	# ecoute signaux de MovingCap pour HUD et débloquer la sortie
 	_moving_cap.all_placed.connect(_on_all_caps_placed)
 	_moving_cap.cap_placed.connect(_on_cap_placed)
 	_hud.set_subtitle("But: Déplacer les condensateurs cylindriques pour réparer le GPU.")
 	_hud.set_cap_counter(0, 7)
 	_setup_trace_hazards()  # kill zones + étincelles sur chaque trace du circuit
-	_setup_fans()           # crée les 3 grandes hélices
+	_setup_fans()   # crée les 3 grandes hélices
 
 func _on_cap_placed(placed: int, total: int) -> void:
 	_hud.set_cap_counter(placed, total)
@@ -77,7 +77,7 @@ func _create_fan(center: Vector3, blade_mesh: BoxMesh, hub_mesh: CylinderMesh) -
 	hub.mesh = hub_mesh
 	pivot.add_child(hub)
 
-	# 8 bras espacés de 45deg autour du moyeau
+	# 8 pales espacés de 45deg autour du moyeau
 	for i in 8:
 		var arm = Node3D.new()
 		arm.rotation_degrees.y = i * 45.0
@@ -97,7 +97,7 @@ func _setup_trace_hazards() -> void:
 	_spark_mesh.radius = 0.04
 	_spark_mesh.height = 0.08
 	var spark_mat = StandardMaterial3D.new()
-	spark_mat.albedo_color = Color(0.3, 0.8, 1.0)  # cyan electrique
+	spark_mat.albedo_color = Color(0.3, 0.8, 1.0)
 	spark_mat.emission_enabled = true
 	spark_mat.emission = Color(0.5, 1.0, 1.5)
 	spark_mat.emission_energy_multiplier = 3.0
@@ -112,13 +112,13 @@ func _setup_trace_hazards() -> void:
 func _add_trace_kill_zone(trace: CSGBox3D) -> void:
 	var area = Area3D.new()
 	area.collision_layer = 0
-	area.collision_mask = 1  # détecte Sophia et les caps (layer 1)
+	area.collision_mask = 1  # détecte Sophia et les caps
 	area.position = trace.position
 	$GPU/CircuitTraces.add_child(area)
 
 	var shape = CollisionShape3D.new()
 	var box = BoxShape3D.new()
-	# hauteur 0.3 : juste assez rase pour toucher ce qui marche sur la trace
+	# hauteur 0.3 assez basse pour toucher ce qui marche sur la trace
 	box.size = Vector3(trace.size.x, 0.3, trace.size.z)
 	shape.shape = box
 	area.add_child(shape)
@@ -150,13 +150,13 @@ func _on_trace_body_entered(body: Node3D, trace_pos: Vector3) -> void:
 	if body.has_method("die"):
 		body.die()  # Sophia --> mort imediate
 	elif body is RigidBody3D:
-		# cap --> snap sur la trace (appelé depuis moving_cap.gd)
+		# si cylindre --> gelé
 		_moving_cap.call("on_cap_entered_trace", body, trace_pos)
 
 func _on_next_scene_area_body_entered(body: Node3D) -> void:
 	if not body.has_method("die"):
 		return
-	# trouve scène N+1 par numero sans hardcoder le chemin
+	# trouve scène N+1 par numero
 	var filename = get_tree().current_scene.scene_file_path.get_file()
 	var num = filename.split("_")[1].to_int()
 	var dir = DirAccess.open(SCENES_DIR)
