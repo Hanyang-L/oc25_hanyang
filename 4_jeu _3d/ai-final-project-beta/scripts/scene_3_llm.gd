@@ -185,6 +185,12 @@ func _physics_process(_delta: float) -> void:
 		for rb in _place_pending:
 			rb.global_position = _place_pending[rb]
 		_place_pending.clear()
+	# empêche Jolt de propulser les blocs au plafond (réaction explosive au freeze/unfreeze)
+	for bd in _blocks:
+		if bd["state"] == STATE_FREE and not bd["node"].freeze:
+			var v: Vector3 = bd["node"].linear_velocity
+			if v.y > 1.5:
+				bd["node"].linear_velocity = Vector3(v.x, 1.5, v.z)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -267,7 +273,7 @@ func _try_validate_phrase(pi: int) -> void:
 			bd["state"]       = STATE_FREE
 			bd["node"].freeze = false
 			bd["node"].global_position += Vector3(0.0, 0.4, 1.8)
-			bd["node"].linear_velocity  = Vector3(0.0, 2.5, 3.5)  # projeté vers Sophia
+			bd["node"].linear_velocity  = Vector3(0.0, 0.0, 2.5)  # projeté vers Sophia (sans composante Y)
 		_hud.show_message(str(correct) + " / 5 correct(s) — Réessaie !", 3.0)
 
 
